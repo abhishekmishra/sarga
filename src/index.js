@@ -1,81 +1,35 @@
 // import { p5 } from 'p5'; //TODO: check why this doesn't work
-import { SATBBlock, SATBBlockRunner, SATBSays } from '../src/satblib';
+import { SATBBlock, SATBBlockRunner, scene, show, says, SATBScriptLine } from '../src/satblib';
 import { Basic0Book } from '../samples/basic0/index';
-
-class BlockDisplay {
-    block;
-    state;
-    blockRunner;
-
-    constructor(block) {
-        this.block = block;
-        this.state = {};
-    }
-
-    preload() {
-
-    }
-
-    setup() {
-        this.state = {
-            'character': null,
-            'character_modifiers': [],
-            'text': null,
-            'scene': [],
-            'music': null,
-            'pause': false
-        };
-        this.blockRunner = new SATBBlockRunner(this.block);
-    }
-
-    keyPressed() {
-        this.state.pause = false;
-    }
-
-    draw(s) {
-        if (!this.state.pause) {
-            const res = this.blockRunner.next();
-            if (res) {
-                const args = this.blockRunner.current().do(this.state);
-                if (args.character) {
-                    this.state.character = args.character;
-                }
-                if (args.text) {
-                    this.state.text = args.text;
-                }
-                if(args.pause) {
-                    this.state.pause = args.pause;
-                }
-            } else {
-                this.state.text = "OVER";
-            }
-        }
-
-        s.fill(255);
-        if (this.state.text === null) {
-            s.text('no text', 100, s.height - 100);
-        } else {
-            s.text(this.state.character, 10, s.height - 100);
-            s.text(this.state.text, 100, s.height - 100);
-        }
-    }
-}
+import { SATBBlockDisplay } from '../src/satbdisplay';
 
 const sketch = (s) => {
-    let concept0 = null;
-    concept0 = new SATBBlock("umm");
-    for (let i = 0; i < 5; i++) {
-        concept0.addItem(new SATBSays('hello world' + i));
-    }
-    let blockDisplay = new BlockDisplay(concept0);
+    let block0 = new SATBBlock("umm");
+    block0.addImage('../samples/basic0/assets/images/Hills Layer 01.png');
+    block0.addImage('../samples/basic0/assets/images/Hills Layer 02.png');
+    block0.addImage('../samples/basic0/assets/images/Hills Layer 03.png');
+    block0.addImage('../samples/basic0/assets/images/Hills Layer 04.png');
+    block0.addImage('../samples/basic0/assets/images/Hills Layer 05.png');
+
+    block0.addItem(scene('hills layer 01'));
+    block0.addItem(show('hills layer 02'));
+    block0.addItem(says('hello world 0'));
+    block0.addItem(says('hello world 1'));
+    block0.addItem(scene('hills layer 03'));
+    block0.addItem(show('hills layer 04'));
+    block0.addItem(says('hello world 2'));
+    block0.addItem(says('hello world 3'));
+
+
+    let blockDisplay = new SATBBlockDisplay(block0);
 
     s.preload = () => {
-        blockDisplay.preload();
+        blockDisplay.preload(s);
     }
 
     s.setup = () => {
         s.createCanvas(500, 500);
-        blockDisplay.setup();
+        blockDisplay.setup(s);
     }
 
     s.keyPressed = () => {

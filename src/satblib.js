@@ -64,17 +64,55 @@ export class SATBSays extends SATBScriptLine {
     }
 }
 
+export function says(tosay = 'nothing', c = 'nobody', label = null) {
+    return new SATBSays(tosay, c, label);
+}
+
+export function scene(img) {
+    return new SATBScriptLine((state) => {
+        return {
+            command: 'scene',
+            image: img
+        }
+    });
+}
+
+export function show(img) {
+    return new SATBScriptLine((state) => {
+        return {
+            command: 'show',
+            image: img
+        }
+    });
+}
+
 export class SATBBlock extends SATBScriptItem {
     static isBlock = true;
     items;
+    images;
+    audioFiles;
 
     constructor(name) {
         super(name);
         this.items = [];
+        this.images = [];
     }
 
     addItem(item) {
         this.items.push(item);
+    }
+
+    addImage(imgUrl) {
+        this.images.push({
+            name: imgUrl.substring(imgUrl.lastIndexOf('/') + 1, imgUrl.lastIndexOf('.')).toLowerCase(),
+            url: imgUrl
+        });
+    }
+
+    addItems(items) {
+        for(let item of items) {
+            this.addItem(item);
+        }
     }
 
     name = this.label;
