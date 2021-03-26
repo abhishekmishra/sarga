@@ -51,4 +51,8 @@ export class SATBBook {
     constructor(name) {
         this.name = name;
     }
+
+    addScene(fn) {
+        
+    }
 }
