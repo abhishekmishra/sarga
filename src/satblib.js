@@ -56,7 +56,8 @@ export class SATBSays extends SATBScriptLine {
             return {
                 command: 'say',
                 character: c,
-                text: tosay
+                text: tosay,
+                pause: true
             }
         },
             label);
@@ -110,7 +111,6 @@ export class SATBBlockRunner {
         if (this.location >= this.block.items.length - 1) {
             return false;
         } else {
-            console.log(this.block.items[this.location]);
             this.location += 1;
             return true;
         }
