@@ -1,0 +1,25 @@
+{
+  "name": "satb",
+  "version": "0.0.1",
+  "description": "SATB: space age textbooks",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "wds --node-resolve --open --app-index www/index.html",
+    "watch": "wds --node-resolve --watch --open --app-index www/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhishekmishra/satb.git"
+  },
+  "keywords": [],
+  "author": "Abhishek Mishra <abhishekmishra3@gmail.com>",
+  "license": "LGPL 2.1",
+  "bugs": {
+    "url": "https://github.com/abhishekmishra/satb/issues"
+  },
+  "homepage": "https://github.com/abhishekmishra/satb#readme",
+  "devDependencies": {
+    "@web/dev-server": "^0.1.10"
+  }
+}
