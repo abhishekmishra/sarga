@@ -37,9 +37,17 @@ export class SATBBlockDisplay {
 
     draw(s) {
         if (!this.state.pause) {
+            let currentItem = null;
             const res = this.blockRunner.next();
             if (res) {
-                const args = this.blockRunner.current().do(this.state);
+                currentItem = this.blockRunner.current();
+                while(currentItem.constructor.isBlock) {
+                    console.log('encountered a block, auto next');
+                    this.blockRunner.next();
+                    currentItem = this.blockRunner.current();
+                }
+                console.log(currentItem);
+                const args = currentItem.do(this.state);
                 switch (args.command) {
                     case "say":
                         if (args.character) {

@@ -205,10 +205,13 @@ export class SATBRunner {
 
         const currentBlk = this.stack[this.stack.length - 1];
         const currentItem = currentBlk.current();
-        if (currentItem.isBlock) {
+        if (currentItem.constructor.isBlock) {
             // if current item is a block, push onto stack
-            const br = new SATBBlockRunner(currentBlk.current());
+            console.log('current item is a block, adding new block runner to stack');
+            currentBlk.next();
+            const br = new SATBBlockRunner(currentItem);
             this.stack.push(br);
+            console.log(this.stack);
         }
         return currentItem;
     }
