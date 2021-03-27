@@ -110,7 +110,7 @@ export class SATBBlock extends SATBScriptItem {
     }
 
     addItems(items) {
-        for(let item of items) {
+        for (let item of items) {
             this.addItem(item);
         }
     }
@@ -137,6 +137,7 @@ export class SATBBook extends SATBBlock {
 export class SATBBlockRunner {
     block;
     location;
+
     constructor(block) {
         if (!block.constructor.isBlock) {
             throw ('not a block');
@@ -169,32 +170,91 @@ export class SATBBlockRunner {
 
 export class SATBRunner {
     block;
-    location;
+    stack;
 
-    constructor() {
-        this.block = null;
-        this.location = [];
-    }
-
-    runBlock(block) {
+    constructor(block) {
         this.block = block;
-        this.location = [this.block.id()];
+        this.stack = [new SATBBlockRunner(this.block)];
     }
 
-    showNext() {
-        let currentLoc = this.location;
+    next() {
+        if (this.stack.length === 0) {
+            return false;
+        }
+
+        const currentBlk = this.stack[this.stack.length - 1];
+        if (currentBlk.hasNext()) {
+            let curRes = currentBlk.next();
+            if (!curRes) {
+                this.stack.pop();
+            }
+        } else {
+            this.stack.pop();
+        }
+
+        if (this.stack.length === 0) {
+            return false;
+        }
+        return true;
     }
 
-    showPrevious() {
+    current() {
+        if (this.stack.length === 0) {
+            throw ('no current item');
+        }
 
+        const currentBlk = this.stack[this.stack.length - 1];
+        const currentItem = currentBlk.current();
+        if (currentItem.isBlock) {
+            // if current item is a block, push onto stack
+            const br = new SATBBlockRunner(currentBlk.current());
+            this.stack.push(br);
+        }
+        return currentItem;
+    }
+
+    previous() {
+        throw ('not implemented');
     }
 
     hasNext() {
+        // if no items in stack
+        if (this.stack.length < 1) {
+            return false;
+        }
 
+        const currentBlk = this.stack[this.stack.length - 1];
+
+        // if current block has more items
+        // or there are more than one block on the stack
+        // return true else false
+        if (currentBlk.hasNext()) {
+            return true;
+        } else if (this.stack.length > 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     hasPrevious() {
+        // if no items in stack
+        if (this.stack.length < 1) {
+            return false;
+        }
 
+        const currentBlk = this.stack[this.stack.length - 1];
+
+        // if current block has previous items
+        // or there are more than one block on the stack
+        // return true else false
+        if (currentBlk.hasPrevious()) {
+            return true;
+        } else if (this.stack.length > 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     location() {

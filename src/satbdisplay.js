@@ -1,4 +1,4 @@
-import { SATBBlockRunner } from '../src/satblib';
+import { SATBBlockRunner, SATBRunner } from '../src/satblib';
 
 export class SATBBlockDisplay {
     block;
@@ -28,7 +28,7 @@ export class SATBBlockDisplay {
             'music': null,
             'pause': false
         };
-        this.blockRunner = new SATBBlockRunner(this.block);
+        this.blockRunner = new SATBRunner(this.block);
     }
 
     keyPressed() {

@@ -5,6 +5,8 @@ import { SATBBlockDisplay } from '../src/satbdisplay';
 
 const sketch = (s) => {
     let block0 = new SATBBlock("umm");
+    let block1 = new SATBBlock("what");
+    
     block0.addImage('../samples/basic0/assets/images/Hills Layer 01.png');
     block0.addImage('../samples/basic0/assets/images/Hills Layer 02.png');
     block0.addImage('../samples/basic0/assets/images/Hills Layer 03.png');
