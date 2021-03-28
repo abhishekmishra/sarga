@@ -111,11 +111,17 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
         return firstBlock.eval();
     },
 
-    Block(begin_block, c, end_block) {
+    Block(begin_block, stmts, end_block) {
         // console.log(a, begin_block, c, end_block, e);
         const blkName = begin_block.eval();
-        c.eval();
-        console.log('created block ' + blkName);
+        const blkStmts = stmts.eval();
+        const block = {
+            type: "block",
+            name: blkName,
+            statements: blkStmts
+        };
+        console.log(block);
+        return block;
     },
 
     BeginBlock(begin_kw, block_name, eol) {
@@ -128,7 +134,7 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
         for (const s of restStmts.children) {
             stmts.push(s.eval());
         }
-        console.log(stmts);
+        return stmts;
     },
 
     Statement(a) {
@@ -136,7 +142,7 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
     },
 
     StmtWithLabel(label, stmt) {
-        return { label: label.eval(), statement: stmt.sourceString };
+        return { label: label.eval(), statement: stmt.eval() };
     },
 
     Label(hash, identifier) {
@@ -144,14 +150,39 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
     },
 
     StmtWithoutLabel(stmt) {
-        return { label: null, statement: stmt.sourceString };
+        return { label: null, statement: stmt.eval() };
+    },
+
+    StartStmt(startkw, blockid) {
+        return {
+            type: "statement",
+            statement: ["start", blockid.sourceString]
+        }
+    },
+
+    LayerStmt(layerkw, layercmd) {
+        return this.sourceString;
+    },
+
+    PlayStmt(playkw, audiokw, audioid) {
+        return {
+            type: "statement",
+            statement: ["play", "audio", audioid.sourceString]
+        };
+    },
+
+    SaysStmt(saysWho, saysWhat) {
+        return {
+            type: "statement",
+            statement: ["says", saysWho.sourceString, saysWhat.sourceString]
+        };
     }
 });
 console.log(satbGrammar);
 console.log(satbSemantics);
 
 const examples = [
-        `begin blah
+    `begin blah
 
         layer clear
         play audio audio0
@@ -168,43 +199,36 @@ const examples = [
     end
     `,
     `
-begin x
-    oy: "$[hello] humm"
-    oy: "what"
-    #t oy: "blah"
-end
-`,
-`
-begin z
-    "what"
-end
-`,
-`
-begin z
-    play audio blah0
-    "what"
-end
-`,
-`
-begin z
-    layer clear
-    "what"
-end
-`,
-`
-begin z
-    layer clear
-    "what"
-    start d0
-end
-`,
-    //     `"hello $world for $date
-    // "`,
-    //     `"hello $character1"`,
-    //     `"hello world"`,
-    //     `"$a"`,
-    //     `" "`,
-];
+    begin x
+        oy: "$[hello] humm"
+        oy: "what"
+        #t oy: "blah"
+    end
+    `,
+    `
+    begin z
+        "what"
+    end
+    `,
+    `
+    begin z
+        play audio blah0
+        "what"
+    end
+    `,
+    `
+    begin z
+        layer clear
+        "what"
+    end
+    `,
+    `
+    begin z
+        layer clear
+        "what"
+        start d0
+    end
+`];
 
 for (let eg of examples) {
     const m = satbGrammar.match(eg);
