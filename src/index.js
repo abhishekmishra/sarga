@@ -5,44 +5,62 @@ import { sketch } from '../src/sketch';
 
 const visualTbGmrText = `
 SATBGrammar {
+    // A script can contain one or more blocks
     Script = Block (ws+ Block)*
 
+    // A block has a begin declaration followed by 0 or more statements
+    // and end with an end declaration
     Block = BeginBlock Statements? EndBlock
 
+    // begin declaration is of the form
+    // begin <blockname>
     BeginBlock = BeginKW identifier eol*
 
+    // end declaration only contains the keyword
+    EndBlock = EndKW
+
     BeginKW = "begin"
+    EndKW = "end"
 
-    EndBlock = "end" ws* eol*
-
+    // A statements list is made of one or more statements
     Statements = Statement (Statement)*
 
+    // A statement can be with or without label
     Statement = StmtWithLabel | StmtWithoutLabel
 
+    // Statement prefixed with label
     StmtWithLabel = Label StmtWithoutLabel
 
+    // A statement can be on of the given types or a block
     StmtWithoutLabel = SaysStmt 
         | PlayStmt
         | LayerStmt
         | StartStmt
         | Block
 
+    // A label is of the form #<id>
     Label = "#" identifier
 
+    // The play statement is of the form
+    // play audio <audioid>
     PlayStmt = PlayKW AudioKW identifier
 
     PlayKW = "play"
-
     AudioKW = "audio"
 
+    // Start statement to run a block
+    // start <blockid>
     StartStmt = StartKW identifier
 
     StartKW = "start"
 
+    // Screen layers statment
+    // layer <layer command>
     LayerStmt = LayerKW layer_cmd
 
     LayerKW = "layer"
 
+    // A layer command can clear, set or unset layers
     layer_cmd = layer_clear_cmd
         | layer_set_cmd
         | layer_unset_cmd
