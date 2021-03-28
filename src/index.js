@@ -38,9 +38,27 @@ SATBGrammar {
         | StartStmt
         | CharacterDeclaration
         | VariableDeclaration
+        | VariableAssignment
         | ChoiceStmt
         | Block
 
+    VariableAssignment = SetKW identifier ArithmeticExp
+
+    SetKW = "set"
+
+    ArithmeticExp
+        = AddExp
+    
+    AddExp
+        = AddExp "+" PriExp  -- plus
+        | AddExp "-" PriExp  -- minus
+        | PriExp
+    
+    PriExp
+        = "(" ArithmeticExp ")"  -- paren
+        | VariableExp
+        | number
+    
     // A label is of the form #<id>
     Label = "#" identifier
 
@@ -48,7 +66,7 @@ SATBGrammar {
 
     VarKW = "var"
 
-    VarValue = AskFragment | SaysWhat | number
+    VarValue = AskFragment | SaysWhat | ArithmeticExp
 
     AskFragment = AskKW SaysWhat
 
@@ -118,11 +136,11 @@ SATBGrammar {
 
     quote = "\\""
 
-    Expr_or_word = Expression | Word
+    Expr_or_word = VariableExp | Word
 
     Word = (alnum | punctuation)+
 
-    Expression = "$[" identifier "]"
+    VariableExp = "$" identifier
     
     identifier = letter alnum*
 
@@ -244,6 +262,14 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
         };
     },
 
+    VariableAssignment(setKW, varName, varValue) {
+        let val = varValue.eval();
+        return {
+            type: "declaration",
+            statement: ["set", varName.sourceString, val]
+        };
+    },
+
     number(value) {
         return this.sourceString;
     },
@@ -253,6 +279,18 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
             type: "fragment",
             statement: ["ask", askText.eval()]
         };
+    },
+
+    PriExp_paren (open, value, close) {
+        return this.sourceString;
+    },
+
+    AddExp_plus(left, sign, right) {
+        return this.sourceString;
+    },
+
+    AddExp_minus(left, sign, right) {
+        return this.sourceString;
     }
 });
 console.log(satbGrammar);
@@ -266,12 +304,15 @@ const examples = [
         var x 10
         var y "blah bluh"
         var z ask "get value"
+
+        set y (10 - $x)
+        set x 20
         
         layer clear
         play audio audio0
 
-        #t oy: "$[hello] humm"
-        oy: "$[hello] humm"
+        #t oy: "$hello humm"
+        oy: "$hello humm"
 
         #an choice "blah"
         option "one" "do something"
@@ -291,7 +332,7 @@ const examples = [
     `,
     `
     begin x
-        oy: "$[hello] humm"
+        oy: "$hello humm"
         oy: "what"
         #t oy: "blah"
     end
@@ -323,6 +364,15 @@ const examples = [
         "what"
         start d0
     end
+`,
+`
+begin x
+set y $z - $x
+set y $z + $x
+set y 10 - $x
+set y 10 + 20
+set y (10 - $x)
+end
 `];
 
 for (let eg of examples) {
