@@ -37,11 +37,22 @@ SATBGrammar {
         | LayerStmt
         | StartStmt
         | CharacterDeclaration
+        | VariableDeclaration
         | ChoiceStmt
         | Block
 
     // A label is of the form #<id>
     Label = "#" identifier
+
+    VariableDeclaration = VarKW identifier VarValue
+
+    VarKW = "var"
+
+    VarValue = AskFragment | SaysWhat | number
+
+    AskFragment = AskKW SaysWhat
+
+    AskKW = "ask"
 
     ChoiceStmt = ChoiceKW SaysWhat ChoiceOption+
 
@@ -122,6 +133,8 @@ SATBGrammar {
     // comment = ";"
 
     eol = "\\n" | "\\r\\n"   
+
+    number = digit*
 }
 `;
 
@@ -198,6 +211,10 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
         };
     },
 
+    SaysWhat(q1, expr, q2) {
+        return expr.sourceString;
+    },
+
     CharacterDeclaration(characterKW, characterName, characterColour) {
         return {
             type: "declaration",
@@ -217,6 +234,25 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
             type: "fragment",
             statement: ["option", optionLabel.sourceString, optionStmt.eval()]
         }
+    },
+
+    VariableDeclaration(varkw, varName, varValue) {
+        let val = varValue.eval();
+        return {
+            type: "declaration",
+            statement: ["var", varName.sourceString, val]
+        };
+    },
+
+    number(value) {
+        return this.sourceString;
+    },
+
+    AskFragment(askkw, askText) {
+        return {
+            type: "fragment",
+            statement: ["ask", askText.eval()]
+        };
     }
 });
 console.log(satbGrammar);
@@ -226,6 +262,10 @@ const examples = [
     `begin blah
         character oy #222222
         character noone #888888
+
+        var x 10
+        var y "blah bluh"
+        var z ask "get value"
         
         layer clear
         play audio audio0
@@ -237,9 +277,9 @@ const examples = [
         option "one" "do something"
         option "two" "do something"
         option "three" 
-        begin
-            "dude"
-        end
+            begin
+                "dude"
+            end
 
         begin bluh
             "dude"
