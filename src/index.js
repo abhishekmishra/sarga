@@ -73,7 +73,20 @@ SATBGrammar {
 `;
 
 const satbGrammar = ohm.grammar(visualTbGmrText);
+const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
+    block(a, begin_block, c, end_block, e) {
+        // console.log(a, begin_block, c, end_block, e);
+        const blkName = begin_block.eval();
+        console.log('created block ' + blkName);
+    },
+
+    begin_block_stmt(ws1, begin_kw, ws2, block_name, eol) {
+        return block_name.source.contents;
+    }
+    
+});
 console.log(satbGrammar);
+console.log(satbSemantics);
 
 const examples = [
     `begin blah
@@ -109,6 +122,7 @@ end
 for (let eg of examples) {
     const m = satbGrammar.match(eg);
     console.log(`${eg} -> ${m.succeeded()}`);
+    satbSemantics(m).eval();
     if(!m.succeeded()) {
         console.log(satbGrammar.trace(eg).toString());
     }
