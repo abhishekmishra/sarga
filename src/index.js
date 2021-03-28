@@ -1,60 +1,115 @@
-// import { p5 } from 'p5'; //TODO: check why this doesn't work
-import { SATBBlock, SATBBlockRunner, scene, show, says, SATBScriptLine } from '../src/satblib';
-import { Basic0Book } from '../samples/basic0/index';
-import { SATBBlockDisplay } from '../src/satbdisplay';
+import { sketch } from '../src/sketch';
+// import * as ohm from 'ohm-js';
 
-const sketch = (s) => {
-    let block0 = new SATBBlock("umm");
-    let block1 = new SATBBlock("what");
+// const sketchInstance = new p5(sketch);
 
-    block0.addImage('../samples/basic0/assets/images/Hills Layer 01.png');
-    block0.addImage('../samples/basic0/assets/images/Hills Layer 02.png');
-    block0.addImage('../samples/basic0/assets/images/Hills Layer 03.png');
-    block0.addImage('../samples/basic0/assets/images/Hills Layer 04.png');
-    block0.addImage('../samples/basic0/assets/images/Hills Layer 05.png');
+const visualTbGmrText = `
+SATBGrammar {
+    block = ws* begin_block_stmt statements end_block_stmt ws*
 
-    // first few items
-    block0.addItem(scene('hills layer 01'));
-    block0.addItem(show('hills layer 02'));
-    block0.addItem(says('hello world 0'));
-    block0.addItem(says('hello world 1'));
+    begin_block_stmt = ws* "begin" space+ identifier eol
 
-    //add a block
-    block1.addItem(scene('hills layer 02'));
-    block1.addItem(show('hills layer 05'));
-    block1.addItem(says('hello from block1-0'));
-    block1.addItem(says('hello from block1-1'));
-    block0.addItem(block1);
+    end_block_stmt = ws* "end" eol*
 
-    //few more items
-    block0.addItem(scene('hills layer 03'));
-    block0.addItem(show('hills layer 04'));
-    block0.addItem(says('hello world 2'));
-    block0.addItem(says('hello world 3'));
+    statements = stmt_with_label+
 
+    stmt_with_label = ws* label stmt_or_block -- stmt
+        | stmt_or_block
 
-    let blockDisplay = new SATBBlockDisplay(block0);
+    stmt_or_block = says_stmt | 
+        play_stmt |
+        layer_stmt |
+        start_stmt |
+        block
 
-    s.preload = () => {
-        blockDisplay.preload(s);
-    }
+    label = "[" identifier "]" ws+
 
-    s.setup = () => {
-        s.createCanvas(500, 500);
-        blockDisplay.setup(s);
-    }
+    play_stmt = ws* "play" ws+ "audio" ws+ identifier
 
-    s.keyPressed = () => {
-        blockDisplay.keyPressed();
-    }
+    start_stmt = ws* "start" ws+ identifier
 
-    s.draw = () => {
-        s.background(0);
-        // s.fill(255);
-        // s.circle(100, 100, 50);
-        s.textSize(20);
-        blockDisplay.draw(s);
+    layer_stmt = ws* "layer" ws+ layer_cmd
+
+    layer_cmd = layer_clear_cmd
+        | layer_set_cmd
+        | layer_unset_cmd
+        
+    layer_clear_cmd = "clear"
+
+    layer_set_cmd = "set" ws+ layer_number ws+ drawable
+
+    layer_unset_cmd = "unset" ws+ layer_number
+
+    layer_number = digit+
+
+    drawable = identifier
+
+    says_stmt = ws* (someone ":" ws+)? quote expr_or_word (ws+ expr_or_word)* quote
+
+    someone = identifier
+
+    quote = "\\""
+
+    expr_or_word = expression | word
+
+    word = (alnum | punctuation)*
+
+    expression = "$" identifier
+    
+    identifier = letter alnum*
+
+    punctuation = "'" | "," | "."
+
+    ws = " " | "\t" | eol_char
+
+    comment = ";" 
+
+    eol = eol_char+
+
+    eol_char = "\\n" | "\\r"
+    
+    // script = "{" script "}"
+}
+`;
+
+const satbGrammar = ohm.grammar(visualTbGmrText);
+console.log(satbGrammar);
+
+const examples = [
+    `begin blah
+
+    layer clear
+    play audio audio0
+
+    [x] noone: "hello $world for $date period."
+    nobody: "hello $world for $date period."
+    "hello $world for $date period."
+
+    begin bluh
+        "dude"
+    end
+
+    noone: "woah"
+    start bluh
+end
+`,
+`
+begin x
+    [a] oy: "hello"
+end
+`,
+//     `"hello $world for $date
+// "`,
+//     `"hello $character1"`,
+//     `"hello world"`,
+//     `"$a"`,
+//     `" "`,
+];
+
+for (let eg of examples) {
+    const m = satbGrammar.match(eg);
+    console.log(`${eg} -> ${m.succeeded()}`);
+    if(!m.succeeded()) {
+        console.log(satbGrammar.trace(eg).toString());
     }
 }
-
-const sketchInstance = new p5(sketch);
