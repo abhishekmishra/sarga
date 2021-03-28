@@ -14,7 +14,7 @@ SATBGrammar {
 
     // begin declaration is of the form
     // begin <blockname>
-    BeginBlock = BeginKW identifier eol*
+    BeginBlock = BeginKW identifier? eol*
 
     // end declaration only contains the keyword
     EndBlock = EndKW
@@ -36,10 +36,30 @@ SATBGrammar {
         | PlayStmt
         | LayerStmt
         | StartStmt
+        | CharacterDeclaration
+        | ChoiceStmt
         | Block
 
     // A label is of the form #<id>
     Label = "#" identifier
+
+    ChoiceStmt = ChoiceKW SaysWhat ChoiceOption+
+
+    ChoiceKW = "choice"
+
+    ChoiceOption = OptionKW SaysWhat eol* StmtWithoutLabel
+
+    OptionKW = "option"
+
+    // A character declaration of the form
+    // character <character_name> <character_colour>
+    CharacterDeclaration = CharacterKW CharacterName Colour
+
+    CharacterKW = "character"
+
+    CharacterName = identifier
+
+    Colour = "#" hexDigit hexDigit hexDigit hexDigit hexDigit hexDigit
 
     // The play statement is of the form
     // play audio <audioid>
@@ -120,7 +140,7 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
             name: blkName,
             statements: blkStmts
         };
-        console.log(block);
+        // console.log(block);
         return block;
     },
 
@@ -176,6 +196,27 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
             type: "statement",
             statement: ["says", saysWho.sourceString, saysWhat.sourceString]
         };
+    },
+
+    CharacterDeclaration(characterKW, characterName, characterColour) {
+        return {
+            type: "declaration",
+            statement: ["character", characterName.sourceString, characterColour.sourceString]
+        };
+    },
+
+    ChoiceStmt(choicekw, choiceLabel, choices) {
+        return {
+            type: "statement",
+            statement: ["choice", choiceLabel.sourceString, choices.eval()]
+        };
+    },
+
+    ChoiceOption(optionkw, optionLabel, eols, optionStmt) {
+        return {
+            type: "fragment",
+            statement: ["option", optionLabel.sourceString, optionStmt.eval()]
+        }
     }
 });
 console.log(satbGrammar);
@@ -183,12 +224,22 @@ console.log(satbSemantics);
 
 const examples = [
     `begin blah
-
+        character oy #222222
+        character noone #888888
+        
         layer clear
         play audio audio0
 
         #t oy: "$[hello] humm"
         oy: "$[hello] humm"
+
+        #an choice "blah"
+        option "one" "do something"
+        option "two" "do something"
+        option "three" 
+        begin
+            "dude"
+        end
 
         begin bluh
             "dude"
@@ -207,7 +258,11 @@ const examples = [
     `,
     `
     begin z
-        "what"
+        choice "x"
+        option "three" 
+        begin x
+            "dude"
+        end
     end
     `,
     `
@@ -238,6 +293,7 @@ for (let eg of examples) {
         console.log(satbGrammar.trace(eg).toString());
     } else {
         // console.log(satbGrammar.trace(eg).toString());
-        satbSemantics(m).eval();
+        const res = satbSemantics(m).eval()
+        console.log(JSON.stringify(res, null, 2));
     }
 }
