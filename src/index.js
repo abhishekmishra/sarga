@@ -5,24 +5,30 @@ import { sketch } from '../src/sketch';
 
 const visualTbGmrText = `
 SATBGrammar {
-    block = ws* begin_block_stmt statements end_block_stmt ws*
+    Script = Block (ws+ Block)*
 
-    begin_block_stmt = ws* "begin" space+ identifier eol
+    Block = BeginBlock Statements? EndBlock
 
-    end_block_stmt = ws* "end" eol*
+    BeginBlock = begin_kw identifier eol*
 
-    statements = stmt_with_label+
+    begin_kw = "begin" space+
 
-    stmt_with_label = ws* label stmt_or_block -- stmt
-        | stmt_or_block
+    EndBlock = "end" ws* eol*
 
-    stmt_or_block = says_stmt | 
-        play_stmt |
-        layer_stmt |
-        start_stmt |
-        block
+    Statements = Statement (Statement)*
 
-    label = "[" identifier "]" ws+
+    Statement = StmtWithLabel | StmtWithoutLabel
+
+    StmtWithLabel = Label StmtWithoutLabel
+
+    StmtWithoutLabel = says_stmt 
+        | play_stmt
+        | layer_stmt
+        | start_stmt
+        // |
+        //block
+
+    Label = "#" identifier
 
     play_stmt = ws* "play" ws+ "audio" ws+ identifier
 
@@ -44,7 +50,7 @@ SATBGrammar {
 
     drawable = identifier
 
-    says_stmt = ws* (someone ":" ws+)? quote expr_or_word (ws+ expr_or_word)* quote
+    says_stmt = (someone ":" ws+)? quote expr_or_word (ws+ expr_or_word)* quote eol+
 
     someone = identifier
 
@@ -60,70 +66,99 @@ SATBGrammar {
 
     punctuation = "'" | "," | "."
 
-    ws = " " | "\t" | eol_char
+    ws = " " | "\t"
 
-    comment = ";" 
+    // comment = ";"
 
-    eol = eol_char+
-
-    eol_char = "\\n" | "\\r"
-    
-    // script = "{" script "}"
+    eol = "\\n" | "\\r\\n"   
 }
 `;
 
 const satbGrammar = ohm.grammar(visualTbGmrText);
 const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
-    block(a, begin_block, c, end_block, e) {
+    Script(firstBlock, ws, restBlocks) {
+        return firstBlock.eval();
+    },
+
+    Block(begin_block, c, end_block) {
         // console.log(a, begin_block, c, end_block, e);
         const blkName = begin_block.eval();
+        c.eval();
         console.log('created block ' + blkName);
     },
 
-    begin_block_stmt(ws1, begin_kw, ws2, block_name, eol) {
+    BeginBlock(begin_kw, block_name, eol) {
         return block_name.source.contents;
+    },
+
+    Statements(firstStmt, restStmts) {
+        let stmts = [];
+        stmts.push(firstStmt.eval());
+        for (const s of restStmts.children) {
+            stmts.push(s.eval());
+        }
+        console.log(stmts);
+    },
+
+    Statement(a) {
+        return a.eval();
+    },
+
+    StmtWithLabel(label, stmt) {
+        return { label: label.eval(), statement: stmt.sourceString };
+    },
+
+    Label(hash, identifier) {
+        return identifier.sourceString;
+    },
+
+    StmtWithoutLabel(stmt) {
+        return { label: null, statement: stmt.sourceString };
     }
-    
 });
 console.log(satbGrammar);
 console.log(satbSemantics);
 
 const examples = [
-    `begin blah
+    //     `begin blah
 
-    layer clear
-    play audio audio0
+    //     layer clear
+    //     play audio audio0
 
-    [x] noone: "hello $world for $date period."
-    nobody: "hello $world for $date period."
-    "hello $world for $date period."
+    //     [x] noone: "hello $world for $date period."
+    //     nobody: "hello $world for $date period."
+    //     "hello $world for $date period."
 
-    begin bluh
-        "dude"
-    end
+    //     begin bluh
+    //         "dude"
+    //     end
 
-    noone: "woah"
-    start bluh
-end
-`,
-`
+    //     noone: "woah"
+    //     start bluh
+    // end
+    // `,
+    `
 begin x
-    [a] oy: "hello"
+    oy: "what"
+    #t oy: "blah"
 end
 `,
-//     `"hello $world for $date
-// "`,
-//     `"hello $character1"`,
-//     `"hello world"`,
-//     `"$a"`,
-//     `" "`,
+    //     `"hello $world for $date
+    // "`,
+    //     `"hello $character1"`,
+    //     `"hello world"`,
+    //     `"$a"`,
+    //     `" "`,
 ];
 
 for (let eg of examples) {
     const m = satbGrammar.match(eg);
     console.log(`${eg} -> ${m.succeeded()}`);
-    satbSemantics(m).eval();
-    if(!m.succeeded()) {
+
+    if (!m.succeeded()) {
         console.log(satbGrammar.trace(eg).toString());
+    } else {
+        // console.log(satbGrammar.trace(eg).toString());
+        satbSemantics(m).eval();
     }
 }
