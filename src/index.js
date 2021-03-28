@@ -9,9 +9,9 @@ SATBGrammar {
 
     Block = BeginBlock Statements? EndBlock
 
-    BeginBlock = begin_kw identifier eol*
+    BeginBlock = BeginKW identifier eol*
 
-    begin_kw = "begin" space+
+    BeginKW = "begin"
 
     EndBlock = "end" ws* eol*
 
@@ -21,20 +21,27 @@ SATBGrammar {
 
     StmtWithLabel = Label StmtWithoutLabel
 
-    StmtWithoutLabel = says_stmt 
-        | play_stmt
-        | layer_stmt
-        | start_stmt
-        // |
-        //block
+    StmtWithoutLabel = SaysStmt 
+        | PlayStmt
+        | LayerStmt
+        | StartStmt
+        | Block
 
     Label = "#" identifier
 
-    play_stmt = ws* "play" ws+ "audio" ws+ identifier
+    PlayStmt = PlayKW AudioKW identifier
 
-    start_stmt = ws* "start" ws+ identifier
+    PlayKW = "play"
 
-    layer_stmt = ws* "layer" ws+ layer_cmd
+    AudioKW = "audio"
+
+    StartStmt = StartKW identifier
+
+    StartKW = "start"
+
+    LayerStmt = LayerKW layer_cmd
+
+    LayerKW = "layer"
 
     layer_cmd = layer_clear_cmd
         | layer_set_cmd
@@ -50,17 +57,23 @@ SATBGrammar {
 
     drawable = identifier
 
-    says_stmt = (someone ":" ws+)? quote expr_or_word (ws+ expr_or_word)* quote eol+
+    SaysStmt = SaysWho? SaysWhat
+
+    SaysWhat = quote Expressions quote
+
+    Expressions = Expr_or_word (Expr_or_word)*
+
+    SaysWho = someone ":"
 
     someone = identifier
 
     quote = "\\""
 
-    expr_or_word = expression | word
+    Expr_or_word = Expression | Word
 
-    word = (alnum | punctuation)*
+    Word = (alnum | punctuation)+
 
-    expression = "$" identifier
+    Expression = "$[" identifier "]"
     
     identifier = letter alnum*
 
@@ -120,27 +133,51 @@ console.log(satbGrammar);
 console.log(satbSemantics);
 
 const examples = [
-    //     `begin blah
+        `begin blah
 
-    //     layer clear
-    //     play audio audio0
+        layer clear
+        play audio audio0
 
-    //     [x] noone: "hello $world for $date period."
-    //     nobody: "hello $world for $date period."
-    //     "hello $world for $date period."
+        #t oy: "$[hello] humm"
+        oy: "$[hello] humm"
 
-    //     begin bluh
-    //         "dude"
-    //     end
+        begin bluh
+            "dude"
+        end
 
-    //     noone: "woah"
-    //     start bluh
-    // end
-    // `,
+        noone: "woah"
+        start bluh
+    end
+    `,
     `
 begin x
+    oy: "$[hello] humm"
     oy: "what"
     #t oy: "blah"
+end
+`,
+`
+begin z
+    "what"
+end
+`,
+`
+begin z
+    play audio blah0
+    "what"
+end
+`,
+`
+begin z
+    layer clear
+    "what"
+end
+`,
+`
+begin z
+    layer clear
+    "what"
+    start d0
 end
 `,
     //     `"hello $world for $date
