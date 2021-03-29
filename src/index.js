@@ -39,8 +39,21 @@ SATBGrammar {
         | CharacterDeclaration
         | VariableDeclaration
         | VariableAssignment
+        | AvatarDeclaration
         | ChoiceStmt
         | Block
+
+    AvatarDeclaration = AvatarKW identifier AvatarDefinition
+
+    AvatarKW = "avatar"
+
+    AvatarDefinition = AvatarType AvatarProperties?
+
+    AvatarType = identifier
+
+    AvatarProperties = "[" AvatarProperty* "]"
+
+    AvatarProperty = identifier SaysWhat
 
     VariableAssignment = SetKW identifier ArithmeticExp
 
@@ -281,7 +294,7 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
         };
     },
 
-    PriExp_paren (open, value, close) {
+    PriExp_paren(open, value, close) {
         return this.sourceString;
     },
 
@@ -291,6 +304,21 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
 
     AddExp_minus(left, sign, right) {
         return this.sourceString;
+    },
+
+    AvatarDeclaration(avatarKW, avatarName, avatarDefn) {
+        let val = avatarDefn.eval();
+        return {
+            type: "declaration",
+            statement: ["avatar", avatarName.sourceString, val]
+        };
+    },
+
+    AvatarDefinition(avatarType, avatarProperties) {
+        return {
+            type: avatarType.sourceString,
+            properties: avatarProperties.sourceString
+        };
     }
 });
 console.log(satbGrammar);
@@ -364,16 +392,21 @@ const examples = [
         "what"
         start d0
     end
-`,
-`
-begin x
-set y $z - $x
-set y $z + $x
-set y 10 - $x
-set y 10 + 20
-set y (10 - $x)
-end
-`];
+    `,
+    `
+    begin x
+        set y $z - $x
+        set y $z + $x
+        set y 10 - $x
+        set y 10 + 20
+        set y (10 - $x)
+    end
+    `,
+    `begin x
+        avatar av1 Image
+        avatar av1 Image [name "bg"]
+    end
+    `];
 
 for (let eg of examples) {
     const m = satbGrammar.match(eg);
