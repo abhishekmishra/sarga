@@ -41,8 +41,13 @@ SATBGrammar {
         | VariableAssignment
         | AvatarDeclaration
         | AttachDeclaration
+        | MessageStmt
         | ChoiceStmt
         | Block
+
+    MessageStmt = MessageKW identifier AvatarProperties
+
+    MessageKW = "msg"
 
     AttachDeclaration = AttachKW identifier identifier
 
@@ -56,7 +61,7 @@ SATBGrammar {
 
     AvatarType = identifier
 
-    AvatarProperties = "[" AvatarProperty* "]"
+    AvatarProperties = "[" AvatarProperty+ "]"
 
     AvatarProperty = identifier SaysWhat
 
@@ -148,7 +153,7 @@ SATBGrammar {
 
     Expressions = Expr_or_word (Expr_or_word)*
 
-    SaysWho = someone ":"
+    SaysWho = someone AvatarProperties? ":"
 
     someone = identifier
 
@@ -331,6 +336,13 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
             type: "declaration",
             statement: ["attach", charOrPropId.sourceString, avatarId.sourceString]
         }
+    },
+
+    MessageStmt(msgKW, id, avatarProperties) {
+        return {
+            type: "statement",
+            statement: ["msg", id.sourceString, avatarProperties.sourceString]
+        }
     }
 });
 console.log(satbGrammar);
@@ -421,6 +433,10 @@ const examples = [
         character x #222222
 
         attach x av1
+
+        msg x [name "bg dark"]
+
+        x [name "bg light"]: "hello"
     end
     `];
 
