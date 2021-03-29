@@ -40,8 +40,13 @@ SATBGrammar {
         | VariableDeclaration
         | VariableAssignment
         | AvatarDeclaration
+        | AttachDeclaration
         | ChoiceStmt
         | Block
+
+    AttachDeclaration = AttachKW identifier identifier
+
+    AttachKW = "attach"
 
     AvatarDeclaration = AvatarKW identifier AvatarDefinition
 
@@ -319,6 +324,13 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
             type: avatarType.sourceString,
             properties: avatarProperties.sourceString
         };
+    },
+
+    AttachDeclaration(attachKW, charOrPropId, avatarId) {
+        return {
+            type: "declaration",
+            statement: ["attach", charOrPropId.sourceString, avatarId.sourceString]
+        }
     }
 });
 console.log(satbGrammar);
@@ -403,8 +415,12 @@ const examples = [
     end
     `,
     `begin x
-        avatar av1 Image
+        avatar av1 Narrator
         avatar av1 Image [name "bg"]
+
+        character x #222222
+
+        attach x av1
     end
     `];
 
