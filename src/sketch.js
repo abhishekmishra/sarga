@@ -1,4 +1,4 @@
-// import { p5 } from 'p5'; //TODO: check why this doesn't work
+import { p5 } from 'p5'; //TODO: check why this doesn't work
 import { SATBBlock, SATBBlockRunner, scene, show, says, SATBScriptLine } from '../src/satblib';
 import { Basic0Book } from '../samples/basic0/index';
 import { SATBBlockDisplay } from '../src/satbdisplay';

@@ -1,7 +1,8 @@
-import { sketch } from '../src/sketch';
-// import * as ohm from 'ohm-js';
+import * as p5 from 'p5';
+import { sketch } from './sketch';
+import ohm from 'ohm-js';
 
-// const sketchInstance = new p5(sketch);
+const sketchInstance = new p5(sketch);
 
 const visualTbGmrText = `
 SATBGrammar {

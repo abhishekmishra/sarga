@@ -2,10 +2,10 @@
   "name": "satb",
   "version": "0.0.1",
   "description": "SATB: space age textbooks",
-  "main": "src/index.js",
+  "private": true,
   "scripts": {
-    "start": "wds --node-resolve --open --app-index www/index.html",
-    "watch": "wds --node-resolve --watch --open --app-index www/index.html",
+    "dev": "webpack --mode development",
+    "start": "webpack serve --mode development --open",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,7 +20,13 @@
   },
   "homepage": "https://github.com/abhishekmishra/satb#readme",
   "devDependencies": {
-    "@web/dev-server": "^0.1.10"
+    "@babel/core": "^7.13.14",
+    "@babel/preset-env": "^7.13.12",
+    "babel-loader": "^8.2.2",
+    "html-webpack-plugin": "^5.3.1",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
     "ohm-js": "^15.4.1",
