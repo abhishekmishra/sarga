@@ -12,7 +12,7 @@ begin blah
     layer clear
     play audio audio0
 
-    #t oy: "$hello humm what $two (सुदीन)"
+    #t oy: "$hello humm what $two (सर्ग)"
     oy: "$hello humm"
 
     #an choice "blah"

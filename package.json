@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abhishekmishra/satb.git"
+    "url": "git+https://github.com/abhishekmishra/sarga.git"
   },
   "keywords": [],
   "author": "Abhishek Mishra <abhishekmishra3@gmail.com>",
   "license": "LGPL 2.1",
   "bugs": {
-    "url": "https://github.com/abhishekmishra/satb/issues"
+    "url": "https://github.com/abhishekmishra/sarga/issues"
   },
-  "homepage": "https://github.com/abhishekmishra/satb#readme",
+  "homepage": "https://github.com/abhishekmishra/sarga#readme",
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.12",
