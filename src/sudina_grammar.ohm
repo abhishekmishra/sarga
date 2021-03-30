@@ -1,0 +1,173 @@
+Sudina {
+    // A script can contain one or more blocks
+    Script = Block (ws+ Block)*
+
+    // A block has a begin declaration followed by 0 or more statements
+    // and end with an end declaration
+    Block = BeginBlock Statements? EndBlock
+
+    // begin declaration is of the form
+    // begin <blockname>
+    BeginBlock = BeginKW identifier? eol*
+
+    // end declaration only contains the keyword
+    EndBlock = EndKW
+
+    BeginKW = "begin"
+    EndKW = "end"
+
+    // A statements list is made of one or more statements
+    Statements = Statement (Statement)*
+
+    // A statement can be with or without label
+    Statement = StmtWithLabel | StmtWithoutLabel
+
+    // Statement prefixed with label
+    StmtWithLabel = Label StmtWithoutLabel
+
+    // A statement can be on of the given types or a block
+    StmtWithoutLabel = SaysStmt 
+        | PlayStmt
+        | LayerStmt
+        | StartStmt
+        | CharacterDeclaration
+        | VariableDeclaration
+        | VariableAssignment
+        | AvatarDeclaration
+        | AttachDeclaration
+        | MessageStmt
+        | ChoiceStmt
+        | Block
+
+    MessageStmt = MessageKW identifier AvatarProperties
+
+    MessageKW = "msg"
+
+    AttachDeclaration = AttachKW identifier identifier
+
+    AttachKW = "attach"
+
+    AvatarDeclaration = AvatarKW identifier AvatarDefinition
+
+    AvatarKW = "avatar"
+
+    AvatarDefinition = AvatarType AvatarProperties?
+
+    AvatarType = identifier
+
+    AvatarProperties = "[" AvatarProperty+ "]"
+
+    AvatarProperty = identifier SaysWhat
+
+    VariableAssignment = SetKW identifier ArithmeticExp
+
+    SetKW = "set"
+
+    ArithmeticExp
+        = AddExp
+    
+    AddExp
+        = AddExp "+" PriExp  -- plus
+        | AddExp "-" PriExp  -- minus
+        | PriExp
+    
+    PriExp
+        = "(" ArithmeticExp ")"  -- paren
+        | VariableExp
+        | number
+    
+    // A label is of the form #<id>
+    Label = "#" identifier
+
+    VariableDeclaration = VarKW identifier VarValue
+
+    VarKW = "var"
+
+    VarValue = AskFragment | SaysWhat | ArithmeticExp
+
+    AskFragment = AskKW SaysWhat
+
+    AskKW = "ask"
+
+    ChoiceStmt = ChoiceKW SaysWhat ChoiceOption+
+
+    ChoiceKW = "choice"
+
+    ChoiceOption = OptionKW SaysWhat eol* StmtWithoutLabel
+
+    OptionKW = "option"
+
+    // A character declaration of the form
+    // character <character_name> <character_colour>
+    CharacterDeclaration = CharacterKW CharacterName Colour
+
+    CharacterKW = "character"
+
+    CharacterName = identifier
+
+    Colour = "#" hexDigit hexDigit hexDigit hexDigit hexDigit hexDigit
+
+    // The play statement is of the form
+    // play audio <audioid>
+    PlayStmt = PlayKW AudioKW identifier
+
+    PlayKW = "play"
+    AudioKW = "audio"
+
+    // Start statement to run a block
+    // start <blockid>
+    StartStmt = StartKW identifier
+
+    StartKW = "start"
+
+    // Screen layers statment
+    // layer <layer command>
+    LayerStmt = LayerKW layer_cmd
+
+    LayerKW = "layer"
+
+    // A layer command can clear, set or unset layers
+    layer_cmd = layer_clear_cmd
+        | layer_set_cmd
+        | layer_unset_cmd
+        
+    layer_clear_cmd = "clear"
+
+    layer_set_cmd = "set" ws+ layer_number ws+ drawable
+
+    layer_unset_cmd = "unset" ws+ layer_number
+
+    layer_number = digit+
+
+    drawable = identifier
+
+    SaysStmt = SaysWho? SaysWhat
+
+    SaysWhat = quote Expressions quote
+
+    Expressions = Expr_or_word (Expr_or_word)*
+
+    SaysWho = someone AvatarProperties? ":"
+
+    someone = identifier
+
+    quote = "\""
+
+    Expr_or_word = VariableExp | Word
+
+    Word = (alnum | punctuation)+
+
+    VariableExp = "$" identifier
+    
+    identifier = letter alnum*
+
+    punctuation = "'" | "," | "."
+
+    ws = " " | "\t"
+
+    // comment = ";"
+
+    eol = "\n" | "\r\n"   
+
+    number = digit*
+}

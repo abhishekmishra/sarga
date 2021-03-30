@@ -16,6 +16,14 @@ module.exports = {
                         plugins: ['@babel/plugin-proposal-class-properties']
                     }
                 }
+            },
+            {
+                test: /\.ohm$/,
+                loader: 'ohm-loader'
+            },
+            {
+                test: /\.sudina$/i,
+                use: 'raw-loader',
             }
         ]
     },

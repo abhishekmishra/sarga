@@ -1,0 +1,12 @@
+begin x
+    avatar av1 Narrator
+    avatar av1 Image [name "bg"]
+
+    character x #222222
+
+    attach x av1
+
+    msg x [name "bg dark"]
+
+    x [name "bg light"]: "hello"
+end

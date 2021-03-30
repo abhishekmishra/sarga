@@ -1,187 +1,14 @@
 import * as p5 from 'p5';
 import { sketch } from './sketch';
 import ohm from 'ohm-js';
+import Sudina from './sudina_grammar.ohm';
+import test0 from 'raw-loader!../samples/test0.sudina';
+import test1 from 'raw-loader!../samples/test1.sudina';
+import test2 from 'raw-loader!../samples/test2.sudina';
 
-const sketchInstance = new p5(sketch);
+// const sketchInstance = new p5(sketch);
 
-const visualTbGmrText = `
-SATBGrammar {
-    // A script can contain one or more blocks
-    Script = Block (ws+ Block)*
-
-    // A block has a begin declaration followed by 0 or more statements
-    // and end with an end declaration
-    Block = BeginBlock Statements? EndBlock
-
-    // begin declaration is of the form
-    // begin <blockname>
-    BeginBlock = BeginKW identifier? eol*
-
-    // end declaration only contains the keyword
-    EndBlock = EndKW
-
-    BeginKW = "begin"
-    EndKW = "end"
-
-    // A statements list is made of one or more statements
-    Statements = Statement (Statement)*
-
-    // A statement can be with or without label
-    Statement = StmtWithLabel | StmtWithoutLabel
-
-    // Statement prefixed with label
-    StmtWithLabel = Label StmtWithoutLabel
-
-    // A statement can be on of the given types or a block
-    StmtWithoutLabel = SaysStmt 
-        | PlayStmt
-        | LayerStmt
-        | StartStmt
-        | CharacterDeclaration
-        | VariableDeclaration
-        | VariableAssignment
-        | AvatarDeclaration
-        | AttachDeclaration
-        | MessageStmt
-        | ChoiceStmt
-        | Block
-
-    MessageStmt = MessageKW identifier AvatarProperties
-
-    MessageKW = "msg"
-
-    AttachDeclaration = AttachKW identifier identifier
-
-    AttachKW = "attach"
-
-    AvatarDeclaration = AvatarKW identifier AvatarDefinition
-
-    AvatarKW = "avatar"
-
-    AvatarDefinition = AvatarType AvatarProperties?
-
-    AvatarType = identifier
-
-    AvatarProperties = "[" AvatarProperty+ "]"
-
-    AvatarProperty = identifier SaysWhat
-
-    VariableAssignment = SetKW identifier ArithmeticExp
-
-    SetKW = "set"
-
-    ArithmeticExp
-        = AddExp
-    
-    AddExp
-        = AddExp "+" PriExp  -- plus
-        | AddExp "-" PriExp  -- minus
-        | PriExp
-    
-    PriExp
-        = "(" ArithmeticExp ")"  -- paren
-        | VariableExp
-        | number
-    
-    // A label is of the form #<id>
-    Label = "#" identifier
-
-    VariableDeclaration = VarKW identifier VarValue
-
-    VarKW = "var"
-
-    VarValue = AskFragment | SaysWhat | ArithmeticExp
-
-    AskFragment = AskKW SaysWhat
-
-    AskKW = "ask"
-
-    ChoiceStmt = ChoiceKW SaysWhat ChoiceOption+
-
-    ChoiceKW = "choice"
-
-    ChoiceOption = OptionKW SaysWhat eol* StmtWithoutLabel
-
-    OptionKW = "option"
-
-    // A character declaration of the form
-    // character <character_name> <character_colour>
-    CharacterDeclaration = CharacterKW CharacterName Colour
-
-    CharacterKW = "character"
-
-    CharacterName = identifier
-
-    Colour = "#" hexDigit hexDigit hexDigit hexDigit hexDigit hexDigit
-
-    // The play statement is of the form
-    // play audio <audioid>
-    PlayStmt = PlayKW AudioKW identifier
-
-    PlayKW = "play"
-    AudioKW = "audio"
-
-    // Start statement to run a block
-    // start <blockid>
-    StartStmt = StartKW identifier
-
-    StartKW = "start"
-
-    // Screen layers statment
-    // layer <layer command>
-    LayerStmt = LayerKW layer_cmd
-
-    LayerKW = "layer"
-
-    // A layer command can clear, set or unset layers
-    layer_cmd = layer_clear_cmd
-        | layer_set_cmd
-        | layer_unset_cmd
-        
-    layer_clear_cmd = "clear"
-
-    layer_set_cmd = "set" ws+ layer_number ws+ drawable
-
-    layer_unset_cmd = "unset" ws+ layer_number
-
-    layer_number = digit+
-
-    drawable = identifier
-
-    SaysStmt = SaysWho? SaysWhat
-
-    SaysWhat = quote Expressions quote
-
-    Expressions = Expr_or_word (Expr_or_word)*
-
-    SaysWho = someone AvatarProperties? ":"
-
-    someone = identifier
-
-    quote = "\\""
-
-    Expr_or_word = VariableExp | Word
-
-    Word = (alnum | punctuation)+
-
-    VariableExp = "$" identifier
-    
-    identifier = letter alnum*
-
-    punctuation = "'" | "," | "."
-
-    ws = " " | "\t"
-
-    // comment = ";"
-
-    eol = "\\n" | "\\r\\n"   
-
-    number = digit*
-}
-`;
-
-const satbGrammar = ohm.grammar(visualTbGmrText);
-const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
+const satbSemantics = Sudina.createSemantics().addOperation('eval', {
     Script(firstBlock, ws, restBlocks) {
         return firstBlock.eval();
     },
@@ -346,107 +173,20 @@ const satbSemantics = satbGrammar.createSemantics().addOperation('eval', {
         }
     }
 });
-console.log(satbGrammar);
+console.log(Sudina);
 console.log(satbSemantics);
 
 const examples = [
-    `begin blah
-        character oy #222222
-        character noone #888888
-
-        var x 10
-        var y "blah bluh"
-        var z ask "get value"
-
-        set y (10 - $x)
-        set x 20
-        
-        layer clear
-        play audio audio0
-
-        #t oy: "$hello humm"
-        oy: "$hello humm"
-
-        #an choice "blah"
-        option "one" "do something"
-        option "two" "do something"
-        option "three" 
-            begin
-                "dude"
-            end
-
-        begin bluh
-            "dude"
-        end
-
-        noone: "woah"
-        start bluh
-    end
-    `,
-    `
-    begin x
-        oy: "$hello humm"
-        oy: "what"
-        #t oy: "blah"
-    end
-    `,
-    `
-    begin z
-        choice "x"
-        option "three" 
-        begin x
-            "dude"
-        end
-    end
-    `,
-    `
-    begin z
-        play audio blah0
-        "what"
-    end
-    `,
-    `
-    begin z
-        layer clear
-        "what"
-    end
-    `,
-    `
-    begin z
-        layer clear
-        "what"
-        start d0
-    end
-    `,
-    `
-    begin x
-        set y $z - $x
-        set y $z + $x
-        set y 10 - $x
-        set y 10 + 20
-        set y (10 - $x)
-    end
-    `,
-    `begin x
-        avatar av1 Narrator
-        avatar av1 Image [name "bg"]
-
-        character x #222222
-
-        attach x av1
-
-        msg x [name "bg dark"]
-
-        x [name "bg light"]: "hello"
-    end
-    `];
+    test0,
+    test1,
+    test2];
 
 for (let eg of examples) {
-    const m = satbGrammar.match(eg);
+    const m = Sudina.match(eg);
     console.log(`${eg} -> ${m.succeeded()}`);
 
     if (!m.succeeded()) {
-        console.log(satbGrammar.trace(eg).toString());
+        console.log(Sudina.trace(eg).toString());
     } else {
         // console.log(satbGrammar.trace(eg).toString());
         const res = satbSemantics(m).eval()
