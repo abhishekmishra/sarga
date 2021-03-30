@@ -1,4 +1,4 @@
-# sudina (सुदिन)
+# Sarga (सर्ग)
 visual audible interactive books for the space age
 
 ## Introduction

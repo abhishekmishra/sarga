@@ -1,7 +1,7 @@
 {
-  "name": "sudina",
+  "name": "sarga",
   "version": "0.0.1",
-  "description": "sudina (सुदिन): visual audible interactive books for the space age",
+  "description": "sarga (सर्ग): audio-visual interactive books for the space age",
   "private": true,
   "scripts": {
     "dev": "webpack --mode development",
