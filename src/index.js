@@ -22,6 +22,7 @@ for (let eg of examples) {
     } else {
         // console.log(satbGrammar.trace(eg).toString());
         const res = SudinaSemantics(m).eval()
-        console.log(JSON.stringify(res, null, 2));
+        console.log(res);
+        // console.log(JSON.stringify(res, null, 2));
     }
 }

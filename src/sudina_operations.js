@@ -66,12 +66,12 @@ export const evalOperation = {
     SaysStmt(saysWho, saysWhat) {
         return {
             type: "statement",
-            statement: ["says", saysWho.sourceString, saysWhat.sourceString]
+            statement: ["says", saysWho.sourceString, saysWhat.eval()]
         };
     },
 
     SaysWhat(q1, expr, q2) {
-        return expr.sourceString;
+        return expr.eval();
     },
 
     CharacterDeclaration(characterKW, characterName, characterColour) {
@@ -160,6 +160,24 @@ export const evalOperation = {
         return {
             type: "statement",
             statement: ["msg", id.sourceString, avatarProperties.sourceString]
+        }
+    },
+
+    Expressions(first, rest) {
+        let exprArr = [];
+        exprArr.push(first.eval());
+        console.log(rest);
+        for (let r of rest.children) {
+            console.log('expr ->' + r.sourceString);
+            // exprArr.push(r);
+        }
+        console.log(exprArr);
+        return exprArr;
+    },
+
+    ExpressionAtom(item) {
+        return {
+            atom: item.sourceString
         }
     }
 };

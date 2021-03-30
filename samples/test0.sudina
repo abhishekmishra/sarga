@@ -3,7 +3,7 @@ begin blah
     character noone #888888
 
     var x 10
-    var y "blah bluh"
+    var y "blah - bluh"
     var z ask "get value"
 
     set y (10 - $x)
@@ -12,7 +12,7 @@ begin blah
     layer clear
     play audio audio0
 
-    #t oy: "$hello humm"
+    #t oy: "$hello humm what $two (सुदीन)"
     oy: "$hello humm"
 
     #an choice "blah"
