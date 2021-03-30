@@ -1,7 +1,7 @@
 {
-  "name": "satb",
+  "name": "sudina",
   "version": "0.0.1",
-  "description": "SATB: space age textbooks",
+  "description": "sudina (सुदिन): visual audible interactive books for the space age",
   "private": true,
   "scripts": {
     "dev": "webpack --mode development",
