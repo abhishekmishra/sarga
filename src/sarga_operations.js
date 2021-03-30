@@ -1,12 +1,19 @@
 export const evalOperation = {
-    Script(firstBlock, ws, restBlocks) {
-        return firstBlock.eval();
+    Script(stmts) {
+        const blkStmts = stmts.eval();
+        // console.log(blkStmts);
+        const block = {
+            type: "block",
+            name: "script",
+            statements: blkStmts
+        };
+        return block;
     },
 
     Block(begin_block, stmts, end_block) {
-        // console.log(a, begin_block, c, end_block, e);
         const blkName = begin_block.eval();
         const blkStmts = stmts.eval();
+
         const block = {
             type: "block",
             name: blkName,
@@ -34,7 +41,9 @@ export const evalOperation = {
     },
 
     StmtWithLabel(label, stmt) {
-        return { label: label.eval(), statement: stmt.eval() };
+        let statement = stmt.eval();
+        statement.label = label.eval();
+        return statement;
     },
 
     Label(hash, identifier) {
@@ -42,7 +51,9 @@ export const evalOperation = {
     },
 
     StmtWithoutLabel(stmt) {
-        return { label: null, statement: stmt.eval() };
+        let statement = stmt.eval();
+        statement.label = null;
+        return statement;
     },
 
     StartStmt(startkw, blockid) {
@@ -70,7 +81,7 @@ export const evalOperation = {
         };
     },
 
-    SaysWhat(q1, expr, q2) {
+    SaysWhat(expr) {
         return expr.eval();
     },
 
@@ -163,21 +174,7 @@ export const evalOperation = {
         }
     },
 
-    Expressions(first, rest) {
-        let exprArr = [];
-        exprArr.push(first.eval());
-        console.log(rest);
-        for (let r of rest.children) {
-            console.log('expr ->' + r.sourceString);
-            // exprArr.push(r);
-        }
-        console.log(exprArr);
-        return exprArr;
+    Text(pre, str, post) {
+        return str.sourceString;
     },
-
-    ExpressionAtom(item) {
-        return {
-            atom: item.sourceString
-        }
-    }
 };

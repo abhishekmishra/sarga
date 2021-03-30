@@ -1,6 +1,6 @@
-import { SATBBlockRunner, SATBRunner } from '../src/satblib';
+import { SargaRunner } from './sarga_runtime';
 
-export class SATBBlockDisplay {
+export class SargaBlockDisplay {
     block;
     state;
     blockRunner;
@@ -28,7 +28,7 @@ export class SATBBlockDisplay {
             'music': null,
             'pause': false
         };
-        this.blockRunner = new SATBRunner(this.block);
+        this.blockRunner = new SargaRunner(this.block);
     }
 
     keyPressed() {

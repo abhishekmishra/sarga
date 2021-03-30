@@ -1,6 +1,6 @@
-import { SATBBook } from '../../src/satblib.js';
+import { SargaBook } from '../../src/sarga_runtime.js';
 
-export class Basic0Book extends SATBBook {
+export class Basic0Book extends SargaBook {
     constructor() {
         super("Basic 0");
 

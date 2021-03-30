@@ -1,15 +1,10 @@
-begin sarga_tutorial
-    //TODO: change character definition to be similar to other objects
-    //TODO: all things are js objects, with properties
-    //TODO: new types can only be defined in js
-    //TODO: default object type (dumb object) is obj with props and slots (behaviour)
-    //TODO: should be able to send messages to slots, and receive response.
-    //TODO: should be able to get properties
-    character neo #334455
+character neo #334455
 
-    begin whatis
-        neo: "Welcome to the Sarga Tutorial"
+begin whatis
+    neo: "Welcome to the Sarga Tutorial"
+    neo: "My name is {{neo}} and I'll be your guide."
+end
 
-        neo: "My name is $neo and I'll be your guide"
-    end
+begin
+"dude"
 end

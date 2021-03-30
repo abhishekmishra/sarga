@@ -1,10 +1,18 @@
+
+//TODO: change character definition to be similar to other objects
+//TODO: all things are js objects, with properties
+//TODO: new types can only be defined in js
+//TODO: default object type (dumb object) is obj with props and slots (behaviour)
+//TODO: should be able to send messages to slots, and receive response.
+//TODO: should be able to get/set properties
+
 Sudina {
     // A script can contain one or more blocks
-    Script = Block (ws+ Block)*
+    Script = Statements
 
     // A block has a begin declaration followed by 0 or more statements
     // and end with an end declaration
-    Block = BeginBlock Statements? EndBlock
+    Block = BeginBlock Statements EndBlock
 
     // begin declaration is of the form
     // begin <blockname>
@@ -89,11 +97,11 @@ Sudina {
 
     AskKW = "ask"
 
-    ChoiceStmt = ChoiceKW SaysWhat ChoiceOption+
+    ChoiceStmt = ChoiceKW Text ChoiceOption+
 
     ChoiceKW = "choice"
 
-    ChoiceOption = OptionKW SaysWhat eol* StmtWithoutLabel
+    ChoiceOption = OptionKW Text eol* StmtWithoutLabel
 
     OptionKW = "option"
 
@@ -143,9 +151,17 @@ Sudina {
 
     SaysStmt = SaysWho? SaysWhat
 
-    SaysWhat = quote Expressions quote
+    SaysWhat = Text
 
-    Expressions = ExpressionAtom (ExpressionAtom)*
+    lineTerminator = "\n" | "\r" | "\u2028" | "\u2029"
+    multiLineComment = "/*" (~"*/" strCharacter)* "*/"
+    singleLineComment = "//" (~lineTerminator strCharacter)*
+
+    Text = "\"" doubleStringCharacter* "\""
+                | "'" singleStringCharacter* "'"
+
+    doubleStringCharacter = ~("\"") strCharacter
+    singleStringCharacter = ~("'") strCharacter
 
     SaysWho = someone AvatarProperties? ":"
 
@@ -153,9 +169,10 @@ Sudina {
 
     quote = "\""
 
-    ExpressionAtom = VariableExp | Word
+    // Remove VariableExp
+    // ExpressionAtom = strCharacter
 
-    Word = (alnum | punctuation)+
+    strCharacter = any
 
     VariableExp = "$" identifier
     

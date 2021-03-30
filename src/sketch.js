@@ -1,11 +1,11 @@
 import { p5 } from 'p5'; //TODO: check why this doesn't work
-import { SATBBlock, SATBBlockRunner, scene, show, says, SATBScriptLine } from '../src/satblib';
+import { SargaBlock, SargaBlockRunner, scene, show, says, SargaScriptLine } from './sarga_runtime';
 import { Basic0Book } from '../samples/basic0/index';
-import { SATBBlockDisplay } from '../src/satbdisplay';
+import { SargaBlockDisplay } from './sarga_display';
 
 export const sketch = (s) => {
-    let block0 = new SATBBlock("umm");
-    let block1 = new SATBBlock("what");
+    let block0 = new SargaBlock("umm");
+    let block1 = new SargaBlock("what");
 
     block0.addImage('../samples/basic0/assets/images/Hills Layer 01.png');
     block0.addImage('../samples/basic0/assets/images/Hills Layer 02.png');
@@ -33,7 +33,7 @@ export const sketch = (s) => {
     block0.addItem(says('hello world 3'));
 
 
-    let blockDisplay = new SATBBlockDisplay(block0);
+    let blockDisplay = new SargaBlockDisplay(block0);
 
     s.preload = () => {
         blockDisplay.preload(s);

@@ -1,13 +1,13 @@
 import { v5 as uuidv5, v4 as uuidv4 } from 'uuid';
 
-export const SATB_NAMESPACE = '5903ea4b-cfed-4c58-991f-0c4624be1b08';
+export const Sarga_NAMESPACE = '5903ea4b-cfed-4c58-991f-0c4624be1b08';
 
 export function loadBook(clazz) {
     let b = new clazz();
     console.log(`loaded book ${b.name}`);
 }
 
-class SATBCharacter {
+class SargaCharacter {
     static isCharacter = true;
     name;
     constructor(name) {
@@ -15,18 +15,18 @@ class SATBCharacter {
     }
 }
 
-class SATBInstructor extends SATBCharacter {
+class SargaInstructor extends SargaCharacter {
     static isInstructor = true;
 }
 
-class SATBScriptItem {
+class SargaScriptItem {
     static isScriptItem = true;
     _label;
     _id;
 
     constructor(label = null) {
         this._label = label !== null ? label : uuidv4();
-        this._id = uuidv5(this._label, SATB_NAMESPACE);
+        this._id = uuidv5(this._label, Sarga_NAMESPACE);
     }
 
     label() {
@@ -38,7 +38,7 @@ class SATBScriptItem {
     }
 }
 
-export class SATBScriptLine extends SATBScriptItem {
+export class SargaScriptLine extends SargaScriptItem {
     fn;
     constructor(fn, label = null) {
         super(label);
@@ -50,7 +50,7 @@ export class SATBScriptLine extends SATBScriptItem {
     }
 }
 
-export class SATBSays extends SATBScriptLine {
+export class SargaSays extends SargaScriptLine {
     constructor(tosay = 'nothing', c = 'nobody', label = null) {
         super((state) => {
             return {
@@ -65,11 +65,11 @@ export class SATBSays extends SATBScriptLine {
 }
 
 export function says(tosay = 'nothing', c = 'nobody', label = null) {
-    return new SATBSays(tosay, c, label);
+    return new SargaSays(tosay, c, label);
 }
 
 export function scene(img) {
-    return new SATBScriptLine((state) => {
+    return new SargaScriptLine((state) => {
         return {
             command: 'scene',
             image: img
@@ -78,7 +78,7 @@ export function scene(img) {
 }
 
 export function show(img) {
-    return new SATBScriptLine((state) => {
+    return new SargaScriptLine((state) => {
         return {
             command: 'show',
             image: img
@@ -86,7 +86,7 @@ export function show(img) {
     });
 }
 
-export class SATBBlock extends SATBScriptItem {
+export class SargaBlock extends SargaScriptItem {
     static isBlock = true;
     items;
     images;
@@ -118,7 +118,7 @@ export class SATBBlock extends SATBScriptItem {
     name = this.label;
 }
 
-export class SATBConcept extends SATBBlock {
+export class SargaConcept extends SargaBlock {
     static isConcept = true;
 
     constructor(name) {
@@ -126,7 +126,7 @@ export class SATBConcept extends SATBBlock {
     }
 }
 
-export class SATBBook extends SATBBlock {
+export class SargaBook extends SargaBlock {
     static isBook = true;
     constructor(name) {
         super(name);
@@ -134,7 +134,7 @@ export class SATBBook extends SATBBlock {
     }
 }
 
-export class SATBBlockRunner {
+export class SargaBlockRunner {
     block;
     location;
 
@@ -168,13 +168,13 @@ export class SATBBlockRunner {
     }
 }
 
-export class SATBRunner {
+export class SargaRunner {
     block;
     stack;
 
     constructor(block) {
         this.block = block;
-        this.stack = [new SATBBlockRunner(this.block)];
+        this.stack = [new SargaBlockRunner(this.block)];
     }
 
     next() {
@@ -209,7 +209,7 @@ export class SATBRunner {
             // if current item is a block, push onto stack
             console.log('current item is a block, adding new block runner to stack');
             currentBlk.next();
-            const br = new SATBBlockRunner(currentItem);
+            const br = new SargaBlockRunner(currentItem);
             this.stack.push(br);
             console.log(this.stack);
         }
