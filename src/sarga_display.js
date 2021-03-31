@@ -51,47 +51,8 @@ export class SargaBlockDisplay {
     }
 
     draw(s) {
-        if (!this.blockRunner.state.pause) {
-            let currentItem = null;
-            const res = this.blockRunner.next();
-            if (res) {
-                currentItem = this.blockRunner.current();
-                while (currentItem.constructor.isBlock) {
-                    console.log('encountered a block, auto next');
-                    this.blockRunner.next();
-                    currentItem = this.blockRunner.current();
-                }
-                console.log(currentItem);
-                const args = this.blockRunner.runCurrent();
-                if (args) {
-                    switch (args.command) {
-                        case "say":
-                            if (args.character) {
-                                this.blockRunner.state.character = args.character;
-                            }
-                            if (args.text) {
-                                this.blockRunner.state.text = args.text;
-                            }
-                            if (args.pause) {
-                                this.blockRunner.state.pause = args.pause;
-                            }
-                            break;
-                        case "scene":
-                            this.blockRunner.state.scene = [];
-                            if (args.image) {
-                                this.blockRunner.state.scene.push(this.images[args.image]);
-                            }
-                        case "show":
-                            if (args.image) {
-                                this.blockRunner.state.scene.push(this.images[args.image]);
-                            }
-                    }
-                }
-            } else {
-                this.blockRunner.state.text = "OVER";
-            }
-        }
-
+        this.blockRunner.tick();
+        
         s.fill(255);
         if (this.blockRunner.state.text === null) {
             s.text('no text', 100, s.height - 100);
