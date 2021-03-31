@@ -1,4 +1,5 @@
 import { v5 as uuidv5, v4 as uuidv4 } from 'uuid';
+import { SargaHeap } from './sarga_heap';
 
 export const Sarga_NAMESPACE = '5903ea4b-cfed-4c58-991f-0c4624be1b08';
 
@@ -138,6 +139,7 @@ export class SargaBook extends SargaBlock {
 export class SargaBlockRunner {
     block;
     location;
+    heap;
 
     constructor(block) {
         if (!block.constructor.isBlock) {
@@ -145,6 +147,7 @@ export class SargaBlockRunner {
         }
         this.block = block;
         this.location = -1;
+        this.heap = [];
     }
 
     next() {

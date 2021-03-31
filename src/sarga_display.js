@@ -22,6 +22,8 @@ export class SargaBlockDisplay {
                 s.createCanvas(500, 500);
                 let sourceStrDiv = s.createElement('div', this.block.sourceString);
                 sourceStrDiv.style('white-space', 'pre-wrap');
+                sourceStrDiv.style('border', '2px solid gray');
+                sourceStrDiv.style('padding', '2px');
                 this.setup(s);
             }
 
