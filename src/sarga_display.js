@@ -24,6 +24,8 @@ export class SargaBlockDisplay {
                 sourceStrDiv.style('white-space', 'pre-wrap');
                 sourceStrDiv.style('border', '2px solid gray');
                 sourceStrDiv.style('padding', '2px');
+                sourceStrDiv.style('height', '250px');
+                sourceStrDiv.style('overflow', 'auto');
                 this.setup(s);
             }
 

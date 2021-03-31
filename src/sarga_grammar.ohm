@@ -45,7 +45,17 @@ Sudina {
         | AttachDeclaration
         | MessageStmt
         | ChoiceStmt
+        | ShowStmt
+        | HideStmt
         | Block
+
+    ShowStmt = ShowKW identifier Properties?
+
+    ShowKW = "show"
+
+    HideStmt = HideKW identifier
+
+    HideKW = "hide"
 
     MessageStmt = MessageKW identifier AvatarProperties
 
@@ -74,7 +84,7 @@ Sudina {
 
     Type = identifier
 
-    IsA = "is a" "n"?
+    IsA = "is"
 
     VarKW = "let"
 

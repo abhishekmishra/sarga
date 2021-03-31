@@ -58,6 +58,20 @@ export const evalOperation = {
         return statement;
     },
 
+    ShowStmt(showkw, id, props) {
+        return {
+            type: "statement",
+            statement: ["show", id.sourceString, props.eval()]
+        };
+    },
+
+    HideStmt(hidekw, id) {
+        return {
+            type: "statement",
+            statement: ["show", id.sourceString]
+        };
+    },
+
     StartStmt(startkw, blockid) {
         return {
             type: "statement",

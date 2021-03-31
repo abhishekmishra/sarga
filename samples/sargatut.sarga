@@ -1,19 +1,38 @@
-narrator is a Character [ 
+Narrator is Character [ 
     name "neo",
     color "#334455"
 ]
 
-TotalScore is a Counter [ 
+TotalScoreBG is Image [
+    wah "wah"
+]
+
+TotalScore is Counter [ 
     start "1", 
     step "1" 
 ]
 
-narrator: "Welcome to the Sarga Tutorial"
+show Narrator [ view "smile", x "100", y "100", w "50", h "50" ]
 
-"My name is {{narrator.name}} and I'll be your guide."
+show TotalScore [ offset "topright", x "-10", y "-10" ]
+
+Narrator: "Welcome to the Sarga Tutorial"
+
+"My name is {{Narrator.name}} and I'll be your guide."
+
+hide TotalScore
 
 "
 Sarga helps to create and run books with audio and visual elements.
 This is similar to visual novels but with a more general focus - so that
 you can create textbooks, stories, tutorials, articles etc.
 "
+
+"
+Note that Sarga doesn't replace graphical or audio creation tools. It helps you become
+the play director and producer, bringing textual, audio and visual elements together on
+a screen. The audio and visual contents can be created using applications and/or generated
+in code. Only their appearance (and disappearance) on the stage is controlled in Sarga.
+"
+
+show TotalScore
