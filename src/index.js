@@ -1,18 +1,11 @@
 import * as p5 from 'p5';
-import { sketch } from './sketch';
-import test0 from 'raw-loader!../samples/test0.sarga';
-import test1 from 'raw-loader!../samples/test1.sarga';
-import test2 from 'raw-loader!../samples/test2.sarga';
 import sargatut from 'raw-loader!../samples/sargatut.sarga';
 import { Sarga, SargaSemantics } from './sarga_main';
 import { SargaBlock, says } from './sarga_runtime';
+import { SargaBlockDisplay } from './sarga_display';
 
-// const sketchInstance = new p5(sketch);
 
 const examples = [
-    // test0,
-    // test1,
-    // test2
     sargatut
 ];
 
@@ -53,8 +46,6 @@ function sargaParsePhase2(text, match) {
 }
 
 function parseStatement(stmt) {
-    // console.log("parse -> ");
-    // console.log(stmt);
     switch (stmt.type) {
 
         case "block":
@@ -87,5 +78,8 @@ function parseStatement(stmt) {
 for (let eg of examples) {
     let sargaScript = sargaParse("inline", eg);
     console.log(sargaScript);
+
+    const display = new SargaBlockDisplay(sargaScript);
+    const displaySketch = new p5(display.getSketch());
 }
 

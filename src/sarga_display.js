@@ -12,6 +12,29 @@ export class SargaBlockDisplay {
         this.images = [];
     }
 
+    getSketch() {
+        return (s) => {
+            s.preload = () => {
+                this.preload(s);
+            }
+
+            s.setup = () => {
+                s.createCanvas(500, 500);
+                this.setup(s);
+            }
+
+            s.keyPressed = () => {
+                this.keyPressed();
+            }
+
+            s.draw = () => {
+                s.background(0);
+                s.textSize(20);
+                this.draw(s);
+            }
+        }
+    }
+
     preload(s) {
         for (let img of this.block.images) {
             this.images[img.name] = s.loadImage(img.url);
@@ -41,7 +64,7 @@ export class SargaBlockDisplay {
             const res = this.blockRunner.next();
             if (res) {
                 currentItem = this.blockRunner.current();
-                while(currentItem.constructor.isBlock) {
+                while (currentItem.constructor.isBlock) {
                     console.log('encountered a block, auto next');
                     this.blockRunner.next();
                     currentItem = this.blockRunner.current();
