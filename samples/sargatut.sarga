@@ -1,4 +1,5 @@
 character neo #334455
+let TotalScore "100"
 
 begin whatis
     neo: "Welcome to the Sarga Tutorial"

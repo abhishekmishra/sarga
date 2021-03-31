@@ -101,7 +101,7 @@ export const evalOperation = {
         };
     },
 
-    ChoiceOption(optionkw, optionLabel, eols, optionStmt) {
+    ChoiceOption(optionkw, optionLabel, optionStmt) {
         return {
             type: "fragment",
             statement: ["option", optionLabel.sourceString, optionStmt.eval()]

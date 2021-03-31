@@ -72,7 +72,7 @@ Sudina {
 
     VariableDeclaration = VarKW identifier VarValue
 
-    VarKW = "var"
+    VarKW = "let"
 
     VarValue = AskFragment | Text
 
@@ -84,7 +84,7 @@ Sudina {
 
     ChoiceKW = "choice"
 
-    ChoiceOption = OptionKW Text eol* StmtWithoutLabel
+    ChoiceOption = OptionKW Text StmtWithoutLabel
 
     OptionKW = "option"
 
