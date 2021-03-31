@@ -91,6 +91,7 @@ export class SargaBlock extends SargaScriptItem {
     items;
     images;
     audioFiles;
+    sourceString;
 
     constructor(name) {
         super(name);

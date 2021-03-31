@@ -17,12 +17,12 @@ const examples = [
  */
 function sargaParse(name, text) {
     // phase 1 - match with grammar.
-    const match = Sarga.match(text);
-    console.log(`"${text.substring(0, 15)} ..." -> ${match.succeeded()}`);
+    const matchResult = Sarga.match(text);
+    console.log(`"${text.substring(0, 15)} ..." -> ${matchResult.succeeded()}`);
 
     // if parse phase 1 succeeded
     // proceed to create statements
-    let scriptBlock = sargaParsePhase2(text, match);
+    let scriptBlock = sargaParsePhase2(text, matchResult);
     scriptBlock["filename"] = name;
     return scriptBlock;
 }
@@ -33,14 +33,15 @@ function sargaParse(name, text) {
  * send to phase 3
  * 
  * @param { input text } text 
- * @param { ohm match object} match 
+ * @param { ohm matchResult object} match 
  */
-function sargaParsePhase2(text, match) {
-    if (!match.succeeded()) {
-        console.log(Sarga.trace(text).toString());
+function sargaParsePhase2(text, matchResult) {
+    if (!matchResult.succeeded()) {
+        // console.log(Sarga.trace(text).toString());
+        console.log(matchResult.message);
         throw ('Error parsing script.');
     } else {
-        const scriptObj = SargaSemantics(match).eval();
+        const scriptObj = SargaSemantics(matchResult).eval();
         return parseStatement(scriptObj);
     }
 }
@@ -50,6 +51,7 @@ function parseStatement(stmt) {
 
         case "block":
             let b = new SargaBlock(stmt.name);
+            b.sourceString = stmt.sourceString;
             if (stmt.statements !== null) {
                 for (let i = 0; i < stmt.statements.length; i++) {
                     let childStmt = stmt.statements[i];

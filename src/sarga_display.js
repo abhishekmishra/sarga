@@ -20,6 +20,8 @@ export class SargaBlockDisplay {
 
             s.setup = () => {
                 s.createCanvas(500, 500);
+                let sourceStrDiv = s.createElement('div', this.block.sourceString);
+                sourceStrDiv.style('white-space', 'pre-wrap');
                 this.setup(s);
             }
 

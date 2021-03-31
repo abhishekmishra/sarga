@@ -5,7 +5,8 @@ export const evalOperation = {
         const block = {
             type: "block",
             name: "script",
-            statements: blkStmts
+            statements: blkStmts,
+            sourceString: this.sourceString
         };
         return block;
     },
@@ -17,7 +18,8 @@ export const evalOperation = {
         const block = {
             type: "block",
             name: blkName,
-            statements: blkStmts
+            statements: blkStmts,
+            sourceString: this.sourceString
         };
         // console.log(block);
         return block;
