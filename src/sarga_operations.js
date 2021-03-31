@@ -108,12 +108,24 @@ export const evalOperation = {
         }
     },
 
-    VariableDeclaration(varkw, varName, varValue) {
-        let val = varValue.eval();
+    VariableDeclaration(varName, isAKW, type, properties) {
         return {
             type: "declaration",
-            statement: ["var", varName.sourceString, val]
+            statement: ["var", varName.sourceString, type.sourceString, properties.eval()]
         };
+    },
+
+    Properties(left, first, separator, rest, right) {
+        let props = [];
+        props.push(first.eval());
+        for (const p of rest.children) {
+            props.push(p.eval());
+        }
+        return props;
+    },
+
+    Property(id, text) {
+        return { k: id.sourceString, v: text.sourceString };
     },
 
     number(value) {

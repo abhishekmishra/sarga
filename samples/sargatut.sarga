@@ -1,11 +1,19 @@
-character neo #334455
-let TotalScore "100"
+narrator is a Character [ 
+    name "neo",
+    color "#334455"
+]
 
-begin whatis
-    neo: "Welcome to the Sarga Tutorial"
-    neo: "My name is {{neo}} and I'll be your guide."
-end
+TotalScore is a Counter [ 
+    start "1", 
+    step "1" 
+]
 
-begin x
-    "dude"
-end
+narrator: "Welcome to the Sarga Tutorial"
+
+"My name is {{narrator.name}} and I'll be your guide."
+
+"
+Sarga helps to create and run books with audio and visual elements.
+This is similar to visual novels but with a more general focus - so that
+you can create textbooks, stories, tutorials, articles etc.
+"

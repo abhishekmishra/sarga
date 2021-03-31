@@ -70,9 +70,19 @@ Sudina {
     // A label is of the form #<id>
     Label = "#" identifier
 
-    VariableDeclaration = VarKW identifier VarValue
+    VariableDeclaration = identifier IsA Type Properties
+
+    Type = identifier
+
+    IsA = "is a" "n"?
 
     VarKW = "let"
+
+    Properties = "[" Property (PropertySeparator Property)* "]"
+
+    Property = identifier Text
+
+    PropertySeparator = ","
 
     VarValue = AskFragment | Text
 
