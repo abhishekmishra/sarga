@@ -25,7 +25,7 @@ export const evalOperation = {
         return block;
     },
 
-    BeginBlock(begin_kw, block_name, eol) {
+    BeginBlock(begin_kw, block_name) {
         return block_name.source.contents;
     },
 
@@ -116,14 +116,6 @@ export const evalOperation = {
         };
     },
 
-    VariableAssignment(setKW, varName, varValue) {
-        let val = varValue.eval();
-        return {
-            type: "declaration",
-            statement: ["set", varName.sourceString, val]
-        };
-    },
-
     number(value) {
         return this.sourceString;
     },
@@ -133,18 +125,6 @@ export const evalOperation = {
             type: "fragment",
             statement: ["ask", askText.eval()]
         };
-    },
-
-    PriExp_paren(open, value, close) {
-        return this.sourceString;
-    },
-
-    AddExp_plus(left, sign, right) {
-        return this.sourceString;
-    },
-
-    AddExp_minus(left, sign, right) {
-        return this.sourceString;
     },
 
     AvatarDeclaration(avatarKW, avatarName, avatarDefn) {

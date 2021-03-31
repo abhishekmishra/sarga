@@ -5,6 +5,6 @@ begin whatis
     neo: "My name is {{neo}} and I'll be your guide."
 end
 
-begin
-"dude"
+begin x
+    "dude"
 end

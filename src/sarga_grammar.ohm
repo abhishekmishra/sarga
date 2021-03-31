@@ -5,6 +5,7 @@
 //TODO: default object type (dumb object) is obj with props and slots (behaviour)
 //TODO: should be able to send messages to slots, and receive response.
 //TODO: should be able to get/set properties
+//TODO: create separate identifierText rule so that Identifier can be made syntactic rule.
 
 Sudina {
     // A script can contain one or more blocks
@@ -16,7 +17,7 @@ Sudina {
 
     // begin declaration is of the form
     // begin <blockname>
-    BeginBlock = BeginKW identifier? eol*
+    BeginBlock = BeginKW identifier?
 
     // end declaration only contains the keyword
     EndBlock = EndKW
@@ -40,7 +41,6 @@ Sudina {
         | StartStmt
         | CharacterDeclaration
         | VariableDeclaration
-        | VariableAssignment
         | AvatarDeclaration
         | AttachDeclaration
         | MessageStmt
@@ -65,25 +65,8 @@ Sudina {
 
     AvatarProperties = "[" AvatarProperty+ "]"
 
-    AvatarProperty = identifier SaysWhat
+    AvatarProperty = identifier Text
 
-    VariableAssignment = SetKW identifier ArithmeticExp
-
-    SetKW = "set"
-
-    ArithmeticExp
-        = AddExp
-    
-    AddExp
-        = AddExp "+" PriExp  -- plus
-        | AddExp "-" PriExp  -- minus
-        | PriExp
-    
-    PriExp
-        = "(" ArithmeticExp ")"  -- paren
-        | VariableExp
-        | number
-    
     // A label is of the form #<id>
     Label = "#" identifier
 
@@ -91,9 +74,9 @@ Sudina {
 
     VarKW = "var"
 
-    VarValue = AskFragment | SaysWhat | ArithmeticExp
+    VarValue = AskFragment | Text
 
-    AskFragment = AskKW SaysWhat
+    AskFragment = AskKW Text
 
     AskKW = "ask"
 
@@ -136,18 +119,18 @@ Sudina {
 
     // A layer command can clear, set or unset layers
     layer_cmd = layer_clear_cmd
-        | layer_set_cmd
-        | layer_unset_cmd
+        // | layer_set_cmd
+        // | layer_unset_cmd
         
     layer_clear_cmd = "clear"
 
-    layer_set_cmd = "set" ws+ layer_number ws+ drawable
+    // layer_set_cmd = "set" ws+ layer_number ws+ drawable
 
-    layer_unset_cmd = "unset" ws+ layer_number
+    // layer_unset_cmd = "unset" ws+ layer_number
 
-    layer_number = digit+
+    // layer_number = digit+
 
-    drawable = identifier
+    // drawable = identifier
 
     SaysStmt = SaysWho? SaysWhat
 
@@ -163,9 +146,9 @@ Sudina {
     doubleStringCharacter = ~("\"") strCharacter
     singleStringCharacter = ~("'") strCharacter
 
-    SaysWho = someone AvatarProperties? ":"
+    SaysWho = Someone AvatarProperties? ":"
 
-    someone = identifier
+    Someone = identifier
 
     quote = "\""
 

@@ -42,6 +42,7 @@ function sargaParsePhase2(text, matchResult) {
         throw ('Error parsing script.');
     } else {
         const scriptObj = SargaSemantics(matchResult).eval();
+        console.log(JSON.stringify(scriptObj, null, 2));
         return parseStatement(scriptObj);
     }
 }
