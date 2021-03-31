@@ -4,7 +4,7 @@ Narrator is Character [
 ]
 
 TotalScoreBG is Image [
-    wah "wah"
+    name "bg01"
 ]
 
 TotalScore is Counter [ 
@@ -12,9 +12,9 @@ TotalScore is Counter [
     step "1" 
 ]
 
-show Narrator [ view "smile", x "100", y "100", w "50", h "50" ]
-
+show TotalScoreBG
 show TotalScore [ offset "topright", x "-10", y "-10" ]
+show Narrator [ view "smile", x "100", y "100", w "50", h "50" ]
 
 Narrator: "Welcome to the Sarga Tutorial"
 
