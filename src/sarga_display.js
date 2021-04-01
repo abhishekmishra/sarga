@@ -39,7 +39,7 @@ export class SargaBlockDisplay {
     }
 
     preload(s) {
-        this.blockRunner.images;
+        this.blockRunner.preload(s);
     }
 
     setup(s) {

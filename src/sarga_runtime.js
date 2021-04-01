@@ -34,6 +34,12 @@ export class SargaScriptLine extends SargaScriptItem {
     }
 }
 
+export const SargaScriptDeclarationMixin = {
+    isDeclaration() {
+        return true;
+    }
+}
+
 export class SargaBlock extends SargaScriptItem {
     static isBlock = true;
     items;
@@ -41,14 +47,21 @@ export class SargaBlock extends SargaScriptItem {
     audioFiles;
     sourceString;
 
+    declarationItems;
+
     constructor(name) {
         super(name);
         this.items = [];
         this.images = [];
+        this.declarationItems = [];
     }
 
     addItem(item) {
         this.items.push(item);
+    }
+
+    addDeclarationItem(item) {
+        this.declarationItems.push(item);
     }
 
     addImage(imgUrl) {
@@ -95,6 +108,24 @@ export class SargaBlockRunner {
         this.block = block;
         this.location = -1;
         this.heap = new SargaHeap(parentHeap);
+    }
+
+    preload(s) {
+        for(let item of this.block.declarationItems) {
+            item.do(this.heap);
+        }
+        console.log(this.heap);
+        for(const heapKey in this.heap) {
+            const heapVal = this.heap[heapKey];
+            console.log(`${heapKey} -> ${heapVal}`);
+            if(heapVal && heapVal.hasPreload && heapVal.hasPreload()) {
+                heapVal.preload(s);
+            }
+        }
+    }
+
+    setup(s) {
+
     }
 
     next() {
@@ -152,7 +183,12 @@ export class SargaRunner {
         }
     }
 
-    setup() {
+    preload(s) {
+        const currentBlk = this.blockRunnerStack[this.blockRunnerStack.length - 1];
+        currentBlk.preload(s);
+    }
+
+    setup(s) {
         this.state = {
             'character': null,
             'character_modifiers': [],
@@ -161,6 +197,8 @@ export class SargaRunner {
             'music': null,
             'pause': false
         };
+        const currentBlk = this.blockRunnerStack[this.blockRunnerStack.length - 1];
+        currentBlk.setup(s);
     }
 
     tick() {

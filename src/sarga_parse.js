@@ -1,6 +1,6 @@
 import { Sarga, SargaSemantics } from './sarga_main';
-import { SargaBlock } from './sarga_runtime';
-import './sarga_factory';
+import { SargaBlock, SargaScriptLine, SargaScriptDeclarationMixin } from './sarga_runtime';
+import { createSargaObject } from './sarga_factory';
 
 /**
  * Create a runnable script out of the input
@@ -8,7 +8,7 @@ import './sarga_factory';
  * 
  * @param { input text } text 
  */
- export function sargaParse(name, text) {
+export function sargaParse(name, text) {
     // phase 1 - match with grammar.
     const matchResult = Sarga.match(text);
     // console.log(`"${text.substring(0, 15)} ..." -> ${matchResult.succeeded()}`);
@@ -50,7 +50,11 @@ function parseStatement(stmt) {
                     let childStmt = stmt.statements[i];
                     let childItem = parseStatement(childStmt);
                     if (childItem !== null) {
-                        b.addItem(childItem);
+                        if (childItem.isDeclaration && childItem.isDeclaration()) {
+                            b.addDeclarationItem(childItem);
+                        } else {
+                            b.addItem(childItem);
+                        }
                     }
                 }
             }
@@ -58,17 +62,28 @@ function parseStatement(stmt) {
 
         case "statement":
             // console.log(JSON.stringify(stmt, null, 2));
-            return(createStatementObject(stmt));
+            return (createStatementObject(stmt));
 
         case "declaration":
-            // console.log(JSON.stringify(stmt, null, 2));
-            return null;
+            console.log(JSON.stringify(stmt, null, 2));
+            const varName = stmt.statement[1];
+            const type = stmt.statement[2].toLowerCase();
+            const properties = stmt.statement[3];
+
+            let declarationLine = new SargaScriptLine((heap) => {
+                heap[varName] = createSargaObject(type, varName, ...properties);
+                console.log(heap[varName]);
+            });
+
+            Object.assign(declarationLine, SargaScriptDeclarationMixin);
+
+            return declarationLine;
     }
 }
 
 function createStatementObject(stmt) {
     let stmtType = stmt.statement[0];
-    switch(stmtType) {
+    switch (stmtType) {
         case "says":
             // return says(stmt.statement[2], stmt.statement[1]);
             return null;

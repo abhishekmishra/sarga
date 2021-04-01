@@ -104,7 +104,7 @@ export const evalOperation = {
     CharacterDeclaration(characterKW, characterName, characterColour) {
         return {
             type: "declaration",
-            statement: ["character", characterName.sourceString, characterColour.sourceString]
+            statement: ["character", characterName.sourceString, characterColour.eval()]
         };
     },
 
@@ -139,7 +139,7 @@ export const evalOperation = {
     },
 
     Property(id, text) {
-        return { k: id.sourceString, v: text.sourceString };
+        return { k: id.eval(), v: text.eval() };
     },
 
     number(value) {
@@ -185,4 +185,8 @@ export const evalOperation = {
     Text(pre, str, post) {
         return str.sourceString;
     },
+
+    identifier(begin, rest) {
+        return this.sourceString;
+    }
 };

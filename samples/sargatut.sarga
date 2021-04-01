@@ -1,10 +1,10 @@
 Narrator is Character [ 
-    image "neo",
+    image "www/assets/images/neo",
     color "#334455"
 ]
 
 TotalScoreBG is Image [
-    image "bg01"
+    image "www/assets/images/bg01"
 ]
 
 TotalScore is Counter [ 

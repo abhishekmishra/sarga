@@ -11,7 +11,7 @@ const examples = [
 
 for (let eg of examples) {
     let sargaScript = sargaParse("inline", eg);
-    // console.log(sargaScript);
+    console.log(sargaScript);
 
     const display = new SargaBlockDisplay(sargaScript);
     const displaySketch = new p5(display.getSketch());
