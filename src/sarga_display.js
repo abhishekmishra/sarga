@@ -16,7 +16,7 @@ export class SargaBlockDisplay {
             }
 
             s.setup = () => {
-                s.createCanvas(500, 500);
+                s.createCanvas(800, 600);
                 let sourceStrDiv = s.createElement('div', this.block.sourceString);
                 sourceStrDiv.style('white-space', 'pre-wrap');
                 sourceStrDiv.style('border', '2px solid gray');
@@ -31,8 +31,8 @@ export class SargaBlockDisplay {
             }
 
             s.draw = () => {
-                s.background(0);
-                s.textSize(20);
+                // s.background(0);
+                // s.textSize(20);
                 this.draw(s);
             }
         }
@@ -43,7 +43,7 @@ export class SargaBlockDisplay {
     }
 
     setup(s) {
-        this.blockRunner.setup();
+        this.blockRunner.setup(s);
     }
 
     keyPressed() {

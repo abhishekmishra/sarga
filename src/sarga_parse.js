@@ -95,12 +95,17 @@ function createStatementObject(stmt) {
             const saysWhat = stmt.statement[2];
             line = new SargaScriptLine((heap) => {
                 console.log(`before says |${saysWho}| = ${saysWhat}`);
+                let speaker = null;
                 if (saysWho && saysWho.length > 0) {
                     heap._setTopLevelValue("_currentSpeaker", saysWho[0]);
-                    heap.get(saysWho).text = saysWhat;
+                    speaker = heap.get(saysWho);
                 } else {
-                    heap.get(heap.get("_currentSpeaker")).text = saysWhat;
+                    speaker = heap.get(heap.get("_currentSpeaker"));
                 }
+                speaker.text = saysWhat;
+                speaker.say();
+
+                heap.get("Play").off();
             });
             return line;
         case "show":

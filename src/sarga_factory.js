@@ -199,13 +199,15 @@ const ImageMixin = {
         const imgNames = this.getImageNames();
         for (let img of imgNames) {
             console.log(`loading image ${img}`);
-            this._imageObjects.set(img, s.loadImage(img));
+            s.loadImage(img, (imgObj) => {
+                this._imageObjects.set(img, imgObj);
+            });
         }
     },
 
     getCurrentImage() {
-        const imgBaseName = this.image.replaceAll(/\s+/, '_');
-        const viewName = this.view.replaceAll(/\s+/, '_');
+        const imgBaseName = this.image.replaceAll(/\s+/g, '_');
+        const viewName = this.view.replaceAll(/\s+/g, '_');
         const imgName = imgBaseName + viewName + this.imageExtension;
         return imgName;
     },
@@ -215,7 +217,9 @@ const ImageMixin = {
     },
 
     drawImage(s) {
-        s.image(this._imageObjects.get(img), 0, 0, s.width, s.height);
+        const currentImg = this.getCurrentImage();
+        const imgObj = this._imageObjects.get(currentImg);
+        s.image(imgObj, 0, 0, s.width, s.height);
     }
 }
 
@@ -270,7 +274,10 @@ const CounterMixin = {
 const SpeechBubbleMixin = {
     initSpeechBubbleMixin() {
         if (this.addShowFn) {
-            this.addShowFn((s) => { this.drawImage(s) });
+            this.addShowFn((s) => { this.drawText(s) });
+        }
+        if(!this.text) {
+            this.text = 'what vro';
         }
     },
 
@@ -280,6 +287,9 @@ const SpeechBubbleMixin = {
     },
 
     drawText(s) {
+        console.log("text -> " + this.text);
+        s.textSize(20);
+        s.fill(0);
         s.text(this.text, this.x, this.y);
     }
 }

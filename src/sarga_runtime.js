@@ -159,7 +159,7 @@ export class SargaBlockRunner {
             const heapVal = this._heap.get(heapKey);
             if (heapVal && heapVal.hasShow && heapVal.hasShow()) {
                 console.log(`showing ${heapKey}`);
-                heapVal.show(s);
+                heapVal.runShow(s);
             }
         }
     }
@@ -205,7 +205,11 @@ export class SargaRunner {
 
     setup(s) {
         if (!this._topHeap.has("Bubble")) {
-            this._topHeap.addName("Bubble", createSargaObject("speechbubble", "Bubble"));
+            const bubbleObj = createSargaObject("speechbubble", "Bubble");
+            this._topHeap.addName("Bubble", bubbleObj);
+            bubbleObj.show();
+            bubbleObj.x = 100;
+            bubbleObj.y = s.height - 100;
         }
         if (!this._topHeap.has("Play")) {
             this._play = createSargaObject("toggle", "Play");
@@ -218,8 +222,8 @@ export class SargaRunner {
     }
 
     tick(s) {
-        s.fill(128);
-        s.text("play status -> " + this._play.switch, 100, 100);
+        // s.fill(128);
+        // s.text("play status -> " + this._play.switch, 100, 100);
 
         // play all statements as long as play switch is on
         if (this._play.switch) {
@@ -240,8 +244,13 @@ export class SargaRunner {
             }
         }
 
+        // s.background(128, 0, 0);
+        // let img = s.loadImage('www/assets/images/bg01.png', img => {
+        //     console.log(img);
+        //     s.image(img, 0, 0, s.width, s.height);
+        // });
 
-        this._play.off();
+        // this._play.off();
     }
 
     play() {
