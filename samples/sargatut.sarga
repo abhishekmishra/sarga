@@ -4,7 +4,10 @@ Narrator is Character [
 ]
 
 TotalScoreBG is Image [
-    image "www/assets/images/bg01"
+    image "www/assets/images/bg01",
+    x "0",
+    y "0",
+    z "0"
 ]
 
 TotalScore is Counter [ 
@@ -13,14 +16,11 @@ TotalScore is Counter [
 ]
 
 show TotalScoreBG
-show TotalScore [ offset "topright", x "-10", y "-10" ]
 show Narrator [ alt "smile", x "100", y "100", w "50", h "50" ]
 
 Narrator: "Welcome to the Sarga Tutorial"
 
 "My name is {{Narrator.name}} and I'll be your guide."
-
-hide TotalScore
 
 "
 Sarga helps to create and run books with audio and visual elements.
@@ -35,4 +35,10 @@ a screen. The audio and visual contents can be created using applications and/or
 in code. Only their appearance (and disappearance) on the stage is controlled in Sarga.
 "
 
+"
+show TotalScore [ offset 'topright', x '-10', y '-10' ]
+
+hide TotalScore
+
 show TotalScore
+"

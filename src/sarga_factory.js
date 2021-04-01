@@ -149,6 +149,10 @@ const ShowMixin = {
                 fn(s);
             }
         }
+    },
+
+    hasShow() {
+        return true;
     }
 }
 
@@ -171,7 +175,7 @@ const ImageMixin = {
         }
 
         if (this.addShowFn) {
-            this.addShowFn(this.drawImage);
+            this.addShowFn((s) => this.drawImage(s));
         }
 
         if (this.addPreloadFn) {
@@ -215,10 +219,13 @@ const ImageMixin = {
     }
 }
 
-const SpeakerMixin = {
-    initSpeakerMixin() {
+const RedirectSpeechMixin = {
+    initRedirectSpeechMixin() {
         if (!this.text) {
             this.text = "!dummy text!";
+        }
+        if (!this.speechBubbleName) {
+            this.speechBubbleName = "Bubble";
         }
     },
 
@@ -226,8 +233,9 @@ const SpeakerMixin = {
         return true;
     },
 
-    say(speakerDrawable) {
-        speakerDrawable.speak(this.text, {
+    say() {
+        const speechBubble = this._heap.get(this.speechBubbleName);
+        speechBubble.speak(this.text, {
             name: this.getDisplayName ? this.getDisplayName() : 'nobody',
             font: this.font ? this.font : null,
             color: this.color ? this.color : null,
@@ -256,6 +264,43 @@ const CounterMixin = {
         if (this.count < this.stop) {
             this.count += this.step;
         }
+    }
+}
+
+const SpeechBubbleMixin = {
+    initSpeechBubbleMixin() {
+        if (this.addShowFn) {
+            this.addShowFn((s) => { this.drawImage(s) });
+        }
+    },
+
+    speak(text, options) {
+        this.text = text;
+        this.textOptions = options;
+    },
+
+    drawText(s) {
+        s.text(this.text, this.x, this.y);
+    }
+}
+
+const ToggleMixin = {
+    initToggleMixin() {
+        if (!this.switch) {
+            this.switch = false;
+        }
+    },
+
+    toggle() {
+        this.switch = !this.switch;
+    },
+
+    on() {
+        this.switch = true;
+    },
+
+    off() {
+        this.switch = false;
     }
 }
 
@@ -298,20 +343,51 @@ registerSargaFactory('character', (id, ...args) => {
     Object.assign(obj, ImageMixin);
     obj.initImageMixin();
 
-    Object.assign(obj, SpeakerMixin);
-    obj.initSpeakerMixin();
+    Object.assign(obj, RedirectSpeechMixin);
+    obj.initRedirectSpeechMixin();
 
     return obj;
 });
 
 registerSargaFactory('counter', (id, ...args) => {
     let obj = new SargaRuntimeObject(id, ...args);
-    
+
     Object.assign(obj, CounterMixin);
     obj.initCounterMixin();
 
+    Object.assign(obj, ScreenLocationMixin);
+    obj.initScreenLocationMixin();
+
+    // TODO: implement counter visible on screen
+    // Object.assign(obj, ShowMixin);
+    // obj.initShowMixin();
+
+    // Object.assign(obj, SpeechBubbleMixin);
+    // obj.initSpeechBubbleMixin();
+
+    return obj;
+});
+
+registerSargaFactory('speechbubble', (id, ...args) => {
+    let obj = new SargaRuntimeObject(id, ...args);
+
+    Object.assign(obj, ScreenLocationMixin);
+    obj.initScreenLocationMixin();
+
     Object.assign(obj, ShowMixin);
     obj.initShowMixin();
+
+    Object.assign(obj, SpeechBubbleMixin);
+    obj.initSpeechBubbleMixin();
+
+    return obj;
+});
+
+registerSargaFactory('toggle', (id, ...args) => {
+    let obj = new SargaRuntimeObject(id, ...args);
+
+    Object.assign(obj, ToggleMixin);
+    obj.initToggleMixin();
 
     return obj;
 });

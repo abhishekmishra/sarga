@@ -71,8 +71,13 @@ function parseStatement(stmt) {
             const properties = stmt.statement[3];
 
             let declarationLine = new SargaScriptLine((heap) => {
-                heap[varName] = createSargaObject(type, varName, ...properties);
-                // console.log(heap[varName]);
+                heap.addName(varName, createSargaObject(
+                    type,
+                    varName,
+                    { "k": "_heap", "v": heap },
+                    ...properties
+                ));
+                console.log(heap.get(varName));
             });
 
             Object.assign(declarationLine, SargaScriptDeclarationMixin);
@@ -89,12 +94,12 @@ function createStatementObject(stmt) {
             const saysWho = stmt.statement[1];
             const saysWhat = stmt.statement[2];
             line = new SargaScriptLine((heap) => {
-                // console.log(`before says |${saysWho}| = ${saysWhat}`);
+                console.log(`before says |${saysWho}| = ${saysWhat}`);
                 if (saysWho && saysWho.length > 0) {
-                    heap["_currentSpeaker"] = saysWho[0];
-                    heap[saysWho].text = saysWhat;
+                    heap._setTopLevelValue("_currentSpeaker", saysWho[0]);
+                    heap.get(saysWho).text = saysWhat;
                 } else {
-                    heap[heap["_currentSpeaker"]].text = saysWhat;
+                    heap.get(heap.get("_currentSpeaker")).text = saysWhat;
                 }
             });
             return line;
@@ -103,11 +108,11 @@ function createStatementObject(stmt) {
             const updateProps = stmt.statement[2];
 
             line = new SargaScriptLine((heap) => {
-                // console.log(`show ${showWhat} = ${heap[showWhat]}`);
+                console.log(`show ${showWhat} = ${heap.get(showWhat)}`);
                 if (updateProps && updateProps.length > 0) {
-                    heap[showWhat].update(...updateProps);
+                    heap.get(showWhat).update(...updateProps);
                 }
-                heap[showWhat].show();
+                heap.get(showWhat).show();
             });
             return line;
         default:

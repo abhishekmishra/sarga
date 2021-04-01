@@ -47,10 +47,10 @@ export class SargaBlockDisplay {
     }
 
     keyPressed() {
-        this.blockRunner.state.pause = false;
+        this.blockRunner.play();
     }
 
     draw(s) {
-        this.blockRunner.tick();       
+        this.blockRunner.tick(s);
     }
 }

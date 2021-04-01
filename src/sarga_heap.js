@@ -1,60 +1,69 @@
 export class SargaHeap {
-    heap;
-    parent;
+    _heap;
+    _parent;
 
     constructor(parent = null) {
-        this.parent = parent;
-        this.heap = {};
+        this._parent = parent;
+        this._heap = {};
     }
 
     isTopLevel() {
-        if (this.heap === null) {
+        if (this._heap === null) {
             throw (`Attempt to use disposed heap.`);
         }
 
-        return this.parent === null;
+        return this._parent === null;
     }
 
     addName(name, value) {
-        if (this.heap === null) {
+        if (this._heap === null) {
             throw (`Attempt to use disposed heap.`);
         }
 
         if (this.hasLocal(name)) {
             throw (`${name} already exists`);
         } else {
-            this.heap[name] = value;
+            this._heap[name] = value;
         }
     }
 
-    // this should not be used
+    // this should not be used by objects
+    // only by the runtime
     // scope will not support mutable values.
-    // _setValue(name, value) {
-    //     this.heap[name] = value;
-    // }
+    _setValue(name, value) {
+        this._heap[name] = value;
+    }
+
+    _setTopLevelValue(name, value) {
+        if (this.isTopLevel()) {
+            this._setValue(name, value);
+        } else {
+            this._parent._setTopLevelValue(name, value);
+        }
+    }
 
     hasLocal(name) {
-        if (this.heap === null) {
+        if (this._heap === null) {
             throw (`Attempt to use disposed heap.`);
         }
 
-        return this.heap.hasOwnProperty(name);
+        return this._heap.hasOwnProperty(name);
     }
 
     has(name) {
-        if (this.heap === null) {
+        if (this._heap === null) {
             throw (`Attempt to use disposed heap.`);
         }
 
         let v = this.hasLocal(name);
         if (!v && !this.isTopLevel()) {
-            v = this.parent.has(name);
+            v = this._parent.has(name);
         }
         return v;
     }
 
     get(name) {
-        if (this.heap === null) {
+        if (this._heap === null) {
             throw (`Attempt to use disposed heap.`);
         }
 
@@ -62,16 +71,34 @@ export class SargaHeap {
             return null;
         }
         if (this.hasLocal(name)) {
-            return this.heap[name];
+            return this._heap[name];
         }
         if (!this.isTopLevel()) {
-            return this.parent.get(name);
+            return this._parent.get(name);
         }
         return null;
     }
 
+    keys() {
+        let ret = {
+            _heapObject: this
+        };
+        ret[Symbol.iterator] = function* () {
+            console.log(this._heapObject);
+            if (!this._heapObject.isTopLevel()) {
+                for (let k in this._heapObject.parent.keys()) {
+                    yield k;
+                }
+            }
+            for (let key in this._heapObject._heap) {
+                yield key;
+            }
+        }
+        return ret;
+    }
+
     dispose() {
-        this.heap = null;
+        this._heap = null;
     }
 }
 

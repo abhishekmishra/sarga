@@ -1,4 +1,5 @@
 import { v5 as uuidv5, v4 as uuidv4 } from 'uuid';
+import { createSargaObject } from './sarga_factory';
 import { SargaHeap } from './sarga_heap';
 
 export const Sarga_NAMESPACE = '5903ea4b-cfed-4c58-991f-0c4624be1b08';
@@ -97,71 +98,84 @@ export class SargaBook extends SargaBlock {
 }
 
 export class SargaBlockRunner {
-    block;
-    location;
-    heap;
+    _block;
+    _location;
+    _heap;
 
-    constructor(block, parentHeap = null) {
+    constructor(block, heap) {
         if (!block.constructor.isBlock) {
             throw ('not a block');
         }
-        this.block = block;
-        this.location = -1;
-        this.heap = new SargaHeap(parentHeap);
+        this._block = block;
+        this._location = -1;
+        this._heap = heap;
     }
 
     preload(s) {
-        for(let item of this.block.declarationItems) {
-            item.do(this.heap);
+        for (let item of this._block.declarationItems) {
+            item.do(this._heap);
         }
-        console.log(this.heap);
-        for(const heapKey in this.heap) {
-            const heapVal = this.heap[heapKey];
+
+        for (let heapKey of this._heap.keys()) {
+            const heapVal = this._heap.get(heapKey);
             console.log(`${heapKey} -> ${heapVal}`);
-            if(heapVal && heapVal.hasPreload && heapVal.hasPreload()) {
+            if (heapVal && heapVal.hasPreload && heapVal.hasPreload()) {
                 heapVal.preload(s);
             }
         }
     }
 
     setup(s) {
-
+        for (let heapKey of this._heap.keys()) {
+            const heapVal = this._heap.get(heapKey);
+            console.log(`${heapKey} -> ${heapVal}`);
+        }
     }
 
     next() {
-        if (this.location >= this.block.items.length - 1) {
+        if (this._location >= this._block.items.length - 1) {
             return false;
         } else {
-            this.location += 1;
+            this._location += 1;
             return true;
         }
     }
 
     current() {
-        return this.block.items[this.location];
+        return this._block.items[this._location];
     }
 
     runCurrent() {
         let ci = this.current();
         if (ci.do) {
-            return ci.do(this.heap);
+            return ci.do(this._heap);
         } else {
             //throw(`${ci} does not have a do method`);
         }
     }
 
+    showAll(s) {
+        for (let heapKey of this._heap.keys()) {
+            const heapVal = this._heap.get(heapKey);
+            if (heapVal && heapVal.hasShow && heapVal.hasShow()) {
+                console.log(`showing ${heapKey}`);
+                heapVal.show(s);
+            }
+        }
+    }
+
     hasPrevious() {
-        return this.location > 0;
+        return this._location > 0;
     }
 
     hasNext() {
-        return this.location < this.block.items.length;
+        return this._location < this._block.items.length;
     }
 
     dispose() {
-        this.location = -1;
-        this.heap.dispose();
-        this.heap = null;
+        this._location = -1;
+        this._heap.dispose();
+        this._heap = null;
     }
 }
 
@@ -169,13 +183,14 @@ export class SargaRunner {
     block;
     blockRunnerStack;
 
-    state;
+    _topHeap;
+    _play;
     images;
 
     constructor(block) {
         this.block = block;
-        this.state = {};
-        this.blockRunnerStack = [new SargaBlockRunner(this.block)];
+        this._topHeap = new SargaHeap();
+        this.blockRunnerStack = [new SargaBlockRunner(this.block, this._topHeap)];
         this.images = [];
 
         for (let img of this.block.images) {
@@ -189,20 +204,25 @@ export class SargaRunner {
     }
 
     setup(s) {
-        this.state = {
-            'character': null,
-            'character_modifiers': [],
-            'text': null,
-            'scene': [],
-            'music': null,
-            'pause': false
-        };
+        if (!this._topHeap.has("Bubble")) {
+            this._topHeap.addName("Bubble", createSargaObject("speechbubble", "Bubble"));
+        }
+        if (!this._topHeap.has("Play")) {
+            this._play = createSargaObject("toggle", "Play");
+            this._topHeap.addName("Play", this._play);
+        }
+        this._play.on();
+
         const currentBlk = this.blockRunnerStack[this.blockRunnerStack.length - 1];
         currentBlk.setup(s);
     }
 
-    tick() {
-        if (!this.state.pause) {
+    tick(s) {
+        s.fill(128);
+        s.text("play status -> " + this._play.switch, 100, 100);
+
+        // play all statements as long as play switch is on
+        if (this._play.switch) {
             let currentItem = null;
             const res = this.next();
             if (res) {
@@ -214,35 +234,18 @@ export class SargaRunner {
                 }
                 // console.log(currentItem);
                 const args = this.runCurrent();
-                if (args) {
-                    switch (args.command) {
-                        case "say":
-                            if (args.character) {
-                                this.state.character = args.character;
-                            }
-                            if (args.text) {
-                                this.state.text = args.text;
-                            }
-                            if (args.pause) {
-                                this.state.pause = args.pause;
-                            }
-                            break;
-                        case "scene":
-                            this.state.scene = [];
-                            if (args.image) {
-                                this.state.scene.push(this.images[args.image]);
-                            }
-                        case "show":
-                            if (args.image) {
-                                this.state.scene.push(this.images[args.image]);
-                            }
-                    }
-                }
-            } else {
-                this.state.text = "OVER";
+                // display items with show
+                const currentBlk = this.blockRunnerStack[this.blockRunnerStack.length - 1];
+                currentBlk.showAll(s);
             }
         }
 
+
+        this._play.off();
+    }
+
+    play() {
+        this._play.on();
     }
 
     next() {
