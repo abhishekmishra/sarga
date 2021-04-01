@@ -3,23 +3,6 @@ import { SargaHeap } from './sarga_heap';
 
 export const Sarga_NAMESPACE = '5903ea4b-cfed-4c58-991f-0c4624be1b08';
 
-export function loadBook(clazz) {
-    let b = new clazz();
-    console.log(`loaded book ${b.name}`);
-}
-
-class SargaCharacter {
-    static isCharacter = true;
-    name;
-    constructor(name) {
-        this.name = name;
-    }
-}
-
-class SargaInstructor extends SargaCharacter {
-    static isInstructor = true;
-}
-
 class SargaScriptItem {
     static isScriptItem = true;
     _label;
@@ -49,42 +32,6 @@ export class SargaScriptLine extends SargaScriptItem {
     do(state) {
         return this.fn(state);
     }
-}
-
-export class SargaSays extends SargaScriptLine {
-    constructor(tosay = 'nothing', c = 'nobody', label = null) {
-        super((state) => {
-            return {
-                command: 'say',
-                character: c,
-                text: tosay,
-                pause: true
-            }
-        },
-            label);
-    }
-}
-
-export function says(tosay = 'nothing', c = 'nobody', label = null) {
-    return new SargaSays(tosay, c, label);
-}
-
-export function scene(img) {
-    return new SargaScriptLine((state) => {
-        return {
-            command: 'scene',
-            image: img
-        }
-    });
-}
-
-export function show(img) {
-    return new SargaScriptLine((state) => {
-        return {
-            command: 'show',
-            image: img
-        }
-    });
 }
 
 export class SargaBlock extends SargaScriptItem {

@@ -1,10 +1,10 @@
 Narrator is Character [ 
-    name "neo",
+    image "neo",
     color "#334455"
 ]
 
 TotalScoreBG is Image [
-    name "bg01"
+    image "bg01"
 ]
 
 TotalScore is Counter [ 
@@ -14,7 +14,7 @@ TotalScore is Counter [
 
 show TotalScoreBG
 show TotalScore [ offset "topright", x "-10", y "-10" ]
-show Narrator [ view "smile", x "100", y "100", w "50", h "50" ]
+show Narrator [ alt "smile", x "100", y "100", w "50", h "50" ]
 
 Narrator: "Welcome to the Sarga Tutorial"
 

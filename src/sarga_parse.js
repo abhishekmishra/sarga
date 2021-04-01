@@ -1,5 +1,6 @@
 import { Sarga, SargaSemantics } from './sarga_main';
-import { SargaBlock, says } from './sarga_runtime';
+import { SargaBlock } from './sarga_runtime';
+import './sarga_factory';
 
 /**
  * Create a runnable script out of the input
@@ -41,7 +42,6 @@ function sargaParsePhase2(text, matchResult) {
 
 function parseStatement(stmt) {
     switch (stmt.type) {
-
         case "block":
             let b = new SargaBlock(stmt.name);
             b.sourceString = stmt.sourceString;
@@ -57,15 +57,24 @@ function parseStatement(stmt) {
             return b;
 
         case "statement":
-            let stmtType = stmt.statement[0];
-            if (stmtType === "says") {
-                return says(stmt.statement[2], stmt.statement[1]);
-            }
-            else {
-                return "unparsed stmt";
-            }
+            // console.log(JSON.stringify(stmt, null, 2));
+            return(createStatementObject(stmt));
 
         case "declaration":
+            // console.log(JSON.stringify(stmt, null, 2));
             return null;
+    }
+}
+
+function createStatementObject(stmt) {
+    let stmtType = stmt.statement[0];
+    switch(stmtType) {
+        case "says":
+            // return says(stmt.statement[2], stmt.statement[1]);
+            return null;
+        case "show":
+            return null;
+        default:
+            return "unparsed stmt";
     }
 }
