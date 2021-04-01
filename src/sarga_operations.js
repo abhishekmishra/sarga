@@ -93,8 +93,12 @@ export const evalOperation = {
     SaysStmt(saysWho, saysWhat) {
         return {
             type: "statement",
-            statement: ["says", saysWho.sourceString, saysWhat.eval()]
+            statement: ["says", saysWho.eval(), saysWhat.eval()]
         };
+    },
+
+    SaysWho(who, properties, kw) {
+        return who.sourceString;
     },
 
     SaysWhat(expr) {

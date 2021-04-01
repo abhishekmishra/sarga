@@ -51,17 +51,6 @@ export class SargaBlockDisplay {
     }
 
     draw(s) {
-        this.blockRunner.tick();
-        
-        s.fill(255);
-        if (this.blockRunner.state.text === null) {
-            s.text('no text', 100, s.height - 100);
-        } else {
-            for (let img of this.blockRunner.state.scene) {
-                s.image(img, 0, 0, s.width, s.height);
-            }
-            s.text(this.blockRunner.state.character, 10, s.height - 100);
-            s.text(this.blockRunner.state.text, 100, s.height - 100);
-        }
+        this.blockRunner.tick();       
     }
 }

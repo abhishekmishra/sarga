@@ -212,7 +212,7 @@ export class SargaRunner {
                     this.next();
                     currentItem = this.current();
                 }
-                console.log(currentItem);
+                // console.log(currentItem);
                 const args = this.runCurrent();
                 if (args) {
                     switch (args.command) {

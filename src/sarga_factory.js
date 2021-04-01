@@ -21,6 +21,9 @@ export function getSargaFactoryNames() {
 }
 
 export function createSargaObject(typeName, id, ...args) {
+    if (!SARGA_FACTORIES.has(typeName)) {
+        console.error(`${typeName} not found in object fatories`);
+    }
     const factory = getSargaFactory(typeName);
     return factory(id, ...args);
 }
@@ -34,7 +37,7 @@ class SargaRuntimeObject {
         }
         this.id = id;
         for (let arg of args) {
-            console.log(arg);
+            // console.log(arg);
             if (arg.k === 'id') {
                 throw ('cannot replace id of object via arguments');
             }
@@ -44,7 +47,7 @@ class SargaRuntimeObject {
 
     update(...args) {
         for (let arg of args) {
-            console.log(arg);
+            // console.log(arg);
             if (arg.k === 'id') {
                 throw ('cannot replace id of object via arguments');
             }
@@ -225,6 +228,7 @@ const SpeakerMixin = {
 
     say(speakerDrawable) {
         speakerDrawable.speak(this.text, {
+            name: this.getDisplayName ? this.getDisplayName() : 'nobody',
             font: this.font ? this.font : null,
             color: this.color ? this.color : null,
             fontSize: this.fontSize ? this.fontSize : null
@@ -234,22 +238,22 @@ const SpeakerMixin = {
 
 const CounterMixin = {
     initCounterMixin() {
-        if(!this.start) {
+        if (!this.start) {
             this.start = 0;
         }
-        if(!this.step) {
+        if (!this.step) {
             this.step = 1;
         }
-        if(!this.stop) {
+        if (!this.stop) {
             this.stop = Infinity;
         }
-        if(!this.count) {
+        if (!this.count) {
             this.count = this.start;
         }
     },
 
     increment() {
-        if(this.count < this.stop) {
+        if (this.count < this.stop) {
             this.count += this.step;
         }
     }
@@ -302,8 +306,14 @@ registerSargaFactory('character', (id, ...args) => {
 
 registerSargaFactory('counter', (id, ...args) => {
     let obj = new SargaRuntimeObject(id, ...args);
+    
     Object.assign(obj, CounterMixin);
     obj.initCounterMixin();
+
+    Object.assign(obj, ShowMixin);
+    obj.initShowMixin();
+
+    return obj;
 });
 
 // console.log(`sarga factory items -> ${Array.from(getSargaFactoryNames())}`);

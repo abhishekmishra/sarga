@@ -72,7 +72,7 @@ function parseStatement(stmt) {
 
             let declarationLine = new SargaScriptLine((heap) => {
                 heap[varName] = createSargaObject(type, varName, ...properties);
-                console.log(heap[varName]);
+                // console.log(heap[varName]);
             });
 
             Object.assign(declarationLine, SargaScriptDeclarationMixin);
@@ -83,12 +83,33 @@ function parseStatement(stmt) {
 
 function createStatementObject(stmt) {
     let stmtType = stmt.statement[0];
+    let line = null;
     switch (stmtType) {
         case "says":
-            // return says(stmt.statement[2], stmt.statement[1]);
-            return null;
+            const saysWho = stmt.statement[1];
+            const saysWhat = stmt.statement[2];
+            line = new SargaScriptLine((heap) => {
+                // console.log(`before says |${saysWho}| = ${saysWhat}`);
+                if (saysWho && saysWho.length > 0) {
+                    heap["_currentSpeaker"] = saysWho[0];
+                    heap[saysWho].text = saysWhat;
+                } else {
+                    heap[heap["_currentSpeaker"]].text = saysWhat;
+                }
+            });
+            return line;
         case "show":
-            return null;
+            const showWhat = stmt.statement[1];
+            const updateProps = stmt.statement[2];
+
+            line = new SargaScriptLine((heap) => {
+                // console.log(`show ${showWhat} = ${heap[showWhat]}`);
+                if (updateProps && updateProps.length > 0) {
+                    heap[showWhat].update(...updateProps);
+                }
+                heap[showWhat].show();
+            });
+            return line;
         default:
             return "unparsed stmt";
     }
