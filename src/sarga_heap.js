@@ -75,34 +75,34 @@ export class SargaHeap {
     }
 }
 
-let top = new SargaHeap();
-console.log("######### HEAP TESTS ########");
+// let top = new SargaHeap();
+// console.log("######### HEAP TESTS ########");
 
-console.log(`new heap top, top has blah -> ${top.has('blah')}`);
-top.addName("blah", "bluh");
-console.log(`set blah, now top has blah -> ${top.has('blah')}`);
+// console.log(`new heap top, top has blah -> ${top.has('blah')}`);
+// top.addName("blah", "bluh");
+// console.log(`set blah, now top has blah -> ${top.has('blah')}`);
 
-let child1 = new SargaHeap(top);
+// let child1 = new SargaHeap(top);
 
-console.log(`new heap child1 with parent top, child1 has blah -> ${child1.has('blah')}, value = ${child1.get('blah')}`);
-console.log(`new heap child1 with parent top, child1 has local blah -> ${child1.hasLocal('blah')}, value = ${child1.get('blah')}`);
+// console.log(`new heap child1 with parent top, child1 has blah -> ${child1.has('blah')}, value = ${child1.get('blah')}`);
+// console.log(`new heap child1 with parent top, child1 has local blah -> ${child1.hasLocal('blah')}, value = ${child1.get('blah')}`);
 
-if (!child1.hasLocal('blah')) {
-    child1.addName('blah', 'bleh');
-}
+// if (!child1.hasLocal('blah')) {
+//     child1.addName('blah', 'bleh');
+// }
 
-console.log(`child1 set local 'blah', child1 has local blah -> ${child1.hasLocal('blah')}, value = ${child1.get('blah')}`);
+// console.log(`child1 set local 'blah', child1 has local blah -> ${child1.hasLocal('blah')}, value = ${child1.get('blah')}`);
 
-child1.dispose();
+// child1.dispose();
 
-try {
-    child1.get('blah');
-} catch (e) {
-    console.log("Exception using disposed heap -> [" + e  + "]");
-}
+// try {
+//     child1.get('blah');
+// } catch (e) {
+//     console.log("Exception using disposed heap -> [" + e  + "]");
+// }
 
-top.dispose();
-child1 == null;
-top == null;
+// top.dispose();
+// child1 == null;
+// top == null;
 
-console.log("######### HEAP TESTS ########");
+// console.log("######### HEAP TESTS ########");
