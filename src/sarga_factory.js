@@ -1,3 +1,5 @@
+import { layoutItemsFromString, breakLines, positionItems } from 'tex-linebreak';
+
 const SARGA_FACTORIES = new Map();
 
 export function getSargaFactory(typeName) {
@@ -240,9 +242,9 @@ const RedirectSpeechMixin = {
     say() {
         const speechBubble = this._heap.get(this.speechBubbleName);
         speechBubble.speak(this.text, {
-            name: this.getDisplayName ? this.getDisplayName() : 'nobody',
+            speakerName: this.getDisplayName ? this.getDisplayName() : 'nobody',
             font: this.font ? this.font : null,
-            color: this.color ? this.color : null,
+            textColor: this.color ? this.color : null,
             fontSize: this.fontSize ? this.fontSize : null
         });
     }
@@ -276,21 +278,72 @@ const SpeechBubbleMixin = {
         if (this.addShowFn) {
             this.addShowFn((s) => { this.drawText(s) });
         }
-        if(!this.text) {
+        if (!this.text) {
             this.text = 'what vro';
+        }
+        if (!this.textOptions) {
+            this.textOptions = {
+                speakerName: 'nobody',
+                font: null,
+                textColor: null,
+                fontSize: 20
+            }
+        }
+        if (!this.width) {
+            this.width = 400;
         }
     },
 
     speak(text, options) {
+        console.log("text options");
+        console.log(options);
         this.text = text;
         this.textOptions = options;
     },
 
     drawText(s) {
         console.log("text -> " + this.text);
-        s.textSize(20);
+        const textSize = this.textOptions.fontSize == null ? 20 : parseInt(this.textOptions.fontSize);
+        console.log(`text size = ${this.textOptions.fontSize}`);
+        s.textSize(textSize);
         s.fill(0);
-        s.text(this.text, this.x, this.y);
+        // s.text(this.text, this.x, this.y);
+
+        // Convert your text to a set of "box", "glue" and "penalty" items used by the
+        // line-breaking process.
+        //
+        // "Box" items are things (typically words) to typeset.
+        // "Glue" items are spaces that can stretch or shrink or be a breakpoint.
+        // "Penalty" items are possible breakpoints (hyphens, end of a paragraph etc.).
+        //
+        // `layoutItemsFromString` is a helper that takes a string and a function to
+        // measure the width of a piece of that string and returns a suitable set of
+        // items.
+        const measureText = text => s.textWidth(text);
+        const items = layoutItemsFromString(this.text, measureText);
+
+        // Find where to insert line-breaks in order to optimally lay out the text.
+        const lineWidth = this.width;
+        const breakpoints = breakLines(items, lineWidth)
+
+        // Compute the (xOffset, line number) at which to draw each box item.
+        const positionedItems = positionItems(items, lineWidth, breakpoints);
+
+        positionedItems.forEach(pi => {
+            const item = items[pi.item];
+
+            // Add code to draw `item.text` at `(box.xOffset, box.line)` to whatever output
+            // you want, eg. `<canvas>`, HTML elements with spacing created using CSS,
+            // WebGL, ...
+
+            let textx = this.x + pi.xOffset;
+            let texty = this.y + (pi.line * textSize)
+
+            // console.log(`${textx}, ${texty}`);
+
+            s.text(item.text, textx, texty);
+        });
+
     }
 }
 
