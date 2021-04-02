@@ -1,6 +1,6 @@
 import { Sarga, SargaSemantics } from './sarga_main';
 import { SargaBlock, SargaScriptLine, SargaScriptDeclarationMixin } from './sarga_runtime';
-import { createSargaObject } from './sarga_factory';
+import { createSargaObject, sargaMixin } from './sarga_factory';
 
 /**
  * Create a runnable script out of the input
@@ -85,9 +85,32 @@ function parseStatement(stmt) {
                 Object.assign(declarationLine, SargaScriptDeclarationMixin);
 
                 return declarationLine;
-            } else {
-                return null;
             }
+            if (declType === "mixin") {
+                console.log(JSON.stringify(stmt, null, 2));
+                const varName = stmt.statement[1];
+                const type = stmt.statement[2];
+                const properties = stmt.statement[3];
+
+                let declarationLine = new SargaScriptLine((heap) => {
+                    let obj = heap.get(varName);
+                    if(obj) {
+                        sargaMixin(obj, type);
+                        obj.update(...properties);
+                    } else {
+                        throw(`${varName} is not in the heap vro.`);
+                    }
+
+                    console.log(heap.get(varName));
+                });
+
+                Object.assign(declarationLine, SargaScriptDeclarationMixin);
+
+                return declarationLine;
+            }
+            break;
+        default:
+            throw(`unexpected declaration`);
     }
 }
 

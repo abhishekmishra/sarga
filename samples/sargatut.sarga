@@ -1,5 +1,8 @@
 Duck is Vanilla
-Duch has Speech
+Duck has Speech
+Duck has DisplayName [
+    name "Daffy"
+]
 
 Narrator is Character [ 
     image "www/assets/images/neo",
@@ -30,6 +33,8 @@ Sarga helps to create and run books with audio and visual elements.
 This is similar to visual novels but with a more general focus - so that
 you can create textbooks, stories, tutorials, articles etc.
 "
+
+Duck: "Quack"
 
 "
 Note that Sarga doesn't replace graphical or audio creation tools. It helps you become

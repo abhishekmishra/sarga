@@ -4,6 +4,12 @@ import { layoutItemsFromString, breakLines, positionItems } from 'tex-linebreak'
 
 registerSargaMixin("DisplayName", {
 
+    initDisplayNameMixin() {
+        if(!this.name) {
+            this.name = this.id;
+        }
+    },
+
     getDisplayName() {
         return this.name;
     },
