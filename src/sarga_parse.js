@@ -61,13 +61,12 @@ function parseStatement(stmt) {
             return b;
 
         case "statement":
-            // console.log(JSON.stringify(stmt, null, 2));
             return (createStatementObject(stmt));
 
         case "declaration":
             const declType = stmt.statement[0];
             if (declType === "var") {
-                console.log(JSON.stringify(stmt, null, 2));
+                // console.log(JSON.stringify(stmt, null, 2));
                 const varName = stmt.statement[1];
                 const type = stmt.statement[2].toLowerCase();
                 const properties = stmt.statement[3];
@@ -87,7 +86,7 @@ function parseStatement(stmt) {
                 return declarationLine;
             }
             if (declType === "mixin") {
-                console.log(JSON.stringify(stmt, null, 2));
+                // console.log(JSON.stringify(stmt, null, 2));
                 const varName = stmt.statement[1];
                 const type = stmt.statement[2];
                 const properties = stmt.statement[3];
@@ -132,8 +131,6 @@ function createStatementObject(stmt) {
                 }
                 speaker.text = saysWhat;
                 speaker.say();
-
-                heap.get("Play").off();
             });
             return line;
         case "show":
@@ -146,6 +143,25 @@ function createStatementObject(stmt) {
                     heap.get(showWhat).update(...updateProps);
                 }
                 heap.get(showWhat).show();
+            });
+            return line;
+        case "method":
+            const objName = stmt.statement[1];
+            const methodName = stmt.statement[2];
+            const methodArgs = stmt.statement[3];
+            console.log(JSON.stringify(stmt, null, 2));
+            line = new SargaScriptLine((heap) => {
+                console.log(`call ${objName} -> ${methodName}`);
+                const obj = heap.get(objName);
+                if(obj) {
+                    if(obj[methodName]) {
+                        obj[methodName](...methodArgs);
+                    } else {
+                        throw(`${objName} does not have method ${methodName}`);
+                    }
+                } else {
+                        throw(`${objName} is not in the heap vro.`);
+                }
             });
             return line;
         default:

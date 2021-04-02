@@ -119,7 +119,7 @@ export class SargaBlockRunner {
 
         for (let heapKey of this._heap.keys()) {
             const heapVal = this._heap.get(heapKey);
-            console.log(`${heapKey} -> ${heapVal}`);
+            // console.log(`${heapKey} -> ${heapVal}`);
             if (heapVal && heapVal.hasPreload && heapVal.hasPreload()) {
                 heapVal.preload(s);
             }
@@ -129,7 +129,7 @@ export class SargaBlockRunner {
     setup(s) {
         for (let heapKey of this._heap.keys()) {
             const heapVal = this._heap.get(heapKey);
-            console.log(`${heapKey} -> ${heapVal}`);
+            // console.log(`${heapKey} -> ${heapVal}`);
         }
     }
 
@@ -159,7 +159,7 @@ export class SargaBlockRunner {
         for (let heapKey of this._heap.keys()) {
             const heapVal = this._heap.get(heapKey);
             if (heapVal && heapVal.hasShow && heapVal.hasShow()) {
-                console.log(`showing ${heapKey}`);
+                // console.log(`showing ${heapKey}`);
                 heapVal.runShow(s);
             }
         }

@@ -39,6 +39,7 @@ Sarga {
         | PlayStmt
         | EntityDeclaration
         | MixinDeclaration
+        | EntityMethodStmt
         | AvatarDeclaration
         | AttachDeclaration
         | MessageStmt
@@ -77,12 +78,18 @@ Sarga {
 
     // A label is of the form #<id>
     Label = "#" identifier
+    
+    EntityMethodStmt = identifier Do Method Properties?
 
     EntityDeclaration = identifier IsA Type Properties?
 
     MixinDeclaration = identifier HasA Type Properties?
 
+    Method = identifier
+
     Type = identifier
+
+    Do = "do"
 
     HasA = "has"
 

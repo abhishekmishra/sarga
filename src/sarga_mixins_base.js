@@ -203,6 +203,7 @@ registerSargaMixin("Speech", {
     say() {
         const speechBubble = this._heap.get(this.speechBubbleName);
         speechBubble.speak(this.text, this.color);
+        this._heap.get("Play").off();
     }
 });
 
@@ -259,9 +260,9 @@ registerSargaMixin("SpeechBubble", {
     },
 
     drawText(s) {
-        console.log("text -> " + this.text);
+        // console.log("text -> " + this.text);
         const textSize = this.textSize == null ? 20 : parseInt(this.textSize);
-        console.log(`text size = ${textSize}`);
+        // console.log(`text size = ${textSize}`);
         s.textSize(textSize);
         s.fill(this.textColor);
 

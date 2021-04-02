@@ -24,6 +24,12 @@ TotalScore is Counter [
 show TotalScoreBG
 show Narrator [ alt "smile", x "100", y "100", w "50", h "50" ]
 
+Duck do update [
+    text "Quack Quack"
+]
+
+Duck do say
+
 Narrator: "Welcome to the Sarga Tutorial"
 
 "My name is {{Narrator.name}} and I'll be your guide."

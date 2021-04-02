@@ -108,6 +108,18 @@ export const evalOperation = {
         }
     },
 
+    EntityMethodStmt(varName, doKW, method, properties) {
+        let props = properties.eval();
+        let propsArr = [];
+        if(props && props.length > 0) {
+            propsArr = props[0];
+        }
+        return {
+            type: "statement",
+            statement: ["method", varName.sourceString, method.sourceString, propsArr]
+        };
+    },
+
     EntityDeclaration(varName, isAKW, type, properties) {
         let props = properties.eval();
         let propsArr = [];
