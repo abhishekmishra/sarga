@@ -4,7 +4,12 @@ Duck is Vanilla has Speech, DisplayName [
 
 Narrator is Character [ 
     image "www/assets/images/neo",
-    color "#334455"
+    color "#334455",
+    alt "smile", 
+    x "100", 
+    y "100", 
+    w "50", 
+    h "50"
 ]
 
 TutorialBG is Image [
@@ -23,15 +28,12 @@ TotalScore is Counter has ScreenLocation, Show, SpeechBubble [
 ]
 
 show TutorialBG
-
-show Narrator [ alt "smile", x "100", y "100", w "50", h "50" ]
-
+show Narrator
 show TotalScore
 
 Duck do update [
     text "Quack Quack"
 ]
-
 Duck do say
 
 Narrator: "Welcome to the Sarga Tutorial"

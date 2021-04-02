@@ -91,7 +91,7 @@ function parseStatement(stmt) {
                 return declarationLine;
             }
             if (declType === "mixin") {
-                console.log(JSON.stringify(stmt, null, 2));
+                // console.log(JSON.stringify(stmt, null, 2));
                 const varName = stmt.statement[1];
                 const types = stmt.statement[2];
                 const properties = stmt.statement[3];
@@ -157,7 +157,7 @@ function createStatementObject(stmt) {
             const objName = stmt.statement[1];
             const methodName = stmt.statement[2];
             const methodArgs = stmt.statement[3];
-            console.log(JSON.stringify(stmt, null, 2));
+            // console.log(JSON.stringify(stmt, null, 2));
             line = new SargaScriptLine((heap) => {
                 // console.log(`call ${objName} -> ${methodName}`);
                 const obj = heap.get(objName);
