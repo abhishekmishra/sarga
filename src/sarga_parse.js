@@ -69,15 +69,20 @@ function parseStatement(stmt) {
                 // console.log(JSON.stringify(stmt, null, 2));
                 const varName = stmt.statement[1];
                 const type = stmt.statement[2].toLowerCase();
-                const properties = stmt.statement[3];
+                const hasTypes = stmt.statement[3];
+                const properties = stmt.statement[4];
 
                 let declarationLine = new SargaScriptLine((heap) => {
-                    heap.addName(varName, createSargaObject(
+                    let obj = createSargaObject(
                         type,
                         varName,
-                        { "k": "_heap", "v": heap },
-                        ...properties
-                    ));
+                        { "k": "_heap", "v": heap }
+                    );
+                    heap.addName(varName, obj);
+                    for(let hasType of hasTypes) {
+                        sargaMixin(obj, hasType);
+                    }
+                    obj.update(...properties);
                     // console.log(heap.get(varName));
                 });
 
@@ -86,15 +91,18 @@ function parseStatement(stmt) {
                 return declarationLine;
             }
             if (declType === "mixin") {
-                // console.log(JSON.stringify(stmt, null, 2));
+                console.log(JSON.stringify(stmt, null, 2));
                 const varName = stmt.statement[1];
-                const type = stmt.statement[2];
+                const types = stmt.statement[2];
                 const properties = stmt.statement[3];
 
                 let declarationLine = new SargaScriptLine((heap) => {
+                    // console.log(`types = ${types}, ${types.length}`);
                     let obj = heap.get(varName);
                     if(obj) {
-                        sargaMixin(obj, type);
+                        for(let type of types) {
+                            sargaMixin(obj, type);
+                        }
                         obj.update(...properties);
                     } else {
                         throw(`${varName} is not in the heap vro.`);

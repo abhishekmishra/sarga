@@ -81,9 +81,13 @@ Sarga {
     
     EntityMethodStmt = identifier Do Method Properties?
 
-    EntityDeclaration = identifier IsA Type Properties?
+    EntityDeclaration = identifier Is Type HasType? Properties?
 
-    MixinDeclaration = identifier HasA Type Properties?
+    MixinDeclaration = identifier HasType Properties?
+
+    HasType = Has Type (TypeSeparator Type)*
+
+    TypeSeparator = ","
 
     Method = identifier
 
@@ -91,9 +95,9 @@ Sarga {
 
     Do = "do"
 
-    HasA = "has"
+    Has = "has"
 
-    IsA = "is"
+    Is = "is"
 
     VarKW = "let"
 

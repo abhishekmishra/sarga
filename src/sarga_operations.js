@@ -111,7 +111,7 @@ export const evalOperation = {
     EntityMethodStmt(varName, doKW, method, properties) {
         let props = properties.eval();
         let propsArr = [];
-        if(props && props.length > 0) {
+        if (props && props.length > 0) {
             propsArr = props[0];
         }
         return {
@@ -120,28 +120,44 @@ export const evalOperation = {
         };
     },
 
-    EntityDeclaration(varName, isAKW, type, properties) {
+    EntityDeclaration(varName, isAKW, type, hasTypes, properties) {
         let props = properties.eval();
         let propsArr = [];
-        if(props && props.length > 0) {
+        if (props && props.length > 0) {
             propsArr = props[0];
         }
+
+        let hasT = hasTypes.eval();
+        let hasTypesArr = [];
+        if (hasT && hasT.length > 0) {
+            hasTypesArr = hasT[0];
+        }
+
         return {
             type: "declaration",
-            statement: ["var", varName.sourceString, type.sourceString, propsArr]
+            statement: ["var", varName.sourceString, type.sourceString, hasTypesArr, propsArr]
         };
     },
 
-    MixinDeclaration(varName, hasAKW, type, properties) {
+    MixinDeclaration(varName, hasTypes, properties) {
         let props = properties.eval();
         let propsArr = [];
-        if(props && props.length > 0) {
+        if (props && props.length > 0) {
             propsArr = props[0];
         }
         return {
             type: "declaration",
-            statement: ["mixin", varName.sourceString, type.sourceString, propsArr]
+            statement: ["mixin", varName.sourceString, hasTypes.eval(), propsArr]
         };
+    },
+
+    HasType(haskw, firstType, sep, restTypes) {
+        let types = [];
+        types.push(firstType.eval());
+        for (const p of restTypes.children) {
+            types.push(p.eval());
+        }
+        return types;
     },
 
     Properties(left, first, separator, rest, right) {

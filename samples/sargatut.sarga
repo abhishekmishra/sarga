@@ -1,6 +1,4 @@
-Duck is Vanilla
-Duck has Speech
-Duck has DisplayName [
+Duck is Vanilla has Speech, DisplayName [
     name "Daffy"
 ]
 
@@ -16,14 +14,9 @@ TutorialBG is Image [
     z "0"
 ]
 
-TotalScore is Counter [ 
+TotalScore is Counter has ScreenLocation, Show, SpeechBubble [ 
     start "1", 
-    step "1"
-]
-
-TotalScore has ScreenLocation
-TotalScore has Show
-TotalScore has SpeechBubble [
+    step "1",
     x "10",
     y "20",
     text "Counter"

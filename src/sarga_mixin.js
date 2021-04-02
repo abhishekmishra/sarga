@@ -4,7 +4,8 @@ export function getSargaMixin(typeName) {
     if (SARGA_MIXINS.has(typeName)) {
         return SARGA_MIXINS.get(typeName);
     } else {
-        throw (`${typeName} is not a known factory.`);
+        console.log(`${Array.from(getSargaMixinNames())}`);
+        throw (`|${typeName}| is not a known mixin.`);
     }
 }
 
