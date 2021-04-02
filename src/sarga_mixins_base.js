@@ -194,6 +194,9 @@ registerSargaMixin("Speech", {
         if (!this.speechBubbleName) {
             this.speechBubbleName = "Bubble";
         }
+        if (!this.speakerBubbleName) {
+            this.speakerBubbleName = "SpeakerBubble";
+        }
     },
 
     canSpeak() {
@@ -203,6 +206,10 @@ registerSargaMixin("Speech", {
     say() {
         const speechBubble = this._heap.get(this.speechBubbleName);
         speechBubble.speak(this.text, this.color);
+        if(this.name) {
+            const speakerBubble = this._heap.get(this.speakerBubbleName);
+            speakerBubble.speak(this.name);
+        }
         this._heap.get("Play").off();
     }
 });
