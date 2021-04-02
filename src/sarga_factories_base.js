@@ -38,7 +38,6 @@ registerSargaFactory('counter', (id, ...args) => {
 
     sargaMixins(obj, [
         'Counter',
-        'ScreenLocation',
     ]);
 
     // TODO: implement counter visible on screen

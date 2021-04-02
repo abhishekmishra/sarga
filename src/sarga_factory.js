@@ -54,7 +54,11 @@ export class SargaRuntimeObject {
             if (arg.k === 'id') {
                 throw ('cannot replace id of object via arguments');
             }
-            this[arg.k] = arg.v;
+            if(arg.k && (typeof this[arg.k]) == "number") {
+                this[arg.k] = parseFloat(arg.v);
+            } else {
+                this[arg.k] = arg.v;
+            }
         }
     }
 
