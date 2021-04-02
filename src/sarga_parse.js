@@ -79,7 +79,7 @@ function parseStatement(stmt) {
                         { "k": "_heap", "v": heap }
                     );
                     heap.addName(varName, obj);
-                    for(let hasType of hasTypes) {
+                    for (let hasType of hasTypes) {
                         sargaMixin(obj, hasType);
                     }
                     obj.update(...properties);
@@ -99,13 +99,13 @@ function parseStatement(stmt) {
                 let declarationLine = new SargaScriptLine((heap) => {
                     // console.log(`types = ${types}, ${types.length}`);
                     let obj = heap.get(varName);
-                    if(obj) {
-                        for(let type of types) {
+                    if (obj) {
+                        for (let type of types) {
                             sargaMixin(obj, type);
                         }
                         obj.update(...properties);
                     } else {
-                        throw(`${varName} is not in the heap vro.`);
+                        throw (`${varName} is not in the heap vro.`);
                     }
 
                     // console.log(heap.get(varName));
@@ -117,7 +117,7 @@ function parseStatement(stmt) {
             }
             break;
         default:
-            throw(`unexpected declaration`);
+            throw (`unexpected declaration`);
     }
 }
 
@@ -153,22 +153,28 @@ function createStatementObject(stmt) {
                 heap.get(showWhat).show();
             });
             return line;
+        case "hide":
+            const hideWhat = stmt.statement[1];
+            line = new SargaScriptLine((heap) => {
+                console.log(`hide ${hideWhat}`);
+                heap.get(hideWhat).hide();
+            });
+            return line;
         case "method":
             const objName = stmt.statement[1];
             const methodName = stmt.statement[2];
             const methodArgs = stmt.statement[3];
-            // console.log(JSON.stringify(stmt, null, 2));
             line = new SargaScriptLine((heap) => {
                 // console.log(`call ${objName} -> ${methodName}`);
                 const obj = heap.get(objName);
-                if(obj) {
-                    if(obj[methodName]) {
+                if (obj) {
+                    if (obj[methodName]) {
                         obj[methodName](...methodArgs);
                     } else {
-                        throw(`${objName} does not have method ${methodName}`);
+                        throw (`${objName} does not have method ${methodName}`);
                     }
                 } else {
-                        throw(`${objName} is not in the heap vro.`);
+                    throw (`${objName} is not in the heap vro.`);
                 }
             });
             return line;

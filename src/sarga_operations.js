@@ -68,7 +68,7 @@ export const evalOperation = {
     HideStmt(hidekw, id) {
         return {
             type: "statement",
-            statement: ["show", id.sourceString]
+            statement: ["hide", id.sourceString]
         };
     },
 

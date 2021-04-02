@@ -46,6 +46,8 @@ This is similar to visual novels but with a more general focus - so that
 you can create textbooks, stories, tutorials, articles etc.
 "
 
+hide TotalScore
+
 Duck: "Quack"
 
 Narrator: 
@@ -56,10 +58,4 @@ a screen. The audio and visual contents can be created using applications and/or
 in code. Only their appearance (and disappearance) on the stage is controlled in Sarga.
 "
 
-"
-show TotalScore [ offset 'topright', x '-10', y '-10' ]
-
-hide TotalScore
-
 show TotalScore
-"
