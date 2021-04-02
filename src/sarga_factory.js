@@ -1,15 +1,5 @@
-import {
-    DisplayNameMixin,
-    ScreenLocationMixin,
-    DimensionMixin,
-    PreloadMixin,
-    ShowMixin,
-    ImageMixin,
-    SpeechMixin,
-    CounterMixin,
-    SpeechBubbleMixin,
-    ToggleMixin
-} from './sarga_mixins_base';
+import { getSargaMixin } from './sarga_mixin';
+import './sarga_mixins_base';
 
 const SARGA_FACTORIES = new Map();
 
@@ -41,7 +31,7 @@ export function createSargaObject(typeName, id, ...args) {
     return factory(id, ...args);
 }
 
-class SargaRuntimeObject {
+export class SargaRuntimeObject {
     id;
 
     constructor(id, ...args) {
@@ -73,102 +63,16 @@ class SargaRuntimeObject {
     }
 }
 
+export function sargaMixin(obj, mixinName) {
+    Object.assign(obj, getSargaMixin(mixinName));
+    const initFnName = "init" + mixinName + "Mixin";
+    if(obj[initFnName]) {
+        obj[initFnName]();
+    }
+}
 
-registerSargaFactory('vanilla', (id, ...args) => {
-    return new SargaRuntimeObject(id, ...args);
-});
-
-registerSargaFactory('image', (id, ...args) => {
-    let obj = new SargaRuntimeObject(id, ...args);
-
-    Object.assign(obj, ScreenLocationMixin);
-    obj.initScreenLocationMixin();
-
-    Object.assign(obj, ShowMixin);
-    obj.initShowMixin();
-
-    Object.assign(obj, PreloadMixin);
-    obj.initPreloadMixin();
-
-    Object.assign(obj, ImageMixin);
-    obj.initImageMixin();
-
-    return obj;
-});
-
-
-registerSargaFactory('character', (id, ...args) => {
-    let obj = new SargaRuntimeObject(id, ...args);
-    Object.assign(obj, DisplayNameMixin);
-
-    Object.assign(obj, ScreenLocationMixin);
-    obj.initScreenLocationMixin();
-
-    Object.assign(obj, ShowMixin);
-    obj.initShowMixin();
-
-    Object.assign(obj, PreloadMixin);
-    obj.initPreloadMixin();
-
-    Object.assign(obj, ImageMixin);
-    obj.initImageMixin();
-
-    Object.assign(obj, SpeechMixin);
-    obj.initRedirectSpeechMixin();
-
-    return obj;
-});
-
-registerSargaFactory('counter', (id, ...args) => {
-    let obj = new SargaRuntimeObject(id, ...args);
-
-    Object.assign(obj, CounterMixin);
-    obj.initCounterMixin();
-
-    Object.assign(obj, ScreenLocationMixin);
-    obj.initScreenLocationMixin();
-
-    // TODO: implement counter visible on screen
-    // Object.assign(obj, ShowMixin);
-    // obj.initShowMixin();
-
-    // Object.assign(obj, SpeechBubbleMixin);
-    // obj.initSpeechBubbleMixin();
-
-    return obj;
-});
-
-registerSargaFactory('speechbubble', (id, ...args) => {
-    let obj = new SargaRuntimeObject(id, ...args);
-
-    Object.assign(obj, ScreenLocationMixin);
-    obj.initScreenLocationMixin();
-
-    Object.assign(obj, DimensionMixin);
-    obj.initDimensionMixin();
-
-    Object.assign(obj, ShowMixin);
-    obj.initShowMixin();
-
-    Object.assign(obj, SpeechBubbleMixin);
-    obj.initSpeechBubbleMixin();
-
-    return obj;
-});
-
-registerSargaFactory('toggle', (id, ...args) => {
-    let obj = new SargaRuntimeObject(id, ...args);
-
-    Object.assign(obj, ToggleMixin);
-    obj.initToggleMixin();
-
-    return obj;
-});
-
-// console.log(`sarga factory items -> ${Array.from(getSargaFactoryNames())}`);
-
-// const obj = createSargaObject('vanilla', 'id0', { k: 'blah', v: 'bluh' });
-// const char1 = createSargaObject('character', 'id1', { k: 'name', v: 'narrator' });
-// console.log(obj);
-// console.dir(char1);
-// console.log(char1.getDisplayName());
+export function sargaMixins(obj, mixinNames) {
+    for(let mixinName of mixinNames) {
+        sargaMixin(obj, mixinName);
+    }
+}

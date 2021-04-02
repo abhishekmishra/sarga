@@ -1,6 +1,7 @@
 import { v5 as uuidv5, v4 as uuidv4 } from 'uuid';
 import { createSargaObject } from './sarga_factory';
 import { SargaHeap } from './sarga_heap';
+import {registerBaseFactories} from './sarga_factories_base';
 
 export const Sarga_NAMESPACE = '5903ea4b-cfed-4c58-991f-0c4624be1b08';
 
@@ -188,6 +189,9 @@ export class SargaRunner {
     images;
 
     constructor(block) {
+
+        registerBaseFactories();
+
         this.block = block;
         this._topHeap = new SargaHeap();
         this.blockRunnerStack = [new SargaBlockRunner(this.block, this._topHeap)];

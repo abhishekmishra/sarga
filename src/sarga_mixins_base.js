@@ -1,6 +1,8 @@
+import { registerSargaMixin } from './sarga_mixin';
+
 import { layoutItemsFromString, breakLines, positionItems } from 'tex-linebreak';
 
-export const DisplayNameMixin = {
+registerSargaMixin("DisplayName", {
 
     getDisplayName() {
         return this.name;
@@ -10,9 +12,9 @@ export const DisplayNameMixin = {
         return true;
     }
 
-};
+});
 
-export const ScreenLocationMixin = {
+registerSargaMixin("ScreenLocation", {
     initScreenLocationMixin() {
         if (!this.x) { this.x = 0 };
         if (!this.y) { this.y = 0 };
@@ -36,14 +38,14 @@ export const ScreenLocationMixin = {
     hasScreenLocation() {
         return true;
     }
-}
+});
 
-export const DimensionMixin = {
+registerSargaMixin("Dimension", {
     initDimensionMixin() {
-        if(!this.width) {
+        if (!this.width) {
             this.width = 100;
         }
-        if(!this.height) {
+        if (!this.height) {
             this.height = 10;
         }
     },
@@ -51,9 +53,9 @@ export const DimensionMixin = {
     hasDimensions() {
         return true;
     }
-}
+});
 
-export const PreloadMixin = {
+registerSargaMixin("Preload", {
     initPreloadMixin() {
         if (!this._preloadFunctions) {
             this._preloadFunctions = [];
@@ -73,9 +75,9 @@ export const PreloadMixin = {
     hasPreload() {
         return true;
     }
-}
+});
 
-export const ShowMixin = {
+registerSargaMixin("Show", {
     initShowMixin() {
         if (!this._showFunctions) {
             this._showFunctions = [];
@@ -109,9 +111,9 @@ export const ShowMixin = {
     hasShow() {
         return true;
     }
-}
+});
 
-export const ImageMixin = {
+registerSargaMixin("Image", {
     initImageMixin() {
         if (!this.imageExtension) {
             this.imageExtension = ".png";
@@ -176,10 +178,10 @@ export const ImageMixin = {
         const imgObj = this._imageObjects.get(currentImg);
         s.image(imgObj, 0, 0, s.width, s.height);
     }
-}
+});
 
-export const SpeechMixin = {
-    initRedirectSpeechMixin() {
+registerSargaMixin("Speech", {
+    initSpeechMixin() {
         if (!this.text) {
             this.text = "!dummy text!";
         }
@@ -196,9 +198,9 @@ export const SpeechMixin = {
         const speechBubble = this._heap.get(this.speechBubbleName);
         speechBubble.speak(this.text, this.color);
     }
-}
+});
 
-export const CounterMixin = {
+registerSargaMixin("Counter", {
     initCounterMixin() {
         if (!this.start) {
             this.start = 0;
@@ -219,9 +221,9 @@ export const CounterMixin = {
             this.count += this.step;
         }
     }
-}
+});
 
-export const SpeechBubbleMixin = {
+registerSargaMixin("SpeechBubble", {
     initSpeechBubbleMixin() {
         if (this.addShowFn) {
             this.addShowFn((s) => { this.drawText(s) });
@@ -232,10 +234,10 @@ export const SpeechBubbleMixin = {
         if (!this.font) {
             this.font = null;
         }
-        if(!this.textColor) {
+        if (!this.textColor) {
             this.textColor = 100;
         }
-        if(!this.textSize) {
+        if (!this.textSize) {
             this.textSize = 20;
         }
         if (!this.width) {
@@ -245,7 +247,7 @@ export const SpeechBubbleMixin = {
 
     speak(text, color = null) {
         this.text = text;
-        if(color !== null) {
+        if (color !== null) {
             this.textColor = color;
         }
     },
@@ -290,9 +292,9 @@ export const SpeechBubbleMixin = {
             s.text(item.text, textx, texty);
         });
     }
-}
+});
 
-export const ToggleMixin = {
+registerSargaMixin("Toggle", {
     initToggleMixin() {
         if (!this.switch) {
             this.switch = false;
@@ -310,4 +312,4 @@ export const ToggleMixin = {
     off() {
         this.switch = false;
     }
-}
+});
