@@ -37,9 +37,8 @@ Sarga {
     // A statement can be on of the given types or a block
     StmtWithoutLabel = SaysStmt 
         | PlayStmt
-        | LayerStmt
-        | StartStmt
-        | CharacterDeclaration
+        // | LayerStmt
+        // | StartStmt
         | VariableDeclaration
         | AvatarDeclaration
         | AttachDeclaration
@@ -108,49 +107,12 @@ Sarga {
 
     OptionKW = "option"
 
-    // A character declaration of the form
-    // character <character_name> <character_colour>
-    CharacterDeclaration = CharacterKW CharacterName Colour
-
-    CharacterKW = "character"
-
-    CharacterName = identifier
-
-    Colour = "#" hexDigit hexDigit hexDigit hexDigit hexDigit hexDigit
-
     // The play statement is of the form
     // play audio <audioid>
     PlayStmt = PlayKW AudioKW identifier
 
     PlayKW = "play"
     AudioKW = "audio"
-
-    // Start statement to run a block
-    // start <blockid>
-    StartStmt = StartKW identifier
-
-    StartKW = "start"
-
-    // Screen layers statment
-    // layer <layer command>
-    LayerStmt = LayerKW layer_cmd
-
-    LayerKW = "layer"
-
-    // A layer command can clear, set or unset layers
-    layer_cmd = layer_clear_cmd
-        // | layer_set_cmd
-        // | layer_unset_cmd
-        
-    layer_clear_cmd = "clear"
-
-    // layer_set_cmd = "set" ws+ layer_number ws+ drawable
-
-    // layer_unset_cmd = "unset" ws+ layer_number
-
-    // layer_number = digit+
-
-    // drawable = identifier
 
     SaysStmt = SaysWho? SaysWhat
 

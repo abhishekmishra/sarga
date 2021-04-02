@@ -72,17 +72,6 @@ export const evalOperation = {
         };
     },
 
-    StartStmt(startkw, blockid) {
-        return {
-            type: "statement",
-            statement: ["start", blockid.sourceString]
-        }
-    },
-
-    LayerStmt(layerkw, layercmd) {
-        return this.sourceString;
-    },
-
     PlayStmt(playkw, audiokw, audioid) {
         return {
             type: "statement",
@@ -103,13 +92,6 @@ export const evalOperation = {
 
     SaysWhat(expr) {
         return expr.eval();
-    },
-
-    CharacterDeclaration(characterKW, characterName, characterColour) {
-        return {
-            type: "declaration",
-            statement: ["character", characterName.sourceString, characterColour.eval()]
-        };
     },
 
     ChoiceStmt(choicekw, choiceLabel, choices) {
