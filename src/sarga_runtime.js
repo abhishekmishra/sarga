@@ -208,7 +208,9 @@ export class SargaRunner {
             const bubbleObj = createSargaObject("speechbubble", "Bubble");
             this._topHeap.addName("Bubble", bubbleObj);
             bubbleObj.show();
-            bubbleObj.x = 100;
+            let margin = s.width/10;
+            bubbleObj.x = margin;
+            bubbleObj.width = s.width - (2 * margin);
             bubbleObj.y = s.height - 100;
         }
         if (!this._topHeap.has("Play")) {

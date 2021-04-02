@@ -7,7 +7,7 @@
 //TODO: should be able to get/set properties
 //TODO: create separate identifierText rule so that Identifier can be made syntactic rule.
 
-Sudina {
+Sarga {
     // A script can contain one or more blocks
     Script = Statements
 

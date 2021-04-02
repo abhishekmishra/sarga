@@ -25,7 +25,7 @@ module.exports = {
                 loader: 'ohm-loader'
             },
             {
-                test: /\.sudina$/i,
+                test: /\.sarga$/i,
                 use: 'raw-loader',
             }
         ]
