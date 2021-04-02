@@ -84,7 +84,6 @@ export class SargaHeap {
             _heapObject: this
         };
         ret[Symbol.iterator] = function* () {
-            console.log(this._heapObject);
             if (!this._heapObject.isTopLevel()) {
                 for (let k in this._heapObject.parent.keys()) {
                     yield k;

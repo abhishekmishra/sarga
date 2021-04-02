@@ -78,7 +78,7 @@ function parseStatement(stmt) {
                         { "k": "_heap", "v": heap },
                         ...properties
                     ));
-                    console.log(heap.get(varName));
+                    // console.log(heap.get(varName));
                 });
 
                 Object.assign(declarationLine, SargaScriptDeclarationMixin);
@@ -100,7 +100,7 @@ function parseStatement(stmt) {
                         throw(`${varName} is not in the heap vro.`);
                     }
 
-                    console.log(heap.get(varName));
+                    // console.log(heap.get(varName));
                 });
 
                 Object.assign(declarationLine, SargaScriptDeclarationMixin);
@@ -121,7 +121,7 @@ function createStatementObject(stmt) {
             const saysWho = stmt.statement[1];
             const saysWhat = stmt.statement[2];
             line = new SargaScriptLine((heap) => {
-                console.log(`before says |${saysWho}| = ${saysWhat}`);
+                // console.log(`before says |${saysWho}| = ${saysWhat}`);
                 let speaker = null;
                 if (saysWho && saysWho.length > 0) {
                     heap._setTopLevelValue("_currentSpeaker", saysWho[0]);
@@ -138,7 +138,7 @@ function createStatementObject(stmt) {
             const updateProps = stmt.statement[2];
 
             line = new SargaScriptLine((heap) => {
-                console.log(`show ${showWhat} = ${heap.get(showWhat)}`);
+                // console.log(`show ${showWhat} = ${heap.get(showWhat)}`);
                 if (updateProps && updateProps.length > 0) {
                     heap.get(showWhat).update(...updateProps);
                 }
@@ -151,7 +151,7 @@ function createStatementObject(stmt) {
             const methodArgs = stmt.statement[3];
             console.log(JSON.stringify(stmt, null, 2));
             line = new SargaScriptLine((heap) => {
-                console.log(`call ${objName} -> ${methodName}`);
+                // console.log(`call ${objName} -> ${methodName}`);
                 const obj = heap.get(objName);
                 if(obj) {
                     if(obj[methodName]) {

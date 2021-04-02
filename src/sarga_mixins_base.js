@@ -267,7 +267,7 @@ registerSargaMixin("SpeechBubble", {
     },
 
     drawText(s) {
-        console.log("text -> " + this.text);
+        // console.log("text -> " + this.text);
         const textSize = this.textSize == null ? 20 : parseInt(this.textSize);
         // console.log(`text size = ${textSize}`);
         s.textSize(textSize);
@@ -303,7 +303,7 @@ registerSargaMixin("SpeechBubble", {
             let textx = this.x + pi.xOffset;
             let texty = this.y + (pi.line * textSize)
 
-            console.log(`${textx}, ${texty}`);
+            // console.log(`${textx}, ${texty}`);
             s.text(item.text, textx, texty);
         });
     }
