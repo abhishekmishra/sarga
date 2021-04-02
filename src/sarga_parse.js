@@ -65,24 +65,29 @@ function parseStatement(stmt) {
             return (createStatementObject(stmt));
 
         case "declaration":
-            console.log(JSON.stringify(stmt, null, 2));
-            const varName = stmt.statement[1];
-            const type = stmt.statement[2].toLowerCase();
-            const properties = stmt.statement[3];
+            const declType = stmt.statement[0];
+            if (declType === "var") {
+                console.log(JSON.stringify(stmt, null, 2));
+                const varName = stmt.statement[1];
+                const type = stmt.statement[2].toLowerCase();
+                const properties = stmt.statement[3];
 
-            let declarationLine = new SargaScriptLine((heap) => {
-                heap.addName(varName, createSargaObject(
-                    type,
-                    varName,
-                    { "k": "_heap", "v": heap },
-                    ...properties
-                ));
-                console.log(heap.get(varName));
-            });
+                let declarationLine = new SargaScriptLine((heap) => {
+                    heap.addName(varName, createSargaObject(
+                        type,
+                        varName,
+                        { "k": "_heap", "v": heap },
+                        ...properties
+                    ));
+                    console.log(heap.get(varName));
+                });
 
-            Object.assign(declarationLine, SargaScriptDeclarationMixin);
+                Object.assign(declarationLine, SargaScriptDeclarationMixin);
 
-            return declarationLine;
+                return declarationLine;
+            } else {
+                return null;
+            }
     }
 }
 

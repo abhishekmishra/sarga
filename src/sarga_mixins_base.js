@@ -178,7 +178,7 @@ export const ImageMixin = {
     }
 }
 
-export const RedirectSpeechMixin = {
+export const SpeechMixin = {
     initRedirectSpeechMixin() {
         if (!this.text) {
             this.text = "!dummy text!";

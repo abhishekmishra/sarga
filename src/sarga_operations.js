@@ -108,7 +108,7 @@ export const evalOperation = {
         }
     },
 
-    VariableDeclaration(varName, isAKW, type, properties) {
+    EntityDeclaration(varName, isAKW, type, properties) {
         let props = properties.eval();
         let propsArr = [];
         if(props && props.length > 0) {
@@ -117,6 +117,18 @@ export const evalOperation = {
         return {
             type: "declaration",
             statement: ["var", varName.sourceString, type.sourceString, propsArr]
+        };
+    },
+
+    MixinDeclaration(varName, hasAKW, type, properties) {
+        let props = properties.eval();
+        let propsArr = [];
+        if(props && props.length > 0) {
+            propsArr = props[0];
+        }
+        return {
+            type: "declaration",
+            statement: ["mixin", varName.sourceString, type.sourceString, propsArr]
         };
     },
 

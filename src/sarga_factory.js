@@ -5,7 +5,7 @@ import {
     PreloadMixin,
     ShowMixin,
     ImageMixin,
-    RedirectSpeechMixin,
+    SpeechMixin,
     CounterMixin,
     SpeechBubbleMixin,
     ToggleMixin
@@ -113,7 +113,7 @@ registerSargaFactory('character', (id, ...args) => {
     Object.assign(obj, ImageMixin);
     obj.initImageMixin();
 
-    Object.assign(obj, RedirectSpeechMixin);
+    Object.assign(obj, SpeechMixin);
     obj.initRedirectSpeechMixin();
 
     return obj;
