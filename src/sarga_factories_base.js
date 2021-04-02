@@ -1,80 +1,78 @@
 import { SargaRuntimeObject, registerSargaFactory, sargaMixins } from './sarga_factory';
 
-export function registerBaseFactories() {
-    registerSargaFactory('vanilla', (id, ...args) => {
-        return new SargaRuntimeObject(id, ...args);
-    });
+registerSargaFactory('vanilla', (id, ...args) => {
+    return new SargaRuntimeObject(id, ...args);
+});
 
-    registerSargaFactory('image', (id, ...args) => {
-        let obj = new SargaRuntimeObject(id, ...args);
+registerSargaFactory('image', (id, ...args) => {
+    let obj = new SargaRuntimeObject(id, ...args);
 
-        sargaMixins(obj, [
-            'ScreenLocation',
-            'Show',
-            'Preload',
-            'Image'
-        ]);
+    sargaMixins(obj, [
+        'ScreenLocation',
+        'Show',
+        'Preload',
+        'Image'
+    ]);
 
-        return obj;
-    });
+    return obj;
+});
 
 
-    registerSargaFactory('character', (id, ...args) => {
-        let obj = new SargaRuntimeObject(id, ...args);
+registerSargaFactory('character', (id, ...args) => {
+    let obj = new SargaRuntimeObject(id, ...args);
 
-        sargaMixins(obj, [
-            'DisplayName',
-            'ScreenLocation',
-            'Show',
-            'Preload',
-            'Image',
-            'Speech'
-        ]);
+    sargaMixins(obj, [
+        'DisplayName',
+        'ScreenLocation',
+        'Show',
+        'Preload',
+        'Image',
+        'Speech'
+    ]);
 
-        return obj;
-    });
+    return obj;
+});
 
-    registerSargaFactory('counter', (id, ...args) => {
-        let obj = new SargaRuntimeObject(id, ...args);
+registerSargaFactory('counter', (id, ...args) => {
+    let obj = new SargaRuntimeObject(id, ...args);
 
-        sargaMixins(obj, [
-            'Counter',
-            'ScreenLocation',
-        ]);
+    sargaMixins(obj, [
+        'Counter',
+        'ScreenLocation',
+    ]);
 
-        // TODO: implement counter visible on screen
-        // Object.assign(obj, ShowMixin);
-        // obj.initShowMixin();
+    // TODO: implement counter visible on screen
+    // Object.assign(obj, ShowMixin);
+    // obj.initShowMixin();
 
-        // Object.assign(obj, SpeechBubbleMixin);
-        // obj.initSpeechBubbleMixin();
+    // Object.assign(obj, SpeechBubbleMixin);
+    // obj.initSpeechBubbleMixin();
 
-        return obj;
-    });
+    return obj;
+});
 
-    registerSargaFactory('speechbubble', (id, ...args) => {
-        let obj = new SargaRuntimeObject(id, ...args);
+registerSargaFactory('speechbubble', (id, ...args) => {
+    let obj = new SargaRuntimeObject(id, ...args);
 
-        sargaMixins(obj, [
-            'ScreenLocation',
-            'Dimension',
-            'Show',
-            'SpeechBubble'
-        ]);
+    sargaMixins(obj, [
+        'ScreenLocation',
+        'Dimension',
+        'Show',
+        'SpeechBubble'
+    ]);
 
-        return obj;
-    });
+    return obj;
+});
 
-    registerSargaFactory('toggle', (id, ...args) => {
-        let obj = new SargaRuntimeObject(id, ...args);
+registerSargaFactory('toggle', (id, ...args) => {
+    let obj = new SargaRuntimeObject(id, ...args);
 
-        sargaMixins(obj, [
-            'Toggle',
-        ]);
+    sargaMixins(obj, [
+        'Toggle',
+    ]);
 
-        return obj;
-    });
-}
+    return obj;
+});
 // console.log(`sarga factory items -> ${Array.from(getSargaFactoryNames())}`);
 
 // const obj = createSargaObject('vanilla', 'id0', { k: 'blah', v: 'bluh' });
