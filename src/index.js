@@ -1,5 +1,5 @@
 import * as p5 from 'p5';
-import sargatut from 'raw-loader!../samples/sargatut.sarga';
+import sargatut from '../samples/sargatut.sarga';
 import { sargaParse } from './sarga_parse';
 import { SargaBlockDisplay } from './sarga_display';
 
