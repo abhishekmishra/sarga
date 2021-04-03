@@ -48,19 +48,47 @@ registerSargaMixin("FixedSequenceAnimator", {
         if (!this.interval) {
             this.interval = 1000;
         }
+        if (!this.index) {
+            this.index = 0;
+        }
+    },
+
+    _setupValues(typeOfTarget) {
+        this._parsedValues = [];
+        for(let v of this.values.split(',')) {
+            v = v.trim();
+            if(typeOfTarget === "number") {
+                this._parsedValues.push(parseFloat(v));
+            } else {
+                this._parsedValues.push(v);
+            }
+        }
     },
 
     runAnimator(dt) {
         this.timeSinceUpdate += dt;
-        console.log(dt);
-        console.log(this.timeSinceUpdate);
-        if(this.timeSinceUpdate > this.interval) {
-            console.log('Time to animate forward, reset time since update');
-            if(this.target && this.attr) {
+        // console.log(dt);
+        // console.log(this.timeSinceUpdate);
+        if (this.timeSinceUpdate > this.interval) {
+            // console.log('Time to animate forward, reset time since update');
+            if (this.target && this.attr) {
                 let tObj = this._heap.get(this.target)
-                if(tObj[this.attr]) {
-                    console.log('Animate target is');
-                    console.log(tObj);    
+                if (tObj[this.attr]) {
+                    // console.log('Animate target is');
+                    // console.log(tObj);
+
+                    if(!this._parsedValues) {
+                        this._setupValues(typeof tObj[this.attr]);
+                        console.log(this._parsedValues);
+                    }
+
+                    if(this._parsedValues) {
+                        this.index += 1;
+                        if(this.index >= this._parsedValues.length) {
+                            this.index = 0;
+                        }
+                        tObj[this.attr] = this._parsedValues[this.index];
+                    }
                 }
             }
             this.timeSinceUpdate = 0;

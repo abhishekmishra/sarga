@@ -160,19 +160,33 @@ export class SargaBlockRunner {
         for (let heapKey of this._heap.keys()) {
             const heapVal = this._heap.get(heapKey);
             if (heapVal && heapVal.hasTick && heapVal.hasTick()) {
-                console.log(`ticking ${heapKey}`);
+                // console.log(`ticking ${heapKey}`);
                 heapVal.tick(s.deltaTime);
             }
         }
     }
 
     showAll(s) {
+        let showList = [];
+
         for (let heapKey of this._heap.keys()) {
             const heapVal = this._heap.get(heapKey);
             if (heapVal && heapVal.hasShow && heapVal.hasShow()) {
-                console.log(`showing ${heapKey}`);
-                heapVal.runShow(s);
+                // console.log(`showing ${heapKey}`);
+                showList.push(heapVal);
             }
+        }
+
+        showList.sort((a, b) => {
+            if (a.z > b.z) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+
+        for (let heapVal of showList) {
+            heapVal.runShow(s);
         }
     }
 
@@ -226,6 +240,7 @@ export class SargaRunner {
             bubbleObj.x = margin;
             bubbleObj.width = s.width - (2 * margin);
             bubbleObj.y = s.height - 100;
+            bubbleObj.z = 100;
         }
         if (!this._topHeap.has("SpeakerBubble")) {
             const speakerBubbleObj = createSargaObject("speechbubble", "SpeakerBubble");
@@ -235,6 +250,7 @@ export class SargaRunner {
             speakerBubbleObj.x = margin;
             speakerBubbleObj.width = s.width - (2 * margin);
             speakerBubbleObj.y = s.height - 140;
+            speakerBubbleObj.z = 100;
         }
         if (!this._topHeap.has("Play")) {
             this._play = createSargaObject("toggle", "Play");
@@ -247,7 +263,6 @@ export class SargaRunner {
     }
 
     tick(s) {
-        // s.fill(128);
         // s.text("play status -> " + this._play.switch, 100, 100);
 
         // play all statements as long as play switch is on
@@ -267,16 +282,22 @@ export class SargaRunner {
 
         const currentBlk = this.blockRunnerStack[this.blockRunnerStack.length - 1];
 
-        //tick all - even when paused
-        currentBlk.tick(s);
+        if (currentBlk) {
+            //tick all - even when paused
+            currentBlk.tick(s);
 
-        //show all - even when paused
-        currentBlk.showAll(s);
+            s.background(255);
 
-        this._loopCount += 1;
-        if(this._loopCount > 10) {
+            //show all - even when paused
+            currentBlk.showAll(s);
+        } else {
+            console.log("We're done here");
             s.noLoop();
         }
+        // this._loopCount += 1;
+        // if (this._loopCount > 100) {
+        //     s.noLoop();
+        // }
     }
 
     play() {

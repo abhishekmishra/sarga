@@ -5,7 +5,7 @@ import { layoutItemsFromString, breakLines, positionItems } from 'tex-linebreak'
 registerSargaMixin("DisplayName", {
 
     initDisplayNameMixin() {
-        if(!this.name) {
+        if (!this.name) {
             this.name = this.id;
         }
     },
@@ -182,7 +182,13 @@ registerSargaMixin("Image", {
     drawImage(s) {
         const currentImg = this.getCurrentImage();
         const imgObj = this._imageObjects.get(currentImg);
-        s.image(imgObj, 0, 0, s.width, s.height);
+        s.image(
+            imgObj,
+            this.x,
+            this.y,
+            this.w ? this.w : s.width,
+            this.h ? this.h : s.height
+        );
     }
 });
 
@@ -206,7 +212,7 @@ registerSargaMixin("Speech", {
     say() {
         const speechBubble = this._heap.get(this.speechBubbleName);
         speechBubble.speak(this.text, this.color);
-        if(this.name) {
+        if (this.name) {
             const speakerBubble = this._heap.get(this.speakerBubbleName);
             speakerBubble.speak(this.name);
         }
@@ -331,7 +337,7 @@ registerSargaMixin("Toggle", {
 
 registerSargaMixin("Tick", {
     initTickMixin() {
-        if(!this.tickFns) {
+        if (!this.tickFns) {
             this.tickFns = [];
         }
     },
@@ -339,9 +345,9 @@ registerSargaMixin("Tick", {
     addTickFn(fn) {
         this.tickFns.push(fn);
     },
-    
+
     tick(dt) {
-        for(let tickFn of this.tickFns) {
+        for (let tickFn of this.tickFns) {
             tickFn(dt);
         }
     },

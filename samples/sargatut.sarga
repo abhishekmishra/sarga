@@ -5,13 +5,15 @@ Duck is Vanilla has Speech, DisplayName, Tick, Animate [
 Duck has ScreenLocation, Show, SpeechBubble [
     x "300",
     y "20",
+    z "1",
     text "Daffy Duck"
 ]
 
 DuckAnimator is Vanilla has FixedSequenceAnimator [
     interval "100",
     target "Duck",
-    attr "x"
+    attr "x",
+    values "100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200"
 ]
 
 Duck do animator [
@@ -22,8 +24,9 @@ Narrator is Character [
     image "www/assets/images/neo",
     color "#334455",
     alt "smile", 
-    x "100", 
-    y "100", 
+    x "500", 
+    y "500",
+    z "1",
     w "50", 
     h "50"
 ]
@@ -40,6 +43,7 @@ TotalScore is Counter has ScreenLocation, Show, SpeechBubble [
     step "1",
     x "10",
     y "20",
+    z "1",
     text "Counter"
 ]
 
