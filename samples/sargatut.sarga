@@ -24,11 +24,11 @@ Narrator is Character [
     image "www/assets/images/neo",
     color "#334455",
     alt "smile", 
-    x "500", 
-    y "500",
+    x "600", 
+    y "300",
     z "1",
-    w "50", 
-    h "50"
+    w "200", 
+    h "200"
 ]
 
 TutorialBG is Image [
