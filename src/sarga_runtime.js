@@ -2,6 +2,7 @@ import { v5 as uuidv5, v4 as uuidv4 } from 'uuid';
 import { createSargaObject } from './sarga_factory';
 import { SargaHeap } from './sarga_heap';
 import './sarga_factories_base';
+import './sarga_animate';
 
 export const Sarga_NAMESPACE = '5903ea4b-cfed-4c58-991f-0c4624be1b08';
 
@@ -155,11 +156,21 @@ export class SargaBlockRunner {
         }
     }
 
+    tick(s) {
+        for (let heapKey of this._heap.keys()) {
+            const heapVal = this._heap.get(heapKey);
+            if (heapVal && heapVal.hasTick && heapVal.hasTick()) {
+                console.log(`ticking ${heapKey}`);
+                heapVal.tick(s.deltaTime);
+            }
+        }
+    }
+
     showAll(s) {
         for (let heapKey of this._heap.keys()) {
             const heapVal = this._heap.get(heapKey);
             if (heapVal && heapVal.hasShow && heapVal.hasShow()) {
-                // console.log(`showing ${heapKey}`);
+                console.log(`showing ${heapKey}`);
                 heapVal.runShow(s);
             }
         }
@@ -187,6 +198,8 @@ export class SargaRunner {
     _topHeap;
     _play;
     images;
+
+    _loopCount = 0;
 
     constructor(block) {
         this.block = block;
@@ -248,21 +261,22 @@ export class SargaRunner {
                     this.next();
                     currentItem = this.current();
                 }
-                // console.log(currentItem);
-                const args = this.runCurrent();
-                // display items with show
-                const currentBlk = this.blockRunnerStack[this.blockRunnerStack.length - 1];
-                currentBlk.showAll(s);
+                this.runCurrent();
             }
         }
 
-        // s.background(128, 0, 0);
-        // let img = s.loadImage('www/assets/images/bg01.png', img => {
-        //     console.log(img);
-        //     s.image(img, 0, 0, s.width, s.height);
-        // });
+        const currentBlk = this.blockRunnerStack[this.blockRunnerStack.length - 1];
 
-        // this._play.off();
+        //tick all - even when paused
+        currentBlk.tick(s);
+
+        //show all - even when paused
+        currentBlk.showAll(s);
+
+        this._loopCount += 1;
+        if(this._loopCount > 10) {
+            s.noLoop();
+        }
     }
 
     play() {

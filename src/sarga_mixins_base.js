@@ -328,3 +328,25 @@ registerSargaMixin("Toggle", {
         this.switch = false;
     }
 });
+
+registerSargaMixin("Tick", {
+    initTickMixin() {
+        if(!this.tickFns) {
+            this.tickFns = [];
+        }
+    },
+
+    addTickFn(fn) {
+        this.tickFns.push(fn);
+    },
+    
+    tick(dt) {
+        for(let tickFn of this.tickFns) {
+            tickFn(dt);
+        }
+    },
+
+    hasTick() {
+        return true;
+    }
+});

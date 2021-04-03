@@ -1,5 +1,21 @@
-Duck is Vanilla has Speech, DisplayName [
+Duck is Vanilla has Speech, DisplayName, Tick, Animate [
     name "Daffy"
+]
+
+Duck has ScreenLocation, Show, SpeechBubble [
+    x "300",
+    y "20",
+    text "Daffy Duck"
+]
+
+DuckAnimator is Vanilla has FixedSequenceAnimator [
+    interval "100",
+    target "Duck",
+    attr "x"
+]
+
+Duck do animator [
+    name "DuckAnimator"
 ]
 
 Narrator is Character [ 
@@ -28,6 +44,7 @@ TotalScore is Counter has ScreenLocation, Show, SpeechBubble [
 ]
 
 show TutorialBG
+show Duck
 show Narrator
 show TotalScore
 
