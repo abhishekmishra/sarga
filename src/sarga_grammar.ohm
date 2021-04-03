@@ -40,9 +40,6 @@ Sarga {
         | EntityDeclaration
         | MixinDeclaration
         | EntityMethodStmt
-        | AvatarDeclaration
-        | AttachDeclaration
-        | MessageStmt
         | ChoiceStmt
         | ShowStmt
         | HideStmt
@@ -55,26 +52,6 @@ Sarga {
     HideStmt = HideKW identifier
 
     HideKW = "hide"
-
-    MessageStmt = MessageKW identifier AvatarProperties
-
-    MessageKW = "msg"
-
-    AttachDeclaration = AttachKW identifier identifier
-
-    AttachKW = "attach"
-
-    AvatarDeclaration = AvatarKW identifier AvatarDefinition
-
-    AvatarKW = "avatar"
-
-    AvatarDefinition = AvatarType AvatarProperties?
-
-    AvatarType = identifier
-
-    AvatarProperties = "[" AvatarProperty+ "]"
-
-    AvatarProperty = identifier Text
 
     // A label is of the form #<id>
     Label = "#" identifier
@@ -142,7 +119,7 @@ Sarga {
     doubleStringCharacter = ~("\"") strCharacter
     singleStringCharacter = ~("'") strCharacter
 
-    SaysWho = Someone AvatarProperties? ":"
+    SaysWho = Someone Properties? ":"
 
     Someone = identifier
 

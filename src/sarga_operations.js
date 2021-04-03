@@ -184,35 +184,6 @@ export const evalOperation = {
         };
     },
 
-    AvatarDeclaration(avatarKW, avatarName, avatarDefn) {
-        let val = avatarDefn.eval();
-        return {
-            type: "declaration",
-            statement: ["avatar", avatarName.sourceString, val]
-        };
-    },
-
-    AvatarDefinition(avatarType, avatarProperties) {
-        return {
-            type: avatarType.sourceString,
-            properties: avatarProperties.sourceString
-        };
-    },
-
-    AttachDeclaration(attachKW, charOrPropId, avatarId) {
-        return {
-            type: "declaration",
-            statement: ["attach", charOrPropId.sourceString, avatarId.sourceString]
-        }
-    },
-
-    MessageStmt(msgKW, id, avatarProperties) {
-        return {
-            type: "statement",
-            statement: ["msg", id.sourceString, avatarProperties.sourceString]
-        }
-    },
-
     Text(pre, str, post) {
         return str.sourceString;
     },
