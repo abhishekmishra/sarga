@@ -78,6 +78,8 @@ export class SargaRuntimeObject {
         return parseFloat(str);
     }
 
+    // TODO: move to sarga_operations.js or sarga_parse.js
+    // so that all text occurences are dealt with uniformly.
     parseText(textObj) {
         if (textObj) {
             const filters = textObj.filters;
@@ -87,8 +89,8 @@ export class SargaRuntimeObject {
                 for (let filter of filters) {
                     outstr = this[filter](outstr, this._heap, this);
                 }
-                console.log(textObj);
-                console.log(outstr);
+                // console.log(textObj);
+                // console.log(outstr);
                 return outstr;
             } else {
                 return str;

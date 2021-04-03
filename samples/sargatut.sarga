@@ -9,6 +9,12 @@ Duck has ScreenLocation, Show, SpeechBubble [
     text "Daffy Duck"
 ]
 
+Duck has Preload, Sound [
+    sound "www/assets/sounds/start.wav"
+]
+
+Duck do play
+
 DuckAnimator is Vanilla has FixedSequenceAnimator [
     interval "100",
     target "Duck",

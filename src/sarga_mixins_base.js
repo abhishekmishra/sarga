@@ -356,3 +356,33 @@ registerSargaMixin("Tick", {
         return true;
     }
 });
+
+registerSargaMixin("Sound", {
+    initSoundMixin() {
+        console.log('init sound mixin');
+        if (this.addPreloadFn) {
+            this.addPreloadFn((s) => this.loadSound(s));
+        }
+    },
+
+    getSoundName() {
+        let soundName = this.sound.replaceAll(/\s+/g, '_');
+        return soundName;
+    },
+
+    loadSound(s) {
+        console.log(`loading ${this.getSoundName()}`);
+        s.loadSound(this.getSoundName(), (sfile) => {
+            this.soundFile = sfile;
+        });
+    },
+
+    play(s) {
+        console.log('play sound');
+        this.soundFile.play();
+    },
+
+    hasSound() {
+        return true;
+    }
+});
