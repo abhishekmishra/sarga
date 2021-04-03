@@ -65,7 +65,7 @@ Duck do say
 
 Narrator: "Welcome to the Sarga Tutorial"
 
-"My name is {{Narrator.name}} and I'll be your guide."
+mustache < "My name is {{Narrator.name}} and I'll be your guide."
 
 "
 Sarga helps to create and run books with audio and visual elements.

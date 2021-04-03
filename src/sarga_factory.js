@@ -1,3 +1,4 @@
+import Mustache from 'mustache';
 import { getSargaMixin } from './sarga_mixin';
 import './sarga_mixins_base';
 
@@ -76,6 +77,14 @@ export class SargaRuntimeObject {
 
     num(str) {
         return parseFloat(str);
+    }
+
+    mustache(str, heap, self) {
+        let output =  Mustache.render(str, heap._heap);
+        console.log(str);
+        console.log(heap);
+        console.log(output);
+        return output;
     }
 
     // TODO: move to sarga_operations.js or sarga_parse.js
