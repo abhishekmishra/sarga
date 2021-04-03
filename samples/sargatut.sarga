@@ -3,9 +3,9 @@ Duck is Vanilla has Speech, DisplayName, Tick, Animate [
 ]
 
 Duck has ScreenLocation, Show, SpeechBubble [
-    x "300",
-    y "20",
-    z "1",
+    x num<"300",
+    y num<"20",
+    z num<"1",
     text "Daffy Duck"
 ]
 

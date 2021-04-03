@@ -84,12 +84,6 @@ Sarga {
 
     PropertySeparator = ","
 
-    VarValue = AskFragment | Text
-
-    AskFragment = AskKW Text
-
-    AskKW = "ask"
-
     ChoiceStmt = ChoiceKW Text ChoiceOption+
 
     ChoiceKW = "choice"
@@ -113,7 +107,13 @@ Sarga {
     multiLineComment = "/*" (~"*/" strCharacter)* "*/"
     singleLineComment = "//" (~lineTerminator strCharacter)*
 
-    Text = "\"" doubleStringCharacter* "\""
+    Text = (TextFilter TextFilterKW)* QuotedText
+
+    TextFilter = identifier
+
+    TextFilterKW = "<"
+
+    QuotedText = "\"" doubleStringCharacter* "\""
                 | "'" singleStringCharacter* "'"
 
     doubleStringCharacter = ~("\"") strCharacter

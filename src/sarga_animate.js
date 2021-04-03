@@ -14,7 +14,7 @@ registerSargaMixin("Animate", {
         let objName = null;
         for (let arg of args) {
             if (arg.k === "name") {
-                objName = arg.v;
+                objName = this.parseText(arg.v);
             }
         }
         console.log(`objname is ${objName}`);
@@ -28,6 +28,7 @@ registerSargaMixin("Animate", {
 
     animate(dt) {
         for (let animatorObj of this.animators) {
+            // console.log(animatorObj);
             animatorObj.runAnimator(dt);
         }
     }

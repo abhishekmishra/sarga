@@ -137,7 +137,10 @@ function createStatementObject(stmt) {
                 } else {
                     speaker = heap.get(heap.get("_currentSpeaker"));
                 }
-                speaker.text = saysWhat;
+                speaker.update({
+                    k: "text",
+                    v: saysWhat
+                });
                 speaker.say();
             });
             return line;

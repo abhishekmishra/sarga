@@ -50,13 +50,21 @@ export class SargaRuntimeObject {
 
     update(...args) {
         for (let arg of args) {
+            // console.log('argument received');
             // console.log(arg);
             if (arg.k === 'id') {
                 throw ('cannot replace id of object via arguments');
             }
-            if(arg.k && (typeof this[arg.k]) == "number") {
-                this[arg.k] = parseFloat(arg.v);
-            } else {
+            else if (arg.v.isSargaText && arg.v.isSargaText()) {
+                let parsedText = this.parseText(arg.v);
+                if ((typeof this[arg.k]) === "number"
+                    && (typeof parsedText) !== "number") {
+                    this[arg.k] = parseFloat(parsedText);
+                } else {
+                    this[arg.k] = parsedText;
+                }
+            }
+            else {
                 this[arg.k] = arg.v;
             }
         }
@@ -65,18 +73,42 @@ export class SargaRuntimeObject {
     isSargaRuntimeObject() {
         return true;
     }
+
+    num(str) {
+        return parseFloat(str);
+    }
+
+    parseText(textObj) {
+        if (textObj) {
+            const filters = textObj.filters;
+            const str = textObj.str;
+            if (filters.length > 0) {
+                let outstr = str;
+                for (let filter of filters) {
+                    outstr = this[filter](outstr, this._heap, this);
+                }
+                console.log(textObj);
+                console.log(outstr);
+                return outstr;
+            } else {
+                return str;
+            }
+        } else {
+            throw (`text object is null/undefined`);
+        }
+    }
 }
 
 export function sargaMixin(obj, mixinName) {
     Object.assign(obj, getSargaMixin(mixinName));
     const initFnName = "init" + mixinName + "Mixin";
-    if(obj[initFnName]) {
+    if (obj[initFnName]) {
         obj[initFnName]();
     }
 }
 
 export function sargaMixins(obj, mixinNames) {
-    for(let mixinName of mixinNames) {
+    for (let mixinName of mixinNames) {
         sargaMixin(obj, mixinName);
     }
 }

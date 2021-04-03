@@ -177,14 +177,22 @@ export const evalOperation = {
         return this.sourceString;
     },
 
-    AskFragment(askkw, askText) {
-        return {
-            type: "fragment",
-            statement: ["ask", askText.eval()]
-        };
+    Text(filters, filterkw, text) {
+        let filtersArr = filters.eval();
+        let retObj = {
+            "str": text.eval(),
+            isSargaText: function () {
+                return true;
+            },
+            filters: []
+        }
+        if (filtersArr && filtersArr.length > 0) {
+            retObj.filters = filtersArr;
+        }
+        return retObj;
     },
 
-    Text(pre, str, post) {
+    QuotedText(pre, str, post) {
         return str.sourceString;
     },
 
