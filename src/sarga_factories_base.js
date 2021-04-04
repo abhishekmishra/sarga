@@ -54,6 +54,8 @@ registerSargaFactory('character', (id, ...args) => {
 
 sargaFactoryEntry('counter', ['Counter']);
 
+sargaFactoryEntry('fillbg', ['Fill']);
+
 registerSargaFactory('speechbubble', (id, ...args) => {
     let obj = new SargaRuntimeObject(id, ...args);
 

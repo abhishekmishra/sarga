@@ -238,9 +238,20 @@ export class SargaRunner {
             bubbleObj.show();
             let margin = s.width / 10;
             bubbleObj.x = margin;
-            bubbleObj.width = s.width - (2 * margin);
+            bubbleObj.w = s.width- (2 * margin);
             bubbleObj.y = s.height - 100;
             bubbleObj.z = 100;
+
+            const bubbleBg = createSargaObject("fillbg", "BubbleBG");
+            this._topHeap.addName("BubbleBG", bubbleBg);
+            bubbleBg.show();
+            bubbleBg.x = margin/2;
+            bubbleBg.w = s.width - (1 * margin);
+            bubbleBg.h = 150;
+            bubbleBg.y = s.height - 170;
+            bubbleBg.z = 99;
+            bubbleBg.tl = bubbleBg.tr = bubbleBg.bl = bubbleBg.br = 50;
+            bubbleBg.color = "#00ff0044";
         }
         if (!this._topHeap.has("SpeakerBubble")) {
             const speakerBubbleObj = createSargaObject("speechbubble", "SpeakerBubble");

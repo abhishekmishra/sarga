@@ -293,7 +293,7 @@ const speechBubbleMixin = {
         const items = layoutItemsFromString(this.text, measureText);
 
         // Find where to insert line-breaks in order to optimally lay out the text.
-        const lineWidth = this.width;
+        const lineWidth = this.w;
         const breakpoints = breakLines(items, lineWidth)
 
         // Compute the (xOffset, line number) at which to draw each box item.
@@ -416,6 +416,7 @@ const fillMixin = {
     },
 
     drawFill(s) {
+        // console.log(`${this.color}, ${this.x}, ${this.y}, ${this.w}, ${this.h}`);
         s.fill(this.color);
         s.noStroke();
         s.rect(
