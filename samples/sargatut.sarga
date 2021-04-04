@@ -9,12 +9,14 @@ DuckAnimator is Vanilla has FixedSequenceAnimator [
 ]
 Duck do animator [ name "DuckAnimator" ]
 
-NarratorBG is Vanilla has Fill [color "#ff00ff10", x "500", y "200", z "1",
-    w "220", h "220", tl "20", tr "20", bl "20", br "20"]
-NarratorBG do print
+BlackboardBG is Vanilla has Fill [color "#000000", x "40", y "40", w "500", h "300", z "1", text ""]
+Blackboard is Vanilla has SpeechBubble, Speech [color "#ffffff", x "40", y "40", w "500", h "300", z "2", text "", speechBubbleName "Blackboard"]
+
+NarratorBG is Vanilla has Fill [color "#ff00ff10", x "650", y "300", z "1",
+    w "110", h "110", tl "20", tr "20", bl "20", br "20"]
 
 Narrator is Character [ image "www/assets/images/neo", color "#009900", alt "smile", 
-    x "520", y "220", z "2", w "180", h "180" ]
+    x "660", y "310", z "2", w "100", h "100" ]
 
 TutorialBG is Image [ image "www/assets/images/bg01", x "0", y "0", z "0" ]
 
@@ -25,11 +27,15 @@ TotalScore is Counter has SpeechBubble [
 
 TotalScore do print
 
+show BlackboardBG
+show Blackboard
 show TutorialBG
 show Duck
 show NarratorBG
 show Narrator
 show TotalScore
+
+Blackboard: "woah"
 
 Narrator: " Duck do play "
 

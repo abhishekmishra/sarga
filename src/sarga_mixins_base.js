@@ -210,7 +210,9 @@ const speechMixin = {
     },
 
     say() {
+        console.log(this.speechBubbleName);
         const speechBubble = this._heap.get(this.speechBubbleName);
+        console.log(speechBubble);
         speechBubble.speak(this.text, this.color);
         if (this.name) {
             const speakerBubble = this._heap.get(this.speakerBubbleName);
@@ -273,7 +275,7 @@ const speechBubbleMixin = {
     },
 
     drawText(s) {
-        // console.log("text -> " + this.text);
+        // console.log("text -> " + this.textColor);
         const textSize = this.textSize == null ? 20 : parseInt(this.textSize);
         // console.log(`text size = ${textSize}`);
         s.textSize(textSize);
@@ -307,7 +309,7 @@ const speechBubbleMixin = {
             // WebGL, ...
 
             let textx = this.x + pi.xOffset;
-            let texty = this.y + (pi.line * textSize)
+            let texty = this.y + textSize + (pi.line * textSize)
 
             // console.log(`${textx}, ${texty}`);
             s.text(item.text, textx, texty);
