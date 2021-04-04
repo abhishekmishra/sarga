@@ -1,71 +1,29 @@
-Duck is Vanilla has Speech, Animate [
-    name "Daffy"
-]
-
-Duck has SpeechBubble [
-    x num<"300",
-    y num<"20",
-    z num<"1",
-    text "Daffy Duck"
-]
-
-Duck has Sound [
-    sound "www/assets/sounds/start.wav"
-]
-
+Duck is Vanilla has Speech, Animate [name "Daffy"]
+Duck has SpeechBubble [ x "300", y "20", z "1", text "Daffy Duck" ]
+Duck has Sound [sound "www/assets/sounds/start.wav"]
 DuckAnimator is Vanilla has FixedSequenceAnimator [
     interval "100",
     target "Duck",
     attr "x",
     values "100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200"
 ]
+Duck do animator [ name "DuckAnimator" ]
 
-Duck do animator [
-    name "DuckAnimator"
-]
-
-NarratorBG is Vanilla has Fill [
-    color "#ff00ff10",
-    x "500", 
-    y "200",
-    z "1",
-    w "240", 
-    h "240",
-    tl "20",
-    tr "20",
-    bl "20",
-    br "20"
-]
-
+NarratorBG is Vanilla has Fill [color "#ff00ff10", x "500", y "200", z "1",
+    w "240", h "240", tl "20", tr "20", bl "20", br "20"]
 NarratorBG do print
 
-Narrator is Character [ 
-    image "www/assets/images/neo",
-    color "#334455",
-    alt "smile", 
-    x "520", 
-    y "220",
-    z "2",
-    w "200", 
-    h "200"
-]
+Narrator is Character [ image "www/assets/images/neo", color "#334455", alt "smile", 
+    x "520", y "220", z "2", w "200", h "200" ]
 
-TutorialBG is Image [
-    image "www/assets/images/bg01",
-    x "0",
-    y "0",
-    z "0"
-]
+TutorialBG is Image [ image "www/assets/images/bg01", x "0", y "0", z "0" ]
 
 TotalScore is Counter has SpeechBubble [ 
-    start "1", 
-    step "1",
-    x "10",
-    y "20",
-    z "1",
-    text "Counter"
+    start "1", step "1",
+    x "10", y "20", z "1", text mustache<"{{TotalScore.count}}"
 ]
 
+TotalScore do print
 
 show TutorialBG
 show Duck
@@ -73,35 +31,23 @@ show NarratorBG
 show Narrator
 show TotalScore
 
-Narrator: "
-Duck do play
-"
+Narrator: " Duck do play "
 
-Duck do update [
-    text "Quack Quack"
-]
+Duck do update [text "Quack Quack"]
 Duck do say
 
 Narrator: "Welcome to the Sarga Tutorial"
-
 mustache < "My name is {{Narrator.name}} and I'll be your guide."
-
 "
 Sarga helps to create and run books with audio and visual elements.
 This is similar to visual novels but with a more general focus - so that
 you can create textbooks, stories, tutorials, articles etc.
 "
-
 hide TotalScore
-
 Duck: "Quack"
-
-Narrator: 
-"
-Note that Sarga doesn't replace graphical or audio creation tools. It helps you become
+Narrator: "Note that Sarga doesn't replace graphical or audio creation tools. It helps you become
 the play director and producer, bringing textual, audio and visual elements together on
 a screen. The audio and visual contents can be created using applications and/or generated
 in code. Only their appearance (and disappearance) on the stage is controlled in Sarga.
 "
-
 show TotalScore
