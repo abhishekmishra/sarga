@@ -2,7 +2,7 @@ import { registerSargaMixin } from './sarga_mixin';
 
 import { layoutItemsFromString, breakLines, positionItems } from 'tex-linebreak';
 
-registerSargaMixin("DisplayName", {
+const displayNameMixin = {
 
     initDisplayNameMixin() {
         if (!this.name) {
@@ -18,10 +18,10 @@ registerSargaMixin("DisplayName", {
         return true;
     }
 
-});
+};
 
-registerSargaMixin("ScreenLocation", {
-    initScreenLocationMixin() {
+const locationMixin = {
+    initLocationMixin() {
         if (!this.x) { this.x = 0 };
         if (!this.y) { this.y = 0 };
         if (!this.z) { this.z = 0 };
@@ -41,12 +41,12 @@ registerSargaMixin("ScreenLocation", {
         return [this.x, this.y, this.z];
     },
 
-    hasScreenLocation() {
+    hasLocation() {
         return true;
     }
-});
+};
 
-registerSargaMixin("Dimension", {
+const dimensionMixin = {
     initDimensionMixin() {
         if (!this.width) {
             this.width = 100;
@@ -59,9 +59,9 @@ registerSargaMixin("Dimension", {
     hasDimensions() {
         return true;
     }
-});
+};
 
-registerSargaMixin("Preload", {
+const preloadMixin = {
     initPreloadMixin() {
         if (!this._preloadFunctions) {
             this._preloadFunctions = [];
@@ -81,9 +81,9 @@ registerSargaMixin("Preload", {
     hasPreload() {
         return true;
     }
-});
+};
 
-registerSargaMixin("Show", {
+const showMixin = {
     initShowMixin() {
         if (!this._showFunctions) {
             this._showFunctions = [];
@@ -117,9 +117,9 @@ registerSargaMixin("Show", {
     hasShow() {
         return true;
     }
-});
+};
 
-registerSargaMixin("Image", {
+const imageMixin = {
     initImageMixin() {
         if (!this.imageExtension) {
             this.imageExtension = ".png";
@@ -190,9 +190,9 @@ registerSargaMixin("Image", {
             this.h ? this.h : s.height
         );
     }
-});
+};
 
-registerSargaMixin("Speech", {
+const speechMixin = {
     initSpeechMixin() {
         if (!this.text) {
             this.text = "!dummy text!";
@@ -218,9 +218,9 @@ registerSargaMixin("Speech", {
         }
         this._heap.get("Play").off();
     }
-});
+};
 
-registerSargaMixin("Counter", {
+const counterMixin = {
     initCounterMixin() {
         if (!this.start) {
             this.start = 0;
@@ -241,9 +241,9 @@ registerSargaMixin("Counter", {
             this.count += this.step;
         }
     }
-});
+};
 
-registerSargaMixin("SpeechBubble", {
+const speechBubbleMixin = {
     initSpeechBubbleMixin() {
         if (this.addShowFn) {
             this.addShowFn((s) => { this.drawText(s) });
@@ -313,9 +313,9 @@ registerSargaMixin("SpeechBubble", {
             s.text(item.text, textx, texty);
         });
     }
-});
+};
 
-registerSargaMixin("Toggle", {
+const toggleMixin = {
     initToggleMixin() {
         if (!this.switch) {
             this.switch = false;
@@ -333,9 +333,9 @@ registerSargaMixin("Toggle", {
     off() {
         this.switch = false;
     }
-});
+};
 
-registerSargaMixin("Tick", {
+const tickMixin = {
     initTickMixin() {
         if (!this.tickFns) {
             this.tickFns = [];
@@ -355,9 +355,9 @@ registerSargaMixin("Tick", {
     hasTick() {
         return true;
     }
-});
+};
 
-registerSargaMixin("Sound", {
+const soundMixin = {
     initSoundMixin() {
         console.log('init sound mixin');
         if (this.addPreloadFn) {
@@ -385,4 +385,31 @@ registerSargaMixin("Sound", {
     hasSound() {
         return true;
     }
-});
+};
+
+const debugMixin = {
+    print() {
+        console.log(`Heap object ${this.id}`);
+        console.log(this);
+    }
+}
+
+registerSargaMixin("Debug", debugMixin);
+registerSargaMixin("DisplayName", displayNameMixin);
+registerSargaMixin("Location", locationMixin);
+registerSargaMixin("Dimension", dimensionMixin);
+registerSargaMixin("Preload", preloadMixin);
+registerSargaMixin("Show", showMixin);
+registerSargaMixin("Image", imageMixin,
+    [
+        'Location',
+        'Dimension',
+        'Show'
+    ]);
+
+registerSargaMixin("Speech", speechMixin, ["DisplayName"]);
+registerSargaMixin("Counter", counterMixin);
+registerSargaMixin("SpeechBubble", speechBubbleMixin, ['Location', 'Dimension', 'Show']);
+registerSargaMixin("Toggle", toggleMixin);
+registerSargaMixin("Tick", tickMixin);
+registerSargaMixin("Sound", soundMixin, ["Preload"]);

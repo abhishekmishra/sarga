@@ -1,19 +1,17 @@
-Duck is Vanilla has Speech, DisplayName, Tick, Animate [
+Duck is Vanilla has Speech, Animate [
     name "Daffy"
 ]
 
-Duck has ScreenLocation, Show, SpeechBubble [
+Duck has SpeechBubble [
     x num<"300",
     y num<"20",
     z num<"1",
     text "Daffy Duck"
 ]
 
-Duck has Preload, Sound [
+Duck has Sound [
     sound "www/assets/sounds/start.wav"
 ]
-
-Duck do play
 
 DuckAnimator is Vanilla has FixedSequenceAnimator [
     interval "100",
@@ -44,7 +42,7 @@ TutorialBG is Image [
     z "0"
 ]
 
-TotalScore is Counter has ScreenLocation, Show, SpeechBubble [ 
+TotalScore is Counter has SpeechBubble [ 
     start "1", 
     step "1",
     x "10",
@@ -53,10 +51,15 @@ TotalScore is Counter has ScreenLocation, Show, SpeechBubble [
     text "Counter"
 ]
 
+
 show TutorialBG
 show Duck
 show Narrator
 show TotalScore
+
+Narrator: "
+Duck do play
+"
 
 Duck do update [
     text "Quack Quack"

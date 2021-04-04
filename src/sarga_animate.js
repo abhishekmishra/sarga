@@ -1,6 +1,6 @@
 import { registerSargaMixin } from './sarga_mixin';
 
-registerSargaMixin("Animate", {
+const animateMixin = {
     initAnimateMixin() {
         if (!this.animators) {
             this.animators = []
@@ -32,7 +32,11 @@ registerSargaMixin("Animate", {
             animatorObj.runAnimator(dt);
         }
     }
-});
+};
+
+registerSargaMixin("Animate", animateMixin, [
+    "Tick"
+]);
 
 /**
  * needs the following parameters to animate

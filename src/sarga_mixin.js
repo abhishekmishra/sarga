@@ -8,11 +8,17 @@ export function getSargaMixin(typeName) {
     }
 }
 
-export function registerSargaMixin(typeName, mixin) {
+export function registerSargaMixin(typeName, mixin, depends = []) {
     if (SARGA_MIXINS.has(typeName)) {
         throw (`${typeName} already exists.`);
     } else {
-        SARGA_MIXINS.set(typeName, mixin);
+        if (typeName !== "Debug") {
+            depends.push("Debug");
+        }
+        SARGA_MIXINS.set(typeName, {
+            depends: depends,
+            mixin: mixin
+        });
     }
 }
 

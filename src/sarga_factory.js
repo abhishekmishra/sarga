@@ -58,6 +58,7 @@ export class SargaRuntimeObject {
             }
             else if (arg.v.isSargaText && arg.v.isSargaText()) {
                 let parsedText = this.parseText(arg.v);
+                // console.log(`${this.id} k=${arg.k}, v=${arg.v}, parsed=${parsedText}, typeof = ${typeof this[arg.k]}`);
                 if ((typeof this[arg.k]) === "number"
                     && (typeof parsedText) !== "number") {
                     this[arg.k] = parseFloat(parsedText);
@@ -111,7 +112,15 @@ export class SargaRuntimeObject {
 }
 
 export function sargaMixin(obj, mixinName) {
-    Object.assign(obj, getSargaMixin(mixinName));
+    const mixinObj = getSargaMixin(mixinName);
+    const dependsOn = mixinObj.depends;
+    if(dependsOn.length > 0) {
+        for (let dependsItem of dependsOn) {
+            // console.log(`Adding depends ${dependsItem}`);
+            sargaMixin(obj, dependsItem);
+        }
+    }
+    Object.assign(obj, mixinObj.mixin);
     const initFnName = "init" + mixinName + "Mixin";
     if (obj[initFnName]) {
         obj[initFnName]();
