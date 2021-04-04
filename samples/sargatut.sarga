@@ -1,5 +1,5 @@
 Duck is Vanilla has Speech, Animate [name "Daffy"]
-Duck has SpeechBubble [ x "300", y "20", z "1", text "Daffy Duck" ]
+Duck has SpeechBubble [ x "300", y "20", z "1", w "100", h "100", text "Daffy Duck" ]
 Duck has Sound [sound "www/assets/sounds/start.wav"]
 DuckAnimator is Vanilla has FixedSequenceAnimator [
     interval "100",
@@ -13,7 +13,7 @@ NarratorBG is Vanilla has Fill [color "#ff00ff10", x "500", y "200", z "1",
     w "220", h "220", tl "20", tr "20", bl "20", br "20"]
 NarratorBG do print
 
-Narrator is Character [ image "www/assets/images/neo", color "#334455", alt "smile", 
+Narrator is Character [ image "www/assets/images/neo", color "#009900", alt "smile", 
     x "520", y "220", z "2", w "180", h "180" ]
 
 TutorialBG is Image [ image "www/assets/images/bg01", x "0", y "0", z "0" ]
@@ -47,7 +47,10 @@ hide TotalScore
 Duck: "Quack"
 Narrator: "Note that Sarga doesn't replace graphical or audio creation tools. It helps you become
 the play director and producer, bringing textual, audio and visual elements together on
-a screen. The audio and visual contents can be created using applications and/or generated
-in code. Only their appearance (and disappearance) on the stage is controlled in Sarga.
+a screen.
 "
+
+"The audio and visual contents can be created using applications and/or generated
+in code. Only their appearance (and disappearance) on the stage is controlled in Sarga."
+
 show TotalScore

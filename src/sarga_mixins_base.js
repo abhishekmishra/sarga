@@ -214,7 +214,7 @@ const speechMixin = {
         speechBubble.speak(this.text, this.color);
         if (this.name) {
             const speakerBubble = this._heap.get(this.speakerBubbleName);
-            speakerBubble.speak(this.name);
+            speakerBubble.speak(this.name, this.color);
         }
         this._heap.get("Play").off();
     }
