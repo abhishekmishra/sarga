@@ -24,13 +24,28 @@ Duck do animator [
     name "DuckAnimator"
 ]
 
+NarratorBG is Vanilla has Fill [
+    color "#ff00ff10",
+    x "500", 
+    y "200",
+    z "1",
+    w "240", 
+    h "240",
+    tl "20",
+    tr "20",
+    bl "20",
+    br "20"
+]
+
+NarratorBG do print
+
 Narrator is Character [ 
     image "www/assets/images/neo",
     color "#334455",
     alt "smile", 
-    x "600", 
-    y "300",
-    z "1",
+    x "520", 
+    y "220",
+    z "2",
     w "200", 
     h "200"
 ]
@@ -54,6 +69,7 @@ TotalScore is Counter has SpeechBubble [
 
 show TutorialBG
 show Duck
+show NarratorBG
 show Narrator
 show TotalScore
 

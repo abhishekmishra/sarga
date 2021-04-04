@@ -48,11 +48,11 @@ const locationMixin = {
 
 const dimensionMixin = {
     initDimensionMixin() {
-        if (!this.width) {
-            this.width = 100;
+        if (!this.w) {
+            this.w = -1;
         }
-        if (!this.height) {
-            this.height = 10;
+        if (!this.h) {
+            this.h = -1;
         }
     },
 
@@ -186,8 +186,8 @@ const imageMixin = {
             imgObj,
             this.x,
             this.y,
-            this.w ? this.w : s.width,
-            this.h ? this.h : s.height
+            this.w && this.w != -1 ? this.w : s.width,
+            this.h && this.h != -1 ? this.h : s.height
         );
     }
 };
@@ -394,6 +394,43 @@ const debugMixin = {
     }
 }
 
+const colorMixin = {
+    initColorMixin() {
+        if (!this.color) {
+            this.color = "#ff0000";
+        }
+    }
+}
+
+const fillMixin = {
+    initFillMixin() {
+        if (this.addShowFn) {
+            this.addShowFn((s) => this.drawFill(s));
+        }
+        if (!this.tl) {
+            this.tl = 0;
+            this.tr = 0;
+            this.br = 0;
+            this.bl = 0;
+        }
+    },
+
+    drawFill(s) {
+        s.fill(this.color);
+        s.noStroke();
+        s.rect(
+            this.x,
+            this.y,
+            this.w,
+            this.h,
+            this.tl,
+            this.tr,
+            this.br,
+            this.bl
+        );
+    }
+}
+
 registerSargaMixin("Debug", debugMixin);
 registerSargaMixin("DisplayName", displayNameMixin);
 registerSargaMixin("Location", locationMixin);
@@ -413,3 +450,5 @@ registerSargaMixin("SpeechBubble", speechBubbleMixin, ['Location', 'Dimension', 
 registerSargaMixin("Toggle", toggleMixin);
 registerSargaMixin("Tick", tickMixin);
 registerSargaMixin("Sound", soundMixin, ["Preload"]);
+registerSargaMixin("Color", colorMixin);
+registerSargaMixin("Fill", fillMixin, ["Location", "Dimension", "Color", "Show"]);
