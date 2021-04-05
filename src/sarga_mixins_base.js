@@ -43,6 +43,35 @@ const locationMixin = {
 
     hasLocation() {
         return true;
+    },
+
+    _getCoord(val, ref) {
+        if (typeof val === "number") {
+            //do nothing
+            return val;
+        } else if (typeof val === "string") {
+            if (ref && val.match(/%$/)) {
+                const parentW = ref;
+                return this._heap.get("_num").parse(val.slice(0, -1)) / 100 * parentW;
+            } else {
+                return this._heap.get("_num").parse(val);
+            }
+        } else {
+            throw (`cannot parse object`);
+        }
+
+    },
+
+    getX() {
+        return this._getCoord(this.x, this.getParent().w);
+    },
+
+    getY() {
+        return this._getCoord(this.y, this.getParent().h);
+    },
+
+    getZ() {
+        return this._getCoord(this.z, this.getParent().z);
     }
 };
 
@@ -58,6 +87,14 @@ const dimensionMixin = {
 
     hasDimensions() {
         return true;
+    },
+
+    getW() {
+        return this._getCoord(this.w, this.getParent().w);
+    },
+
+    getH() {
+        return this._getCoord(this.h, this.getParent().h);
     }
 };
 
@@ -182,12 +219,17 @@ const imageMixin = {
     drawImage(s) {
         const currentImg = this.getCurrentImage();
         const imgObj = this._imageObjects.get(currentImg);
+        const x = this.getX();
+        const y = this.getY();
+        const z = this.getZ();
+        const w = this.getW();
+        const h = this.getH();
         s.image(
             imgObj,
-            this.x,
-            this.y,
-            this.w && this.w != -1 ? this.w : s.width,
-            this.h && this.h != -1 ? this.h : s.height
+            x,
+            y,
+            w && w != -1 ? w : s.width,
+            h && h != -1 ? h : s.height
         );
     }
 };
@@ -295,7 +337,7 @@ const speechBubbleMixin = {
         const items = layoutItemsFromString(this.text, measureText);
 
         // Find where to insert line-breaks in order to optimally lay out the text.
-        const lineWidth = this.w;
+        const lineWidth = this.getW();
         const breakpoints = breakLines(items, lineWidth)
 
         // Compute the (xOffset, line number) at which to draw each box item.
@@ -308,8 +350,8 @@ const speechBubbleMixin = {
             // you want, eg. `<canvas>`, HTML elements with spacing created using CSS,
             // WebGL, ...
 
-            let textx = this.x + pi.xOffset;
-            let texty = this.y + textSize + (pi.line * textSize)
+            let textx = this.getX() + pi.xOffset;
+            let texty = this.getY() + textSize + (pi.line * textSize)
 
             // console.log(`${textx}, ${texty}`);
             s.text(item.text, textx, texty);
@@ -417,19 +459,35 @@ const fillMixin = {
         }
     },
 
+    getTl() {
+        return this._getCoord(this.tl, null);
+    },
+
+    getTr() {
+        return this._getCoord(this.tr, null);
+    },
+
+    getBr() {
+        return this._getCoord(this.br, null);
+    },
+
+    getBl() {
+        return this._getCoord(this.bl, null);
+    },
+
     drawFill(s) {
         // console.log(`${this.color}, ${this.x}, ${this.y}, ${this.w}, ${this.h}`);
         s.fill(this.color);
         s.noStroke();
         s.rect(
-            this.x,
-            this.y,
-            this.w,
-            this.h,
-            this.tl,
-            this.tr,
-            this.br,
-            this.bl
+            this.getX(),
+            this.getY(),
+            this.getW(),
+            this.getH(),
+            this.getTl(),
+            this.getTr(),
+            this.getBr(),
+            this.getBl()
         );
     }
 }
@@ -437,7 +495,7 @@ const fillMixin = {
 registerSargaMixin("Debug", debugMixin);
 registerSargaMixin("DisplayName", displayNameMixin);
 registerSargaMixin("Location", locationMixin);
-registerSargaMixin("Dimension", dimensionMixin);
+registerSargaMixin("Dimension", dimensionMixin, ['Location']);
 registerSargaMixin("Preload", preloadMixin);
 registerSargaMixin("Show", showMixin);
 registerSargaMixin("Image", imageMixin,

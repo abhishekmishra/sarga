@@ -32,6 +32,19 @@ export function createSargaObject(typeName, id, ...args) {
     return factory(id, ...args);
 }
 
+/**
+ * This class implements the base object for all
+ * objects in the Sarga Runtime Heap.
+ * 
+ * It has an id (name of the object on the heap),
+ * and a parent (which is "Window" for all objects)
+ * 
+ * The update method allows additional attributes to
+ * be added to thd class.
+ * 
+ * TODO: The ...args params in the constructor need
+ *       to be removed.
+ */
 export class SargaRuntimeObject {
     id;
 
@@ -40,6 +53,8 @@ export class SargaRuntimeObject {
             throw (`dude id cannot be null or undefined`);
         }
         this.id = id;
+        this.parent = "Window";
+
         for (let arg of args) {
             // console.log(arg);
             if (arg.k === 'id') {
@@ -47,6 +62,10 @@ export class SargaRuntimeObject {
             }
             this[arg.k] = arg.v;
         }
+    }
+
+    getParent() {
+        return this._heap.get(this.parent);
     }
 
     update(...args) {
@@ -59,12 +78,12 @@ export class SargaRuntimeObject {
             else if (arg.v.isSargaText && arg.v.isSargaText()) {
                 let parsedText = this.parseText(arg.v);
                 // console.log(`${this.id} k=${arg.k}, v=${arg.v}, parsed=${parsedText}, typeof = ${typeof this[arg.k]}`);
-                if ((typeof this[arg.k]) === "number"
-                    && (typeof parsedText) !== "number") {
-                    this[arg.k] = parseFloat(parsedText);
-                } else {
-                    this[arg.k] = parsedText;
-                }
+                // if ((typeof this[arg.k]) === "number"
+                //     && (typeof parsedText) !== "number") {
+                //     this[arg.k] = parseFloat(parsedText);
+                // } else {
+                this[arg.k] = parsedText;
+                // }
             }
             else {
                 this[arg.k] = arg.v;
@@ -81,7 +100,7 @@ export class SargaRuntimeObject {
     }
 
     mustache(str, heap, self) {
-        let output =  Mustache.render(str, heap._heap);
+        let output = Mustache.render(str, heap._heap);
         console.log(str);
         console.log(heap);
         console.log(output);
@@ -114,7 +133,7 @@ export class SargaRuntimeObject {
 export function sargaMixin(obj, mixinName) {
     const mixinObj = getSargaMixin(mixinName);
     const dependsOn = mixinObj.depends;
-    if(dependsOn.length > 0) {
+    if (dependsOn.length > 0) {
         for (let dependsItem of dependsOn) {
             // console.log(`Adding depends ${dependsItem}`);
             sargaMixin(obj, dependsItem);
