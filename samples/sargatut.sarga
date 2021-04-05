@@ -1,3 +1,5 @@
+Window do print
+
 Duck is Vanilla has Speech, Animate [name "Daffy"]
 Duck has SpeechBubble [ x "300", y "20", z "1", w "100", h "100", text "Daffy Duck" ]
 Duck has Sound [sound "www/assets/sounds/start.wav"]

@@ -1,5 +1,5 @@
 import { v5 as uuidv5, v4 as uuidv4 } from 'uuid';
-import { createSargaObject } from './sarga_factory';
+import { createSargaObject, sargaMixin } from './sarga_factory';
 import { SargaHeap } from './sarga_heap';
 import './sarga_factories_base';
 import './sarga_animate';
@@ -232,6 +232,17 @@ export class SargaRunner {
     }
 
     setup(s) {
+        if(!this._topHeap.has("Window")) {
+            const winObj = createSargaObject("vanilla", "Window");
+            sargaMixin(winObj, "Location");
+            sargaMixin(winObj, "Dimension");
+            winObj.x = 0;
+            winObj.y = 0;
+            winObj.z = 0;
+            winObj.w = s.width;
+            winObj.h = s.height;
+            this._topHeap.addName("Window", winObj);
+        }
         if (!this._topHeap.has("Bubble")) {
             const bubbleObj = createSargaObject("speechbubble", "Bubble");
             this._topHeap.addName("Bubble", bubbleObj);
