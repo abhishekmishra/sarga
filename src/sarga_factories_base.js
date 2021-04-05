@@ -78,6 +78,30 @@ registerSargaFactory('toggle', (id, ...args) => {
 
     return obj;
 });
+
+registerSargaFactory('numparser', (id, ...args) => {
+    let obj = new SargaRuntimeObject(id, ...args);
+
+    sargaMixin(obj, "Debug");
+
+    Object.assign(obj, {
+        parse(text) {
+            if (text === undefined || text === null) {
+                throw (`input is undefined or null`);
+            }
+            if (typeof text === "string") {
+                return parseFloat(text);
+            } else if (typeof text === "number") {
+                return text;
+
+            } else {
+                throw (`Cannot parse object of type ${typeof text}`);
+            }
+        }
+    });
+
+    return obj;
+});
 // console.log(`sarga factory items -> ${Array.from(getSargaFactoryNames())}`);
 
 // const obj = createSargaObject('vanilla', 'id0', { k: 'blah', v: 'bluh' });

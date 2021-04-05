@@ -78,7 +78,7 @@ function parseStatement(stmt) {
                         varName,
                         { "k": "_heap", "v": heap }
                     );
-                    heap.addName(varName, obj);
+                    heap.addName(obj);
                     for (let hasType of hasTypes) {
                         sargaMixin(obj, hasType);
                     }

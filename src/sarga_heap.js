@@ -15,7 +15,14 @@ export class SargaHeap {
         return this._parent === null;
     }
 
-    addName(name, value) {
+    addName(value, name = null) {
+        if (name === null) {
+            if(value.id) {
+                name = value.id;
+            } else {
+                throw(`name is null, and value has no id`);
+            }
+        }
         if (this._heap === null) {
             throw (`Attempt to use disposed heap.`);
         }

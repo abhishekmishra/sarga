@@ -232,6 +232,11 @@ export class SargaRunner {
     }
 
     setup(s) {
+        if(!this._topHeap.has("num")) {
+            const numObj = createSargaObject("numparser", "num");
+            this._topHeap.addName(numObj);
+        }
+
         if(!this._topHeap.has("Window")) {
             const winObj = createSargaObject("vanilla", "Window");
             sargaMixin(winObj, "Location");
@@ -241,11 +246,11 @@ export class SargaRunner {
             winObj.z = 0;
             winObj.w = s.width;
             winObj.h = s.height;
-            this._topHeap.addName("Window", winObj);
+            this._topHeap.addName(winObj);
         }
         if (!this._topHeap.has("Bubble")) {
             const bubbleObj = createSargaObject("speechbubble", "Bubble");
-            this._topHeap.addName("Bubble", bubbleObj);
+            this._topHeap.addName(bubbleObj);
             bubbleObj.show();
             let margin = s.width / 10;
             bubbleObj.x = margin;
@@ -254,7 +259,7 @@ export class SargaRunner {
             bubbleObj.z = 100;
 
             const bubbleBg = createSargaObject("fillbg", "BubbleBG");
-            this._topHeap.addName("BubbleBG", bubbleBg);
+            this._topHeap.addName(bubbleBg);
             bubbleBg.show();
             bubbleBg.x = margin/2;
             bubbleBg.w = s.width - (1 * margin);
@@ -266,7 +271,7 @@ export class SargaRunner {
         }
         if (!this._topHeap.has("SpeakerBubble")) {
             const speakerBubbleObj = createSargaObject("speechbubble", "SpeakerBubble");
-            this._topHeap.addName("SpeakerBubble", speakerBubbleObj);
+            this._topHeap.addName(speakerBubbleObj);
             speakerBubbleObj.show();
             let margin = s.width / 10;
             speakerBubbleObj.x = margin;
@@ -276,7 +281,7 @@ export class SargaRunner {
         }
         if (!this._topHeap.has("Play")) {
             this._play = createSargaObject("toggle", "Play");
-            this._topHeap.addName("Play", this._play);
+            this._topHeap.addName(this._play);
         }
         this._play.on();
 
