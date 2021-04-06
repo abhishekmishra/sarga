@@ -59,19 +59,26 @@ const locationMixin = {
         } else {
             throw (`cannot parse object`);
         }
-
     },
 
     getX() {
-        return this._getCoord(this.x, this.getParent().w);
+        if (this.parent === this.id) {
+            return this._getCoord(this.x, null);
+        } else {
+            return this.getParent().getX() + this._getCoord(this.x, this.getParent().getW());
+        }
     },
 
     getY() {
-        return this._getCoord(this.y, this.getParent().h);
+        if (this.parent === this.id) {
+            return this._getCoord(this.y, null);
+        } else {
+            return this.getParent().getY() + this._getCoord(this.y, this.getParent().getH());
+        }
     },
 
     getZ() {
-        return this._getCoord(this.z, this.getParent().z);
+        return this._getCoord(this.z, null);
     }
 };
 
@@ -90,11 +97,19 @@ const dimensionMixin = {
     },
 
     getW() {
-        return this._getCoord(this.w, this.getParent().w);
+        if (this.parent === this.id) {
+            return this._getCoord(this.w, null);
+        } else {
+            return this._getCoord(this.w, this.getParent().getW());
+        }
     },
 
     getH() {
-        return this._getCoord(this.h, this.getParent().h);
+        if (this.parent === this.id) {
+            return this._getCoord(this.h, null);
+        } else {
+            return this._getCoord(this.h, this.getParent().getH());
+        }
     }
 };
 
@@ -224,6 +239,9 @@ const imageMixin = {
         const z = this.getZ();
         const w = this.getW();
         const h = this.getH();
+        // if (this.id === "Narrator") {
+        //     console.log(`${x}, ${y}, ${w}, ${h}`);
+        // }
         s.image(
             imgObj,
             x,
