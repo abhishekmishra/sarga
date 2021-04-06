@@ -57,7 +57,7 @@ show TotalScore
 
 Nobody: "hi"
 
-Narrator: mustache < "Welcome to the Sarga Tutorial.
+Narrator: mustache < "▓▓▓ Welcome to the Sarga Tutorial. ▓▓▓
 My name is '{{Narrator.name}}' and I'll be your guide. 
 You can see me in the little box to the right of the screen.
 "
