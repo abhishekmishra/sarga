@@ -32,10 +32,6 @@ registerSargaFactory('character', (id, ...args) => {
 
     sargaMixins(obj, [
         'DisplayName',
-        'Location',
-        'Show',
-        'Preload',
-        'Image',
         'Speech'
     ]);
 

@@ -505,6 +505,7 @@ registerSargaMixin("Preload", preloadMixin);
 registerSargaMixin("Show", showMixin);
 registerSargaMixin("Image", imageMixin,
     [
+        'Preload',
         'Location',
         'Dimension',
         'Show'
