@@ -16,11 +16,11 @@ export class SargaBlockDisplay {
             }
 
             s.setup = () => {
-                s.createCanvas(800, 600);
+                s.createCanvas(s.windowWidth * 0.95, s.windowHeight * 0.5);
                 let sourceStrDiv = s.createElement('div', this.block.sourceString);
-                sourceStrDiv.style('white-space', 'pre-wrap');
-                sourceStrDiv.style('border', '2px solid gray');
-                sourceStrDiv.style('padding', '2px');
+                sourceStrDiv.style('white-space', 'pre-wrap');               
+                sourceStrDiv.style('margin', '0px');
+                sourceStrDiv.style('padding', '0px');
                 sourceStrDiv.style('height', '250px');
                 sourceStrDiv.style('overflow', 'auto');
                 this.setup(s);

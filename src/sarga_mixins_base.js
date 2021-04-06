@@ -245,6 +245,9 @@ const speechMixin = {
         if (!this.speakerBubbleName) {
             this.speakerBubbleName = "SpeakerBubble";
         }
+        if (!this.pauseOnSpeech) {
+            this.pauseOnSpeech = true;
+        }
     },
 
     canSpeak() {
@@ -252,15 +255,17 @@ const speechMixin = {
     },
 
     say() {
-        console.log(this.speechBubbleName);
         const speechBubble = this._heap.get(this.speechBubbleName);
-        console.log(speechBubble);
         speechBubble.speak(this.text, this.color);
         if (this.name) {
             const speakerBubble = this._heap.get(this.speakerBubbleName);
-            speakerBubble.speak(this.name, this.color);
+            if (speakerBubble) {
+                speakerBubble.speak(this.name, this.color);
+            }
         }
-        this._heap.get("Play").off();
+        if (!(this.pauseOnSpeech === false || this.pauseOnSpeech === "false")) {
+            this._heap.get("Play").off();
+        }
     }
 };
 
@@ -293,7 +298,7 @@ const speechBubbleMixin = {
             this.addShowFn((s) => { this.drawText(s) });
         }
         if (!this.text) {
-            this.text = 'what vro';
+            this.text = 'lorem';
         }
         if (!this.font) {
             this.font = null;

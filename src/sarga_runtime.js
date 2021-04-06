@@ -252,31 +252,30 @@ export class SargaRunner {
             const bubbleObj = createSargaObject("speechbubble", "Bubble", { "k": "_heap", "v": this._topHeap });
             this._topHeap.addName(bubbleObj);
             bubbleObj.show();
-            let margin = s.width / 10;
-            bubbleObj.x = margin;
-            bubbleObj.w = s.width - (2 * margin);
-            bubbleObj.y = s.height - 100;
+            bubbleObj.x = "7%";
+            bubbleObj.w = "84%";
+            bubbleObj.y = "80%";
             bubbleObj.z = 100;
+            bubbleObj.textSize = 16;
 
             const bubbleBg = createSargaObject("fillbg", "BubbleBG", { "k": "_heap", "v": this._topHeap });
             this._topHeap.addName(bubbleBg);
             bubbleBg.show();
-            bubbleBg.x = margin / 2;
-            bubbleBg.w = s.width - (1 * margin);
-            bubbleBg.h = 150;
-            bubbleBg.y = s.height - 170;
+            bubbleBg.x = "5%";
+            bubbleBg.w = "90%";
+            bubbleBg.h = "24%";
+            bubbleBg.y = "72%";
             bubbleBg.z = 99;
-            bubbleBg.tl = bubbleBg.tr = bubbleBg.bl = bubbleBg.br = 50;
+            bubbleBg.tl = bubbleBg.tr = bubbleBg.bl = bubbleBg.br = 10;
             bubbleBg.color = "#00ff0044";
         }
         if (!this._topHeap.has("SpeakerBubble")) {
             const speakerBubbleObj = createSargaObject("speechbubble", "SpeakerBubble", { "k": "_heap", "v": this._topHeap });
             this._topHeap.addName(speakerBubbleObj);
             speakerBubbleObj.show();
-            let margin = s.width / 10;
-            speakerBubbleObj.x = margin;
-            speakerBubbleObj.width = s.width - (2 * margin);
-            speakerBubbleObj.y = s.height - 140;
+            speakerBubbleObj.x = "7%";
+            speakerBubbleObj.width = "84%";
+            speakerBubbleObj.y = "73%";
             speakerBubbleObj.z = 100;
         }
         if (!this._topHeap.has("Play")) {

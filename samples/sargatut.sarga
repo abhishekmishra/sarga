@@ -1,3 +1,15 @@
+Palette is Vanilla [
+    darkest "#222324",
+    darker  "#444546",
+    dark    "#666768",
+    neutral "#888990",
+    light   "#a0a1a2",
+    lighter "#c0c1c2",
+    lightest "#e0e1e2"
+]
+
+BubbleBG do update [ color mustache < "{{Palette.light}}" ]
+
 Duck is Vanilla has Speech, Animate [name "Daffy"]
 Duck has SpeechBubble [ x "5%", y "0%", z "1", w "100", h "100", text "Daffy Duck" ]
 Duck has Sound [sound "www/assets/sounds/start.wav"]
@@ -9,15 +21,19 @@ DuckAnimator is Vanilla has FixedSequenceAnimator [
 ]
 Duck do animator [ name "DuckAnimator" ]
 
-BlackboardBG is Vanilla has Fill [color "#000000", x "5%", y "5%", w "90%", h "66%", z "1", text ""]
-Blackboard is Vanilla has SpeechBubble, Speech [color "#ffffff", x "5%", y "5%", w "50%", h "60%", z "2", text "", speechBubbleName "Blackboard"]
+BlackboardBG is Vanilla has Fill [color mustache < "{{Palette.darkest}}", x "5%", y "5%", w "90%", h "66%", z "1", text ""]
+Blackboard is Vanilla has SpeechBubble, Speech [ color mustache < "{{Palette.lightest}}", 
+    x "6%", y "6%", w "88%", h "64%", z "2", 
+    text "", speechBubbleName "Blackboard", speakerBubbleName "",
+    pauseOnSpeech "false"
+]
 
-NarratorBG is Vanilla has Fill [color "#ff00ff", x "80%", y "55%", z "2",
+NarratorBG is Vanilla has Fill [color mustache < "{{Palette.lighter}}", x "80%", y "55%", z "2",
     w "12%", h "15%", tl "20", tr "20", bl "20", br "20"]
-Narrator is Character [ image "www/assets/images/neo", color "#009900", alt "smile", 
+Narrator is Character [ image "www/assets/images/neo", color mustache < "{{Palette.darkest}}", alt "smile", 
     x "81%", y "56%", z "3", w "10%", h "13%" ]
 
-TutorialBG is Image [ image "www/assets/images/bg01", x "0", y "0", z "0" ]
+TutorialBG is Vanilla has Fill [ color mustache < "{{Palette.lightest}}", x "0", y "0", w "100%", h "100%", z "0" ]
 
 TotalScore is Counter has SpeechBubble [ 
     start "1", step "1",
@@ -26,38 +42,36 @@ TotalScore is Counter has SpeechBubble [
     text mustache<"Score: {{TotalScore.count}}"
 ]
 
-TotalScore do print
-
 show BlackboardBG
 show Blackboard
 show TutorialBG
-show Duck
+hide Duck
 show NarratorBG
 show Narrator
 show TotalScore
 
-Blackboard: "woah"
-
-Narrator: " Duck do play "
-
-Duck do update [text "Quack Quack"]
-Duck do say
-
-Narrator: "Welcome to the Sarga Tutorial"
-mustache < "My name is {{Narrator.name}} and I'll be your guide."
+Narrator: mustache < "Welcome to the Sarga Tutorial.
+My name is {{Narrator.name}} and I'll be your guide. 
+You can see me in the little box to the right of the screen.
 "
-Sarga helps to create and run books with audio and visual elements.
+
+"Sarga helps to create and run books with audio and visual elements.
 This is similar to visual novels but with a more general focus - so that
-you can create textbooks, stories, tutorials, articles etc.
-"
-hide TotalScore
-Duck: "Quack"
-Narrator: "Note that Sarga doesn't replace graphical or audio creation tools. It helps you become
+you can create textbooks, stories, tutorials, articles etc."
+
+"Let's get started..."
+
+"Sometimes text will appear in the box at the bottom of the screen which is the default 'Speech Bubble'."
+
+Blackboard: "This is the Blackboard Speech Bubble"
+
+Narrator: "Sometimes I will write some stuff on the Blackboard"
+
+"Note that Sarga doesn't replace graphical or audio creation tools. It helps you become
 the play director and producer, bringing textual, audio and visual elements together on
-a screen.
-"
+a screen."
 
 "The audio and visual contents can be created using applications and/or generated
 in code. Only their appearance (and disappearance) on the stage is controlled in Sarga."
 
-show TotalScore
+Narrator: " Duck do play "
