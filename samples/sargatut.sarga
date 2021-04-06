@@ -32,7 +32,7 @@ Blackboard is Vanilla has SpeechBubble, Speech [ color mustache < "{{Palette.lig
 
 NarratorBG is Vanilla has Fill [color mustache < "{{Palette.lighter}}", x "80%", y "55%", z "2",
     w "12%", h "15%", tl "20", tr "20", bl "20", br "20"]
-Narrator is Character has Image [ image "www/assets/images/neo", color mustache < "{{Palette.darkest}}", alt "smile", 
+Narrator is Character has Image [ image "www/assets/images/neo", imageExtension ".svg", color mustache < "{{Palette.darkest}}", alt "smile", 
     x "1%", y "1%", z "4", w "100%", h "100%", name "Dude" ]
 Narrator do update [
     parent "NarratorBG"
