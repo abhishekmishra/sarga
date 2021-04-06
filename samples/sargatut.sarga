@@ -31,7 +31,7 @@ Blackboard is Vanilla has SpeechBubble, Speech [ color mustache < "{{Palette.lig
 NarratorBG is Vanilla has Fill [color mustache < "{{Palette.lighter}}", x "80%", y "55%", z "2",
     w "12%", h "15%", tl "20", tr "20", bl "20", br "20"]
 Narrator is Character [ image "www/assets/images/neo", color mustache < "{{Palette.darkest}}", alt "smile", 
-    x "81%", y "56%", z "3", w "10%", h "13%" ]
+    x "81%", y "56%", z "3", w "10%", h "13%", name "Dude" ]
 
 TutorialBG is Vanilla has Fill [ color mustache < "{{Palette.lightest}}", x "0", y "0", w "100%", h "100%", z "0" ]
 
@@ -51,7 +51,7 @@ show Narrator
 show TotalScore
 
 Narrator: mustache < "Welcome to the Sarga Tutorial.
-My name is {{Narrator.name}} and I'll be your guide. 
+My name is '{{Narrator.name}}' and I'll be your guide. 
 You can see me in the little box to the right of the screen.
 "
 
