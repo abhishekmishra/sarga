@@ -1,30 +1,29 @@
-Window do print
-_num do print
 Duck is Vanilla has Speech, Animate [name "Daffy"]
-Duck has SpeechBubble [ x "300", y "20", z "1", w "100", h "100", text "Daffy Duck" ]
+Duck has SpeechBubble [ x "5%", y "0%", z "1", w "100", h "100", text "Daffy Duck" ]
 Duck has Sound [sound "www/assets/sounds/start.wav"]
 DuckAnimator is Vanilla has FixedSequenceAnimator [
-    interval "100",
+    interval "200",
     target "Duck",
     attr "x",
-    values "100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200"
+    values "10%, 15%, 20%, 25%, 30%, 35%, 40%, 45%, 50%, 55%, 60%"
 ]
 Duck do animator [ name "DuckAnimator" ]
 
-BlackboardBG is Vanilla has Fill [color "#000000", x "5%", y "5%", w "50%", h "60%", z "1", text ""]
+BlackboardBG is Vanilla has Fill [color "#000000", x "5%", y "5%", w "90%", h "66%", z "1", text ""]
 Blackboard is Vanilla has SpeechBubble, Speech [color "#ffffff", x "5%", y "5%", w "50%", h "60%", z "2", text "", speechBubbleName "Blackboard"]
 
-NarratorBG is Vanilla has Fill [color "#ff00ff10", x "650", y "300", z "1",
-    w "110", h "110", tl "20", tr "20", bl "20", br "20"]
-
+NarratorBG is Vanilla has Fill [color "#ff00ff", x "80%", y "55%", z "2",
+    w "12%", h "15%", tl "20", tr "20", bl "20", br "20"]
 Narrator is Character [ image "www/assets/images/neo", color "#009900", alt "smile", 
-    x "660", y "310", z "2", w "100", h "100" ]
+    x "81%", y "56%", z "3", w "10%", h "13%" ]
 
 TutorialBG is Image [ image "www/assets/images/bg01", x "0", y "0", z "0" ]
 
 TotalScore is Counter has SpeechBubble [ 
     start "1", step "1",
-    x "10", y "20", z "1", text mustache<"{{TotalScore.count}}"
+    x "85%", y "0%", z "1", 
+    w "10%", h "5%",
+    text mustache<"Score: {{TotalScore.count}}"
 ]
 
 TotalScore do print
