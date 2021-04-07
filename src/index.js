@@ -1,6 +1,6 @@
 // import p5 from "p5";
 // import "p5/lib/addons/p5.sound";
-import sargatut from '../samples/sargatut.sarga';
+import sargatut from '../samples/test0.sarga';
 import { sargaParse } from './sarga_parse';
 import { SargaBlockDisplay } from './sarga_display';
 

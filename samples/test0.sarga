@@ -1,32 +1,8 @@
-begin blah
-    character oy #222222
-    character noone #888888
+person1 is Character [ color "#222222" ]
+person2 is Character [ color "#888888" ]
 
-    var x 10
-    var y "blah - bluh"
-    var z ask "get value"
-
-    set y (10 - $x)
-    set x 20
-    
-    layer clear
-    play audio audio0
-
-    #t oy: "$hello humm what $two (सर्ग)"
-    oy: "$hello humm"
-
-    #an choice "blah"
-    option "one" "do something"
-    option "two" "do something"
-    option "three" 
-        begin
-            "dude"
-        end
-
-    begin bluh
-        "dude"
-    end
-
-    noone: "woah"
-    start bluh
-end
+person1: "knock knock!"
+person2: "who's there?"
+person1: "Sarga"
+person2: "Sarga who?"
+person1: "Sa re ga ma"
