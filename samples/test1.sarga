@@ -1,34 +1,7 @@
-begin test1
-    begin x
-        oy: "$hello humm"
-        oy: "what"
-        #t oy: "blah"
-    end
-    begin z
-        choice "x"
-        option "three" 
-        begin x
-            "dude"
-        end
-    end
-    begin z
-        play audio blah0
-        "what"
-    end
-    begin z
-        layer clear
-        "what"
-    end
-    begin z
-        layer clear
-        "what"
-        start d0
-    end
-    begin x
-        set y $z - $x
-        set y $z + $x
-        set y 10 - $x
-        set y 10 + 20
-        set y (10 - $x)
-    end
-end
+narrator is Character
+
+narrator: "Once upon a time..."
+"there lived a king."
+"His name was Rahula."
+"He was kind and generous and strong, but idealistic."
+"And they lived happily ever after."
