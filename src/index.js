@@ -15,4 +15,3 @@ for (let eg of examples) {
     const display = new SargaDisplay(sargaScript);
     display.show();
 }
-

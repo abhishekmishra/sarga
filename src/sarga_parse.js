@@ -1,4 +1,4 @@
-import { Sarga, SargaSemantics } from './sarga_main';
+import Sarga from './sarga_grammar';
 import { SargaBlock, SargaScriptLine, SargaScriptDeclarationMixin } from './sarga_runtime';
 import { createSargaObject, sargaMixin } from './sarga_factory';
 
@@ -10,7 +10,7 @@ import { createSargaObject, sargaMixin } from './sarga_factory';
  */
 export function sargaParse(name, text) {
     // phase 1 - match with grammar.
-    const matchResult = Sarga.match(text);
+    const matchResult = Sarga.SargaGrammar.match(text);
     // console.log(`"${text.substring(0, 15)} ..." -> ${matchResult.succeeded()}`);
 
     // if parse phase 1 succeeded
@@ -34,7 +34,7 @@ function sargaParsePhase2(text, matchResult) {
         console.log(matchResult.message);
         throw ('Error parsing script.');
     } else {
-        const scriptObj = SargaSemantics(matchResult).eval();
+        const scriptObj = Sarga.SargaSemantics(matchResult).eval();
         // console.log(JSON.stringify(scriptObj, null, 2));
         return parseStatement(scriptObj);
     }
