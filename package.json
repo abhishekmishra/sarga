@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "sarga (सर्ग): audio-visual interactive books for the space age",
   "private": true,
+  "main": "dist/sarga.js",
   "scripts": {
+    "build": "webpack --mode production",
     "dev": "webpack --mode development",
     "start": "webpack serve --mode development --open --port 8190",
     "test": "echo \"Error: no test specified\" && exit 1"

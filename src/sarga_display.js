@@ -1,3 +1,4 @@
+import { sargaParse } from './sarga_parse';
 import { SargaRunner } from './sarga_runtime';
 
 export class SargaDisplay {
@@ -5,7 +6,11 @@ export class SargaDisplay {
     blockRunner;
 
     constructor(block) {
-        this.block = block;
+        if(typeof block === "string") {
+            this.block = sargaParse("inline", block);
+        } else {
+            this.block = block;
+        }
         this.blockRunner = new SargaRunner(this.block);
     }
 

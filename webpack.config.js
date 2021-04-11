@@ -30,14 +30,19 @@ module.exports = {
             }
         ]
     },
-    entry: './src/index.js',
+    entry: './src/sarga_main.js',
     output: {
-        filename: 'main.js',
+        filename: 'sarga.js',
         path: path.resolve(__dirname, 'dist'),
+        globalObject: 'this',
+        library: {
+            name: 'Sarga',
+            type: 'commonjs'
+        }
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "www", "index.html")
-        })
-    ]
+    // plugins: [
+    //     new HtmlWebpackPlugin({
+    //         template: path.resolve(__dirname, "www", "index.html")
+    //     })
+    // ]
 };
