@@ -1,10 +1,12 @@
 // import p5 from "p5";
 // import "p5/lib/addons/p5.sound";
-import sargatut from '../samples/test1.sarga';
-import Sarga from './sarga_main';
+// import sargatut from '../samples/test1.sarga';
+// import Sarga from './sarga_main';
 
 const examples = [
-    sargatut
+    `test is Character
+    test: "hello world"
+    `
 ];
 
 for (let eg of examples) {

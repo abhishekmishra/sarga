@@ -1,5 +1,3 @@
-import { SargaDisplay as Display } from './sarga_display';
+import { SargaDisplay } from './sarga_display';
 
-export default {
-    Display
-}
+export const Display = SargaDisplay;

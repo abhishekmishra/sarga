@@ -34,15 +34,15 @@ module.exports = {
     output: {
         filename: 'sarga.js',
         path: path.resolve(__dirname, 'dist'),
-        globalObject: 'this',
+        // globalObject: 'this',
         library: {
             name: 'Sarga',
-            type: 'commonjs'
+            type: 'umd'
         }
     },
-    // plugins: [
-    //     new HtmlWebpackPlugin({
-    //         template: path.resolve(__dirname, "www", "index.html")
-    //     })
-    // ]
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "www", "index.html")
+        })
+    ]
 };
